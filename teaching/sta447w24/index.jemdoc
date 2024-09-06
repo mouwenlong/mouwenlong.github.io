@@ -1,0 +1,50 @@
+# jemdoc: menu{MENU}{index.html}, nofooter  
+==STA 447/2006: Stochastic Processes
+[../../index.html Wenlong Mou], Department of Statistical Sciences, University of Toronto, Winter 2024
+
+== Description
+*Time:* Wednesdays 10:10am -- 11am, Fridays 10:10am -- noon
+
+*Office hours:* Wednesdays 11am -- noon
+
+*Teaching assistants:* Anthony Coache and David Dayi Li
+
+
+This is an introductory course for stochastic processes. In this semester, we will discuss stochastic processes with various structures, including (discrete-time) Markov chains, martingales, Brownian motion and Poisson processes. Topics include, but are not limited to, recurrence and convergence of Markov chains, optional stopping and martingale convergence, and basics of stochastic calculus. If time permits, we will also cover applications including Monte Carlo algorithms, random walks on graphs, branching processes, option pricing, queueing theory, and more.
+
+== Announcement
+- Apr 30th. Final grades and [./final-sol.pdf solution] released. Note that final exam is mandatory to get the credit. If you are enrolled in the course but did not attend the final, please contact me asap.
+
+- Apr 22th. Final exam at 9am -- noon, at MY315 (different from the lecture location).
+
+1. The exam is going to last 3 hours. Please plan to arrive 5 minutes prior to the exam time. Be sure to bring your student ID.
+
+2. You're allowed to bring up to 3 pages (double-sided, letter-sized) cheat sheet. No electronics including calculators are allowed (and they won't be needed).
+
+3. The format is going to be similar to the midterms, though we'll have a few more questions.
+
+Good luck!
+- Feb 29th. Midterm \#1 grade released.
+- Feb 16th. Midterm exam \#1. Same location and time as the lectures. The exam will cover all the Markov chain stuff discussed in lectures. Please remember to bring your student ID. You are allowed to bring one-page (double-sided) cheat sheet. Please work on the problems by yourself. No electronics are allowed during the exams.
+- Feb 10th. Special office hours for TAs: Feb 12th, 2--4pm for David; Feb 13, 9--11am for Anthony; see Piazza for details.
+- Jan 31st. In-person class cancelled for this lecture. Video lecture will be uploaded on Quercus.
+- Jan 16th. [https://piazza.com/class/lrgrtpbjxfy44y Piazza page] is available now.
+- The course [./STA447H1S-2024_Winter_Syllabus-20240110.pdf syllabus] is online. Please read.
+- First lecture starts on January 10th.
+
+
+== Textbooks
+Default textbook
+- /A first look at stochastic processes/ by Jeff Rosenthal
+
+Reference books
+- /Introduction to stochastic processes/, by Greg Lawler
+- /Essentials of stochastic processes/, by Rick Durrett, 2nd Edition
+
+== Grading
+2 mid-term exams during classes and a final exam.
+
+Raw final grade = max (25\% \* midterm1 \+ 25\% \* midterm2 \+ 50\% \* final, 33.3\% \* midterm1 \+ 66.7\% \* final, 33.3\% \* midterm2 \+ 66.7\% \* final, 100\% \* final)
+
+There are no graded homework assignments. However, you are strongly encouraged to attempt the textbook's practice problems to learn the material well.
+

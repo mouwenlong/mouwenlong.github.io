@@ -1,0 +1,12 @@
+# jemdoc: menu{MENU}{schedule.html}, nofooter  
+==STA3000F: Advanced Theory of Statistics
+[../../index.html Wenlong Mou], Department of Statistical Sciences, University of Toronto, Fall 2024
+
+== Schedule
+~~~
+{}{table}{}
+lecture | topic | references | notes ||
+09\/12| Probability recap, decision theory, Bayes and minimax procedures, sufficient statistics| | ||
+~~~
+
+

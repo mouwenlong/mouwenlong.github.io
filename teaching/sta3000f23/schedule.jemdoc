@@ -1,0 +1,34 @@
+# jemdoc: menu{MENU}{schedule.html}, nofooter  
+==STA3000F: Advanced Theory of Statistics
+[../../index.html Wenlong Mou], Department of Statistical Sciences, University of Toronto, Fall 2023
+
+== Schedule
+~~~
+{}{table}{}
+lecture | topic | references ||
+09\/12| Probability recap, decision theory, Bayes and minimax procedures| Bickel and Doksum 1.3; Keener 7.1, 7.2; [https://sites.stat.washington.edu/jaw/COURSES/580s/581/LECTNOTES/ch5b.pdf Jon Wellner's notes] (Section 1-6)  ||
+09\/14| Game theory and minimax procedures, sufficient statistics | Bickel and Doksum 3.3; Keener 3.2, 3.3 ||
+09\/19| Sufficiency, completeness, and UMVU, examples from exponential family | Keener 3.3, 3.5, 3.6, 4.1, [https://sites.stat.washington.edu/jaw/COURSES/580s/581/LECTNOTES/ch13.pdf Jon Wellner's notes] ||
+09\/21|UMVU examples continued; log likelihood, Fisher identity, and Cramér--Rao lower bound| Keener 4.5, 4.6 ||
+09\/26| Hammersley--Chapman--Robbins and Bayesian Cramér--Rao lower bound; framework for testing, Neyman--Pearson lemma, UMP tests | Tsybakov 2.7.3, Keener 12.1, 12.2, 12.3 ||
+09 \/28| Two-sided tests and UMPU, duality between testing and interval estimation; multivariate Gaussian and minimax testing| Keener 12.4, 12.6, 12.7, [https://www.stat.cmu.edu/~siva/teaching/709/lec23.pdf Siva's notes] ||
+10\/03| Minimax testing radius for multivariate Gaussian; Bonus question I; Le Cam's two point method| [https://www.stat.cmu.edu/~siva/teaching/709/lec24.pdf Siva's notes], [https://people.eecs.berkeley.edu/~bartlett/courses/281b-sp08/21.pdf Sasha's notes]  ||
+10\/05| Basics of probabilistic convergence| van der Vaart 2.1, 2.2 ||
+10\/10| Delta methods continued, uniform law of large numbers, covering and packing, Wald's consistency proof for M-estimators and MLE|   van der Vaart 3.1, 3.3, 5.2, Keener 9.1, 9.2 ||
+10\/12| Consistency continued; asymptotic distribution of Z-estimators under classical conditions | van der Vaart 5.6, 5.7 ||
+10\/17| Basics of empirical process theory, symmetrization and chaining|  [https://web.stanford.edu/class/stats300b/Slides/07-sub-g-processes.pdf John's notes], [./STA3000-lec11.pdf my notes] ||
+10\/19| Examples of empirical process upper bounds, preliminaries of convergence rates| [./STA3000-lec12.pdf notes], [http://www.stat.columbia.edu/~bodhi/Talks/Emp-Proc-Lecture-Notes.pdf Bohdi's notes], Section 5 ||
+10\/24| Convergence rates of M-estimators, process convergence and Donsker's theorem | [./STA3000-lec13.pdf notes], van der Vaart 5.3, 5.8||
+10\/26| Asymptotic distribution of M estimators via weak convergence of empirical processes, application to MLE | [./STA3000-lec14.pdf notes], van der Vaart 5.3, 19.4, 19.5 ||
+10\/31| Examples of M-estimator asymptotics. Schwartz's theorem for posterior consistency via testing| [./STA3000-lec15.pdf notes], van der Vaart 19.5, 7.1 -- 7.4 (optional), Chapter 7 of [https://staff.fnwi.uva.nl/b.j.k.kleijn/NPBayes-LecNotes-2015.pdf the monograph] ||
+11\/02| Bernstein-von-Mises theorem, nonparametric estimation problems, Hölder and Sobolev classes| [./STA3000-lec16.pdf notes]  ||
+11\/14| Analysis of least-squares estimators for nonparametric regression, metric entropy for Hölder classes | [./STA3000-lec17.pdf notes], van der Vaart and Wellner 2.7.1 ||
+11\/16| Kernel density estimation and pointwise risk analysis for Hölder classes|  [./STA3000-lec18.pdf notes], Tsybakov 1.2  ||
+11\/21| MISE for KDE for Sobolev classes, lack of asymptotic optimality, projection estimator| [./STA3000-lec19.pdf notes], Tsybakov 1.2, 1.7 ||
+11\/23| Projection estimator continued, local polynomial fitting for nonparametric regression| [./STA3000-lec20.pdf notes], Tsybakov 1.5, 1.6, 1.7  ||
+11\/28| Local polynomial estimation continued; Le Cam's two-point lower bound for pointwise risks; Mutual information and Fano's inequality| [./STA3000-lec21.pdf notes], Tsybakov 1.6, 2.4, 2.5 ||
+11\/30| Proof of Fano's inequality, lower bounds for integrated risks|  [./STA3000-lec22.pdf notes], Tsybakov 2.6.1, 2.7.1 ||
+12\/05| Adaptive estimation via Lepski's method|   ||
+~~~
+
+
