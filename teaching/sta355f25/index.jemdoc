@@ -1,0 +1,28 @@
+# jemdoc: menu{MENU}{index.html}, nofooter  
+==STA 355: Theory of statistical practice
+[../../index.html Wenlong Mou], Department of Statistical Sciences, University of Toronto, Fall 2025
+
+== Description
+*Time:* Fridays 5pm -- 8pm
+
+*Office hours:* TBD
+
+*Teaching assistants:* Rosa Fallahpour, Yichen Ji, Daiqing Wu
+
+STA355H1 provides a rigorous introduction to the theory of statistical practice, bridging the 200-level introductory courses and advanced topics. The course will enable students to read methodological research articles or articles with a large methodological component. Both methodologies and models will be covered. Methodological topics include bootstrapping; parametric estimation and inference, maximal likelihood estimation; hypothesis testing; Bayesian inference and decision theory. Topics on models include linear regression, generalized linear models, and nonparametric regression. The course will also cover the basics of asymptotic theory.
+
+== Announcement
+- First lecture starts on September 5, 2025.
+
+
+== Textbook
+- /All of Statistics/ by Larry Wasserman.
+
+
+== Grading
+2 homeworks, 1 mid-term exam during class, and 1 final exam.
+
+The raw final grade will be calculated as:
+30\% \* homework \+ max(30\% \* midterm \+ 40\% \* final, 70\% \* final).
+
+In particular, if you miss the midterm exam, the portion will be automatically allocated to the final exam.

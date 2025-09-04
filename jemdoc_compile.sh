@@ -1,0 +1,1 @@
+python3 /Users/wmou/Downloads/jemdoc_mathjax-master/jemdoc $1
