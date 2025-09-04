@@ -1,0 +1,96 @@
+# jemdoc: menu{MENU}{research.html}, nofooter  
+==Papers
+
+- [https://arxiv.org/abs/2502.04297
+Statistical guarantees for continuous-time policy evaluation: blessing of ellipticity and new tradeoffs]
+-- *Wenlong Mou*
+
+- [https://arxiv.org/abs/2411.09731
+To bootstrap or to rollout? An optimal and adaptive interpolation]
+-- *Wenlong Mou*, Jian Qian (equal contribution)
+
+- [https://arxiv.org/abs/2407.05966v1
+On Bellman equations for continuous-time policy evaluation I: discretization and approximation]
+-- *Wenlong Mou*, Yuhua Zhu (equal contribution)
+
+- [https://arxiv.org/abs/2311.10076 
+A decorrelation method for general regression adjustment in randomized experiments]
+-- Fangzhou Su, *Wenlong Mou (equal contribution)*, Peng Ding, Martin J. Wainwright
+
+- [https://arxiv.org/abs/2411.02909
+When is it worthwhile to jackknife? Breaking the quadratic barrier for Z-estimators]
+-- Licong Lin, Fangzhou Su, *Wenlong Mou*, Peng Ding, Martin J. Wainwright
+
+- [https://arxiv.org/abs/2012.05299 Optimal oracle inequalities for solving projected fixed-point equations, with applications to policy evaluation]
+-- *Wenlong Mou*, Ashwin Pananjady, and Martin Wainwright
+-- Published at /Mathematics of Operations Research/, article in advance, 2022+
+
+- [https://arxiv.org/abs/2301.06240 Kernel-based off-policy estimation without overlap: Instance optimality beyond semiparametric efficiency]
+-- *Wenlong Mou*, Peng Ding, Martin Wainwright, and Peter Bartlett
+
+    
+- [https://arxiv.org/abs/2209.13075 Off-policy Estimation of Linear Functionals:
+        Non-asymptotic Theory for Semi-parametric Efficiency]
+-- *Wenlong Mou*, Martin Wainwright, and Peter Bartlett
+         
+
+- [https://arxiv.org/abs/2112.12770 Optimal and Instance-dependent Guarantees for Markovian Linear Stochastic Approximation]
+-- *Wenlong Mou*, Ashwin Pananjady, Martin Wainwright, and Peter Bartlett
+-- Selected as a finalist for INFORMS APS student paper competition, 2022
+-- Extended abstract appeared at [https://proceedings.mlr.press/v178/mou22a/mou22a.pdf /COLT/ 2022]
+-- Accepted to /Mathematical Statistics and Learning/, 2023+
+
+- [https://arxiv.org/abs/1909.00966 A Diffusion Process Perspective on Posterior Contraction Rates for Parameters]
+-- *Wenlong Mou*, Nhat Ho, Martin Wainwright, Peter Bartlett, and Michael Jordan
+-- Accepted to /SIAM Journal on Mathematics of Data Science/, 2023+
+
+- [https://arxiv.org/abs/2201.08518 Optimal Variance-reduced Stochastic Approximation in Banach Spaces]
+-- *Wenlong Mou*, Koulik Khamaru (equal contribution), Martin Wainwright, Peter Bartlett, and Michael Jordan
+
+- [https://arxiv.org/abs/2303.17102 When is the estimated propensity score better? High-dimensional analysis and bias correction]
+-- Fangzhou Su, *Wenlong Mou (equal contribution)*, Peng Ding, Martin Wainwright
+    
+- [https://proceedings.mlr.press/v178/li22a/li22a.pdf ROOT-SGD: Sharp Nonasymptotics and Asymptotic Efficiency in a Single Algorithm]
+-- Chris Junchi Li, *Wenlong Mou (equal contribution)*, Martin Wainwright, and Michael Jordan
+-- In proceedings of [https://proceedings.mlr.press/v178/li22a/li22a.pdf /COLT/ 2022]
+     
+- [https://projecteuclid.org/journals/bernoulli/volume-28/issue-3/Improved-bounds-for-discretization-of-Langevin-diffusions--Near-optimal/10.3150/21-BEJ1343.short Improved Bounds for Discretization of Langevin Diffusions: Near-optimal rates without Convexity]       
+-- *Wenlong Mou*, Nicolas Flammarion, Martin Wainwright, and Peter Bartlett
+-- Published at [https://projecteuclid.org/journals/bernoulli/volume-28/issue-3/Improved-bounds-for-discretization-of-Langevin-diffusions--Near-optimal/10.3150/21-BEJ1343.short /Bernoulli/] 28.3 (2022): 1577-1601
+    
+
+- [https://jmlr.org/papers/v22/20-576.html High-Order Langevin Diffusion Yields an Accelerated MCMC Algorithm]
+-- *Wenlong Mou*, Yi-An Ma (equal contribution), Martin Wainwright, Peter Bartlett, and Michael Jordan
+-- Published at [https://jmlr.org/papers/v22/20-576.html /Journal of Machine Learning Research/], 22(42):1-41, 2021
+    
+- [https://arxiv.org/abs/1910.00551 An Efficient Sampling Algorithm for Non-smooth Composite Potentials]
+-- *Wenlong Mou*, Nicolas Flammarion, Martin Wainwright, and Peter Bartlett
+-- Published at /Journal of Machine Learning Research/, to appear (2022+)
+    
+    
+- [https://arxiv.org/abs/2008.07353 On the Sample Complexity of Reinforcement Learning with Policy Space Generalization]
+-- *Wenlong Mou*, Zheng Wen, Xi Chen
+
+- [https://proceedings.mlr.press/v125/mou20a.html On Linear Stochastic Approximation: Fine-grained Polyak--Ruppert and Non-Asymptotic Concentration]    
+-- *Wenlong Mou*, Chris Junchi Li, Martin Wainwright, Peter Bartlett, and Michael Jordan
+-- In proceedings of [https://proceedings.mlr.press/v125/mou20a.html /COLT/ 2020]
+
+    
+- [https://arxiv.org/abs/1912.05153 Sampling for Bayesian Mixture Models: MCMC with Polynomial-time Mixing]
+-- *Wenlong Mou*, Nhat Ho, Martin Wainwright, Peter Bartlett, and Michael Jordan
+    
+- [https://proceedings.mlr.press/v75/mou18a.html Generalization Bounds of SGLD for Non-convex Learning: Two Theoretical Viewpoints]
+-- *Wenlong Mou*, Liwei Wang, Xiyu Zhai, and Kai Zheng (alphabetical order)
+-- In proceedings of [https://proceedings.mlr.press/v75/mou18a.html /COLT/ 2018]
+
+- [https://proceedings.mlr.press/v80/mou18a.html Dropout Training, Adaptive Regularization and Generalization Error Bounds]
+-- *Wenlong Mou*, Yuchen Zhou, Jun Gao, and Liwei Wang
+-- In proceedings of [https://proceedings.mlr.press/v80/mou18a.html /ICML/ 2018]
+    
+- [https://proceedings.mlr.press/v70/balcan17a.html Differentially Private Clustering in High-dimensional Euclidean Spaces]
+-- Maria-Florina Balcan, Travis Dick, Yingyu Liang, *Wenlong Mou*, and Hongyang Zhang (alphabetical order)
+-- In proceedings of [https://proceedings.mlr.press/v70/balcan17a.html /ICML/ 2017]
+
+- [http://proceedings.mlr.press/v70/zheng17c/zheng17c.pdf Collect at Once, Use Effectively: Making Non-interactive Locally Private Learning Possible]
+-- Kai Zheng, *Wenlong Mou*, Liwei Wang
+-- In proceedings of [http://proceedings.mlr.press/v70/zheng17c/zheng17c.pdf /ICML/ 2017]

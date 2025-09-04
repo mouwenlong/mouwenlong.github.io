@@ -1,0 +1,24 @@
+# jemdoc: menu{MENU}{talks.html}, nofooter  
+== Invited talks
+
+== Upcoming talks
+- RL in continuous-time diffusions: from the blessing of ellipticity to structure-driven algorithms, Columbia University, April 2025
+
+== Past talks
+- Continuous-time reinforcement learning: blessings of diffusion structures and high-order approximations, /CMS Winter Meeting/, Vancouver, Dec 2024
+- Structure-driven design of reinforcement learning algorithms: a tale of two estimators, Northwestern University, Nov 2024
+- Structure-driven design of reinforcement learning algorithms: a tale of bootstrapping and rollout, Georgia Institute of Technology, Nov 2024
+- To bootstrap or to rollout? An optimal and adaptive interpolation, /INFORMS Annual Meeting/, Seattle, Oct 2024
+- A decorrelation method for general regression adjustment in randomized experiments, /IMS-Bernoulli World Congress/, Bochum, Aug 2024
+- Optimal stochastic approximation under general norms with applications to reinforcement learning, Shanghai Jiaotong University, July 2024
+- To bootstrap or to rollout? An optimal and adaptive interpolation, /International Conference on Frontiers of Data Science/, Hangzhou, Jul 2024
+- A decorrelation method for general regression adjustment in randomized experiments, Banff International Research Station, Feb 2024
+- Policy Evaluation With General Function Approximation: Efficient Algorithms And Instance-dependent Guarantees, /INFORMS Annual Meeting/, Phoenix, Oct 2023
+- Statistical theory for reinforcement learning: Oracle inequalities, Markov chains, and stochastic approximation, /Young Researchers Workshop/, Cornell University, Oct 2022
+- Optimal and Instance-dependent Guarantees for Markovian Linear Stochastic Approximation, APS student paper competition at /INFORMS Annual Meeting/, Indianapolis, Oct 2022
+- On The Statistical Complexity Of Reinforcement Learning With Function Approximation, /INFORMS Annual Meeting/, Indianapolis, Oct 2022
+- Rethinking semi-parametric efficiency for off-policy estimation: a non-asymptotic perspective, /BLISS seminar/, UC Berkeley, Oct 2022
+- Optimal variance-reduced stochastic approximation in Banach spaces, /Applied and Computational Math seminar/, Georgia Institute of Technology, Nov 2022
+- Optimal algorithms for reinforcement learning: Oracle inequalities, Markov chains, and stochastic approximation, /International Conference on Continuous Optimization/, Lehigh University, July 2022
+- Statistical theory for reinforcement learning: Oracle inequalities, Markov chains, and stochastic approximation, /Neyman seminar/, Department of Statistics, UC Berkeley, January 2022
+- High-Order Langevin diffusion yields an accelerated MCMC algorithm, Simons Institute program on /Geometric Methods in Optimization and Sampling/, October 2021

@@ -1,0 +1,31 @@
+# jemdoc: menu{MENU}{index.html}, nofooter  
+==Wenlong Mou (牟文龙)
+
+~~~
+{}{img_left}{photo.jpg}{alt text}{294.7}{256}
+Assistant Professor,\n [https://www.statistics.utoronto.ca/ Department of Statistical Sciences], \n[https://www.utoronto.ca/ University of Toronto]\n
+Office: Ontario Power Building, Room 9190, Toronto, ON\n 
+E-mail: /wmou.work/ \[@\] gmail \[DOT\] com \n
+[https://scholar.google.com/citations?user=j-2RtWUAAAAJ&hl=en Google Scholar]
+~~~
+
+== About me
+Welcome to my homepage!
+I am an Assistant Professor at the Department of Statistical Sciences, University of Toronto. I recently obtained my Ph.D. from the Department of EECS, UC Berkeley, where I was very fortunate to be advised by [https://people.eecs.berkeley.edu/~wainwrig/ Prof. Martin Wainwright] and [https://www.stat.berkeley.edu/~bartlett/ Prof. Peter Bartlett]. Prior to Berkeley, I received B.S. in Computer Science from Peking University in 2017, where I was very fortunate to work with [http://www.cis.pku.edu.cn/faculty/vision/wangliwei/ Prof. Liwei Wang]. 
+
+== Research
+My research interests are broadly in statistics, machine learning theory, dynamic programming and optimization, and applied probability. In particular, I develop optimal statistical methods that enable optimal decision making, powered with efficient computational algorithms. Currently, I work on the following topics:
+- Theory of reinforcement learning with function approximation, geometry of Bellman equations, statistical complexity of reinforcement learning
+- Non-asymptotic theory of semi-parametric statistics, finite-sample optimal methods for treatment effect estimation
+- Stochastic approximation algorithms under statistical settings, interplay between geometry, stochastic processes and optimization
+- Discretization of diffusion processes, high-dimensional MCMC algorithms, Bayesian posterior contraction
+
+== Recruiting
+I am actively seeking Ph.D. students. Please see [./recruiting.html the post] for detailed information. If you are interested in collaborating with me, please don't hesitate to reach out. However, please be aware that I receive a high volume of emails daily, which may lead to some delays in my response. Your patience in this regard is greatly appreciated. Thank you.
+
+== News
+- Feb 2025: [https://arxiv.org/abs/2502.04297 New paper] on statistical guarantees for continuous-time reinforcement learning
+- Nov 2024: [https://arxiv.org/abs/2411.09731 New paper] on optimal interpolation between bootstrap and rollout methods in reinforcement learning.
+- Nov 2024: [https://arxiv.org/abs/2411.02909 New paper] on debiasing general Z estimators.
+- July 2024: [https://arxiv.org/abs/2407.05966v1 New paper] on policy evaluation for continuous-time reinforcement learning.
+- Dec 2023: [https://arxiv.org/abs/1909.00966 Paper] on diffusion process methods for Bayesian posterior contraction accepted to /SIAM Journal on Mathematics of Data Science/

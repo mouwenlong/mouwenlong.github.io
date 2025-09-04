@@ -1,0 +1,43 @@
+# jemdoc: menu{MENU}{index.html}, nofooter  
+== Recruiting
+
+My research primarily delves into the theoretical aspects of machine learning and data science—a field gradually integrating disciplines such as statistics, machine learning, operations research, algorithm theory, and applied mathematics.
+A fundamental question that currently captivates my interest is how machine learning can be harnessed to optimize data-driven decision-making. This involves the development of new statistical methods and optimization algorithms, as well as the distillation of general principles for practical applications. While modern machine learning, particularly deep learning, excels in fitting functions and distributions, its efficacy in decision-making scenarios remains limited, in my view. This observation creates opportunities for advancements in statistical and algorithmic theory.
+
+My research interests extend beyond these topics, and as a prospective student, you are encouraged to pursue your own research direction. As long as you aspire to develop meaningful theories guiding the practice of machine learning and data science, our paths align. For further insights into my research, please visit [http://mouwenlong.github.io my personal website].
+
+
+== Concerning my expectations for doctoral students
+
+I currently have several openings for doctoral students. I am seeking candidates with expertise in *one* of the following two areas:
+
+1. *Mathematics:*
+   - Solid foundation in analysis, probability.
+   - Passion for theoretical proofs with proficiency.
+
+2. *Deep Learning Algorithms:*
+   - Familiarity with the latest developments in the field.
+   - Willingness to understand the underlying principles.
+
+Note that expertise in either area is sufficient, and a background in statistics or operations research is a plus but not mandatory. As long as you possess a strong mathematical background or empirical deep learning skills and are eager to explore, other aspects are flexible.
+
+If you are nearing the completion of your doctoral studies and are interested in a postdoc position with me, please reach out. Our department offers several well-funded postdoctoral projects, and if your research interests align, we can discuss the possibility of applying for some of these projects together.
+
+== Regarding the University of Toronto and the Department of Statistical Sciences
+
+The [http://utoronto.ca University of Toronto] boasts formidable research capabilities, particularly in the fields of machine learning and data science. As one of the birthplaces of modern deep learning, the research atmosphere here is vibrant in machine learning and artificial intelligence.
+
+The [http://vectorinstitute.ai Vector Institute], located just across the street from our department, stands as a major center in the AI field. I am also affiliated with the Vector Institute, granting my students access to a shared GPU cluster with thousands of GPUs.
+
+The [http://statistics.utoronto.ca Department of Statistical Sciences] consistently ranks among the top 20 or even the top 10 in various global rankings. Many successful academics have emerged from our department. Currently, the department covers a wide range of directions, and research in the field of data science is exceptionally active. As a statistical department, we maintain an open-minded approach and actively embrace modern machine learning technologies. Personally, I find great enjoyment in the research atmosphere here.
+
+
+== Contact me
+
+If you are applying to our doctoral program and are interested in joining my research group, please mention my name in your research statement and feel free to contact me through my email (see [./index.html homepage]) When emailing, please include the following:
+
+1. Start the subject with ``Prospective student''.
+
+2. Attach your resume, transcript, and any papers you may have.
+
+3. Provide a brief paragraph about your future research direction or attach your research statement.
