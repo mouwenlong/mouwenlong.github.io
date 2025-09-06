@@ -1,6 +1,14 @@
 # jemdoc: menu{MENU}{research.html}, nofooter  
 ==Papers
 
+- [https://arxiv.org/abs/2509.02528 
+Is RL fine-tuning harder than regression? A PDE learning approach for diffusion models]
+-- *Wenlong Mou*
+
+- [https://arxiv.org/abs/2509.02538
+Federated learning over physical channels: adaptive algorithms with near-optimal guarantees]
+-- Rui Zhang, *Wenlong Mou (equal contribution)*
+
 - [https://arxiv.org/abs/2502.04297
 Statistical guarantees for continuous-time policy evaluation: blessing of ellipticity and new tradeoffs]
 -- *Wenlong Mou*

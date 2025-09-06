@@ -6,7 +6,7 @@
 ~~~
 {}{table}{}
 lecture | topic | references | notes ||
-09\/05| Probability recap, decision theory, admissibility, Bayes and minimax procedures| | ||
+09\/05| Probability recap, basic concentration inequalities, decision theory, admissibility| [https://www.stat.cmu.edu/~larry/=stat705/Lecture2.pdf Larry Wasserman's notes on concentration], [https://en.wikipedia.org/wiki/Gilbert%E2%80%93Varshamov_bound Gilbert--Varshamov bound] for Hamming packing, Bickel and Doksum 1.3 | [./sta3000f25-lec1.pdf Lecture 1] ||
 09\/12 | |  |  ||
 09\/19 | |  |  ||
 09\/26 | |  |  ||
