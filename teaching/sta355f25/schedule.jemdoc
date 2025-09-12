@@ -7,7 +7,7 @@
 {}{table}{}
 lecture | topic | book chapters | notes ||
 09\/05 | introduction, review of probability theory | 1 -- 4 | [./sta355f25-lec1.pdf Lecture 1]  ||
-09\/12 | |  |  ||
+09\/12 | convergence of random variables and limit theorems, basic concepts of statistical inference | 5, 6 |  ||
 09\/19 | |  |  ||
 09\/26 | |  |  ||
 10\/03 | |  |  ||
