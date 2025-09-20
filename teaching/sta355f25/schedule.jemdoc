@@ -8,7 +8,7 @@
 lecture | topic | book chapters | notes ||
 09\/05 | introduction, review of probability theory | 1 -- 4 | [./sta355f25-lec1.pdf Lecture 1]  ||
 09\/12 | convergence of random variables and limit theorems, basic concepts of statistical models | 5, 6 | [./sta355f25-lec2.pdf Lecture 2] ||
-09\/19 | concepts of statistical inference, estimating cdf and functionals, basics of bootstrap methods | 7, 8 |  ||
+09\/19 | concepts of statistical inference, estimating cdf and statistical functionals | 7, 8 | [./sta355f25-lec3.pdf Lecture 3] ||
 09\/26 | |  |  ||
 10\/03 | |  |  ||
 10\/10 | |  |  ||
