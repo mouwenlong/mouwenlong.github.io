@@ -9,8 +9,8 @@ lecture | topic | book chapters | notes ||
 09\/05 | introduction, review of probability theory | 1 -- 4 | [./sta355f25-lec1.pdf Lecture 1]  ||
 09\/12 | convergence of random variables and limit theorems, basic concepts of statistical models | 5, 6 | [./sta355f25-lec2.pdf Lecture 2] ||
 09\/19 | concepts of statistical inference, estimating cdf and statistical functionals | 7, 8 | [./sta355f25-lec3.pdf Lecture 3] ||
-09\/26 | bootstrap, jackknife, parametric bootstrap| 9 | [./sta355f25-lec4.pdf Lecture 4] ||
-10\/03 | |  |  ||
+09\/26 | bootstrap, jackknife, parametric bootstrap| 8 | [./sta355f25-lec4.pdf Lecture 4] ||
+10\/03 | jackknife, maximal likelihood estimation, M-estimators, asymptotic convergence| 8, 9  |  ||
 10\/10 | |  |  ||
 10\/17 | midterm exam |  |  ||
 10\/24 | |  |  ||
