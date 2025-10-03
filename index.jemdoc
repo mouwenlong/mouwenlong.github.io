@@ -26,6 +26,7 @@ On the applied side, I am interested in various applications of machine learning
 I am actively seeking Ph.D. students. Please see [./recruiting.html the post] for detailed information. If you are interested in collaborating with me, please don't hesitate to reach out. However, please be aware that I receive a high volume of emails daily, which may lead to some delays in my response. Your patience in this regard is greatly appreciated. Thank you.
 
 == News
+- Oct 2025: [https://arxiv.org/abs/2510.02149 New paper] on RL with action-triggered observations.
 - Sep 2025: [https://arxiv.org/abs/2509.02528 New paper] on RL fine tuning of diffusion models with function approximation.
 - Sep 2025: [https://arxiv.org/abs/2509.02538 New paper] on federated learning with physical communication channels.
 - Feb 2025: [https://arxiv.org/abs/2502.04297 New paper] on statistical guarantees for continuous-time reinforcement learning
