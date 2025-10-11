@@ -11,7 +11,7 @@ lecture | topic | references | notes ||
 09\/19 | UMVU estimation, Fisher information, (Bayesian) Cramér-Rao lower bound | [https://sites.stat.washington.edu/jaw/COURSES/580s/581/LECTNOTES/ch13.pdf Jon Wellner's notes],  Keener 4.5, 4.6, Tsybakov 2.7.3 | [./sta3000f25-lec3.pdf Lecture 3] ||
 09\/26 | Bayesian Cramér-Rao continued, local minimax lower bound, testing framework, Neyman-Pearson lemma and UMP tests, Le Cam's two-point method| Keener Chapter 12 (except for 12.5), Tsybakov 2.3, 2.4, 2.7.3  | [./sta3000f25-lec4.pdf Lecture 4] ||
 10\/03 | two-sided testing, minimax testing radius, basics of uniform convergence, covering and packing numbers| Keener Chapter 12, Siva's notes on minimax testing [https://www.stat.cmu.edu/~siva/teaching/709/lec23.pdf upper bounds] and [https://www.stat.cmu.edu/~siva/teaching/709/lec24.pdf lower bounds], [https://www.stat.berkeley.edu/~bartlett/courses/2013spring-stat210b/notes/12notes.pdf Peter's notes] | [./sta3000f25-lec5.pdf Lecture 5] ||
-10\/10 | |  |  ||
+10\/10 | Wald's consistency theorem, symmetrization and Rademacher complexity, Dudley chaining integral, main empirical process bounds| van der Vaart 5.2, van der Vaart and Wellner 2.3, 2.5, [http://www.stat.columbia.edu/~bodhi/Talks/Emp-Proc-Lecture-Notes.pdf Bohdi's notes], Section 4 | [./sta3000f25-lec6.pdf Lecture 6] ||
 10\/17 | |  |  ||
 10\/24 | |  |  ||
 11\/07 | |  |  ||
