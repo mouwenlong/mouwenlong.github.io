@@ -12,7 +12,7 @@ lecture | topic | book chapters | notes ||
 09\/26 | bootstrap, parametric bootstrap| 8 | [./sta355f25-lec4.pdf Lecture 4] ||
 10\/03 | Z-estimators, maximal likelihood estimation, M-estimators, asymptotic convergence| 9 | [./sta355f25-lec5.pdf Lecture 5] ||
 10\/10 | M-estimator consistency theorem, additional topics on asymptotic normality, jackknife debiasing, sufficient statistics| 9 | [./sta355f25-lec6.pdf Lecture 6] ||
-10\/17 | midterm exam |  |  ||
+10\/17 | midterm exam | - | [./midterm-sol.pdf Solutions] ||
 10\/24 | |  |  ||
 11\/07 | |  |  ||
 11\/14 | |  |  ||
