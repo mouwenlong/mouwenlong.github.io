@@ -22,8 +22,9 @@ To bootstrap or to rollout? An optimal and adaptive interpolation]
 -- *Wenlong Mou*, Jian Qian (equal contribution)
 
 - [https://arxiv.org/abs/2407.05966v1
-On Bellman equations for continuous-time policy evaluation I: discretization and approximation]
+On Bellman equations for continuous-time policy evaluation: discretization and approximation]
 -- *Wenlong Mou*, Yuhua Zhu (equal contribution)
+-- Accepted to /SIAM Journal on Mathematics of Data Science/, 2025+
 
 - [https://arxiv.org/abs/2311.10076 
 A decorrelation method for general regression adjustment in randomized experiments]
@@ -35,7 +36,7 @@ When is it worthwhile to jackknife? Breaking the quadratic barrier for Z-estimat
 
 - [https://arxiv.org/abs/2012.05299 Optimal oracle inequalities for solving projected fixed-point equations, with applications to policy evaluation]
 -- *Wenlong Mou*, Ashwin Pananjady, and Martin Wainwright
--- Published at /Mathematics of Operations Research/, article in advance, 2022+
+-- Published at /Mathematics of Operations Research/, 2023
 
 - [https://arxiv.org/abs/2301.06240 Kernel-based off-policy estimation without overlap: Instance optimality beyond semiparametric efficiency]
 -- *Wenlong Mou*, Peng Ding, Martin Wainwright, and Peter Bartlett
