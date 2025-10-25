@@ -13,7 +13,7 @@ lecture | topic | references | notes ||
 10\/03 | two-sided testing, minimax testing radius, basics of uniform convergence, covering and packing numbers| Keener Chapter 12, Siva's notes on minimax testing [https://www.stat.cmu.edu/~siva/teaching/709/lec23.pdf upper bounds] and [https://www.stat.cmu.edu/~siva/teaching/709/lec24.pdf lower bounds], [https://www.stat.berkeley.edu/~bartlett/courses/2013spring-stat210b/notes/12notes.pdf Peter's notes] | [./sta3000f25-lec5.pdf Lecture 5] ||
 10\/10 | Wald's consistency theorem, symmetrization and Rademacher complexity, Dudley chaining integral, main empirical process bounds| van der Vaart 5.2, van der Vaart and Wellner 2.3, 2.5, [http://www.stat.columbia.edu/~bodhi/Talks/Emp-Proc-Lecture-Notes.pdf Bohdi's notes], Section 4 | [./sta3000f25-lec6.pdf Lecture 6] ||
 10\/17 | main empirical process bound, VC dimension, Sauer's lemma, bounds on covering/packing number using VC dimension | van der Vaart and Wellner 2.6.1, 2.6.2, [http://www.stat.columbia.edu/~bodhi/Talks/Emp-Proc-Lecture-Notes.pdf Bohdi's notes], Section 7 | [./sta3000f25-lec7.pdf Lecture 7] ||
-10\/24 | |  |  ||
+10\/24 | VC subgraph dimension, fat shattering dimension, localization and convergence rates| [https://www.stat.berkeley.edu/~aditya/resources/FullNotes210BSpring2018.pdf Aditya's notes] Lecture 11 -- 13, van der Vaart and Wellner 3.2.2 | [./sta3000f25-lec8.pdf Lecture 8] ||
 11\/07 | |  |  ||
 11\/14 | |  |  ||
 11\/21 | |  |  ||
