@@ -14,7 +14,7 @@ lecture | topic | book chapters | notes ||
 10\/10 | M-estimator consistency theorem, additional topics on asymptotic normality, jackknife debiasing, sufficient statistics| 9 | [./sta355f25-lec6.pdf Lecture 6] ||
 10\/17 | midterm exam | - | [./midterm-sol.pdf Solutions] ||
 10\/24 | hypothesis testing, p-values, multiple testing, permutation tests | 10 | [./sta355f25-lec7.pdf Lecture 7] ||
-11\/07 | |  |  ||
+11\/07 | likelihood ratio test, detection radius for normal mean testing, basic concepts of decision theory and Bayes estimator| 10, 12 | [./sta355f25-lec8.pdf Lecture 8] ||
 11\/14 | |  |  ||
 11\/21 | |  |  ||
 11\/28 | |  |  ||
