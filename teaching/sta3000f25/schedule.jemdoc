@@ -15,6 +15,6 @@ lecture | topic | references | notes ||
 10\/17 | main empirical process bound, VC dimension, Sauer's lemma, bounds on covering/packing number using VC dimension | van der Vaart and Wellner 2.6.1, 2.6.2, [http://www.stat.columbia.edu/~bodhi/Talks/Emp-Proc-Lecture-Notes.pdf Bodhi's notes], Section 7 | [./sta3000f25-lec7.pdf Lecture 7] ||
 10\/24 | VC subgraph dimension, fat shattering dimension, localization and convergence rates| [https://www.stat.berkeley.edu/~aditya/resources/FullNotes210BSpring2018.pdf Aditya's notes] Lecture 11 -- 13, van der Vaart and Wellner 3.2.2 | [./sta3000f25-lec8.pdf Lecture 8] ||
 11\/07 | examples of localization and convergence rates, Bayesian posterior contraction| Section 5 of [https://sites.stat.columbia.edu/bodhi/Talks/Emp-Proc-Lecture-Notes.pdf Bodhi's notes],  Chapter 7 of [https://staff.fnwi.uva.nl/b.j.k.kleijn/NPBayes-LecNotes-2015.pdf the monograph] | [./sta3000f25-lec9.pdf Lecture 9] ||
-11\/14 | |  |  ||
+11\/14 | constrained-least square for nonparametric regression, convergence rates for Hölder class, discrete Fourier basis and projection estimator for Sobolev class| van der Vaart and Wellner 2.7.1, Martin J. Wainwright high-dimensional statistics Chapter 13, Tsybakov 1.7 | [./sta3000f25-lec10.pdf Lecture 10] ||
 11\/21 | |  |  ||
 11\/28 | |  |  ||
