@@ -16,5 +16,5 @@ lecture | topic | book chapters | notes ||
 10\/24 | hypothesis testing, p-values, multiple testing, permutation tests | 10 | [./sta355f25-lec7.pdf Lecture 7] ||
 11\/07 | likelihood ratio test, detection radius for normal mean testing, basic concepts of decision theory and Bayes estimator| 10, 12 | [./sta355f25-lec8.pdf Lecture 8] ||
 11\/14 | minimax estimator, connection between minimax and Bayes optimality, admissibility and James--Stein estimators, asymptotics of posterior distribution, computational methods for posterior distribution| 12.3 -- 12.7,  11.4 -- 11.7 | [./sta355f25-lec9.pdf Lecture 9]  ||
-11\/21 | |  |  ||
+11\/21 | linear regression and logistic regression| 13 | [./sta355f25-lec10.pdf Lecture 10] ||
 11\/28 | |  |  ||
