@@ -1,0 +1,33 @@
+# jemdoc: menu{MENU}{index.html}, nofooter  
+==STA 447/2006: Stochastic Processes
+[../../index.html Wenlong Mou], Department of Statistical Sciences, University of Toronto, Winter 2026
+
+== Description
+*Time:* Wednesdays 6pm -- 9pm
+
+*Office hours:* TBD
+
+*Teaching assistants:* Marco Antonio Gallegos Herrada and Arian Hashemzadeh Amirkhizi
+
+This is an introductory course for stochastic processes. In this semester, we will discuss stochastic processes with various structures, including (discrete-time) Markov chains, martingales, Brownian motion and Poisson processes. Topics include, but are not limited to, recurrence and convergence of Markov chains, optional stopping and martingale convergence, and basics of stochastic calculus. If time permits, we will also cover applications including Monte Carlo algorithms, random walks on graphs, branching processes, option pricing, queueing theory, and more. See [./syllabus.pdf syllabus] for details.
+
+
+== Announcement
+- First lecture starts on January 7th.
+
+
+== Textbooks
+Default textbook
+- /A first look at stochastic processes/ by Jeff Rosenthal
+
+Reference books
+- /Introduction to stochastic processes/, by Greg Lawler
+- /Essentials of stochastic processes/, by Rick Durrett, 2nd Edition
+
+== Grading
+2 mid-term exams during classes and a final exam.
+
+Raw final grade = max (25\% \* midterm1 \+ 25\% \* midterm2 \+ 50\% \* final, 33.3\% \* midterm1 \+ 66.7\% \* final, 33.3\% \* midterm2 \+ 66.7\% \* final, 100\% \* final)
+
+There are no graded homework assignments. However, you are strongly encouraged to attempt the textbook's practice problems to learn the material well.
+
