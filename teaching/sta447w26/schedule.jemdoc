@@ -6,7 +6,7 @@
 ~~~
 {}{table}{}
 lecture | topic | book chapteres | notes ||
-01\/07 | introduction, Markov definitions and transition probabilities, recurrent and transient states, recurrent state theorem | Rosenthal 1.1 -- 1.5 |  ||
+01\/07 | introduction, Markov definitions and transition probabilities, recurrent and transient states, recurrent state theorem, recurrence of (multi-dimensional) random walks | Rosenthal 1.1 -- 1.5 | [./sta447-lec1.pdf Lecture 1] ||
 01\/14 |  | |  ||
 01\/21 |  | |  ||
 01\/28 |  | |  ||
