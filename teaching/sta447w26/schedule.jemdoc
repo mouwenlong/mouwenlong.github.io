@@ -9,7 +9,7 @@ lecture | topic | book chapteres | notes ||
 01\/07 | introduction, Markov definitions and transition probabilities, recurrent and transient states, recurrent state theorem, recurrence of (multi-dimensional) random walks | Rosenthal 1.1 -- 1.5 | [./sta447-lec1.pdf Lecture 1] ||
 01\/14 | Proof of recurrence state theorem, f-expansion, relation between recurrence and transience of different states, equivalent characterization of recurrent/transient Markov chains| Rosenthal 1.6, 1.7 | [./sta447-lec2.pdf Lecture 2] ||
 01\/21 | Recurrence equivalence continued, reducible Markov chains, stationary distributions and stationary measures, detailed balance condition, vanishing transition probabilities and non-existence results, periodicity | Rosenthal 1.6, 2.1 -- 2.3, Lawler 1.3 | [./sta447-lec3.pdf Lecture 3] ||
-01\/28 |  | |  ||
+01\/28 | Markov chain convergence theorem, coupling, average convergence for periodic chains, positive recurrence and null recurrence, strong law of large numbers for Markov chains | Rosenthal 2.4, 2.5, 2.8, Durrett 1.7 | [./sta447-lec4.pdf Lecture 4] ||
 02\/04 | Midterm exam \#1 | |  ||
 02\/11 |  | |  ||
 02\/25 |  | |  ||
@@ -24,3 +24,4 @@ lecture | topic | book chapteres | notes ||
 - Week 1: Rosenthal 1.3.9, 1.4.8, 1.5.4, 1.5.9
 - Week 2: Rosenthal 1.5.13, 1.5.14, 1.6.20, 1.6.21, 1.6.25, 1.7.12
 - Week 3:  Rosenthal 2.1.3, 2.4.13, 2.4.14, 2.4.15, 2.4.16, Lawler 1.7, Durrett 1.70, 1.72
+- Week 4: Rosenthal 2.4.18, 2.4.20, Lawler 1.15, Durrett 1.73, 1.74, 1.75, (see also [https://pages.uoregon.edu/dlevin/MARKOV/markovmixing.pdf a book], Chapter 4 and 5 for more information about coupling methods)
