@@ -1,6 +1,12 @@
 # jemdoc: menu{MENU}{research.html}, nofooter  
 ==Papers
 
+- [https://arxiv.org/abs/2602.01485 Predicting and improving test-time scaling laws via reward tail-guided search]
+-- Muheng Li, Jian Qian, *Wenlong Mou*
+
+- [https://arxiv.org/abs/2602.06930 Continuous-time reinforcement learning: ellipticity enables model-free value function approximation]
+-- *Wenlong Mou*
+
 - [https://arxiv.org/abs/2509.02528 
 Is RL fine-tuning harder than regression? A PDE learning approach for diffusion models]
 -- *Wenlong Mou*
