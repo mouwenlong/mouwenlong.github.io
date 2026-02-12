@@ -11,7 +11,7 @@ lecture | topic | book chapteres | notes ||
 01\/21 | Recurrence equivalence continued, reducible Markov chains, stationary distributions and stationary measures, detailed balance condition, vanishing transition probabilities and non-existence results, periodicity | Rosenthal 1.6, 2.1 -- 2.3, Lawler 1.3 | [./sta447-lec3.pdf Lecture 3] ||
 01\/28 | Markov chain convergence theorem, coupling, average convergence for periodic chains, positive recurrence and null recurrence, strong law of large numbers for Markov chains | Rosenthal 2.4, 2.5, 2.8, Durrett 1.7 | [./sta447-lec4.pdf Lecture 4] ||
 02\/04 | Midterm exam \#1 | |  ||
-02\/11 |  | |  ||
+02\/11 | Metropolis--Hastings algorithm, concepts of martingales and stopping times, optional stopping theorem, application to gambler's ruin | Rosenthal 2.6 , Rosenthal 3.1, 3.2, Lawler 5.3 | [./sta447-lec5.pdf Lecture 5] ||
 02\/25 |  | |  ||
 03\/04 |  | |  ||
 03\/11 | Midterm exam \#2 | |  ||
@@ -25,3 +25,5 @@ lecture | topic | book chapteres | notes ||
 - Week 2: Rosenthal 1.5.13, 1.5.14, 1.6.20, 1.6.21, 1.6.25, 1.7.12
 - Week 3:  Rosenthal 2.1.3, 2.4.13, 2.4.14, 2.4.15, 2.4.16, Lawler 1.7, Durrett 1.70, 1.72
 - Week 4: Rosenthal 2.4.18, 2.4.20, Lawler 1.15, Durrett 1.73, 1.74, 1.75, (see also [https://pages.uoregon.edu/dlevin/MARKOV/markovmixing.pdf a book], Chapter 4 and 5 for more information about coupling methods)
+- Week 5: (midterm exam 1)
+- Week 6: Rosenthal 3.1.7, 3.2.3, 3.2.8, 3.2.9, 3.2.10, 3.2.11, Lawler 5.4, 5.8, 5.9 ([../sta447w24/lawler-5.9-correction.pdf correction])
