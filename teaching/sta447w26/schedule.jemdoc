@@ -15,7 +15,7 @@ lecture | topic | book chapteres | notes ||
 02\/25 | Additional applications of optional stopping theorem, uniform integrability, Wald's theorem, Doob's maximal inequality, basic concepts of martingale convergence| Rosenthal 3.3, 3.5, Lawler 5.4, 5.6 | [./sta447-lec6.pdf Lecture 6] ||
 03\/04 | Proof of martingale convergence, almost-sure and L^1, L^p convergence of martingales, optional stopping theorem via martingale convergence, Doob's martingale and application to Bayesian statistics | Lawler 5.5, 5.6, Durrett 5.3, 5.4, 5.5 | [./sta447-lec7.pdf Lecture 7] ||
 03\/11 | Midterm exam \#2 | | [./midterm-2.pdf Solutions] ||
-03\/18 |  | |  ||
+03\/18 | Brownian motion and its martingale properties, reflection principle, Itô's integral | Rosenthal 4.1, Lawler 8.2, 8.3, 9.1, 9.2 | [./sta447-lec8.pdf Lecture 8] ||
 03\/25 |  | |  ||
 04\/02 |  | |  ||
 ~~~
@@ -30,3 +30,4 @@ lecture | topic | book chapteres | notes ||
 - Week 7: Rosenthal 3.3.7, 3.5.6, Lawler 5.13, 5.15, Durrett 5.2, 5.6
 - Week 8: Durrett 5.2, 5.4, 5.5, 5.6, 5.9, 5.17
 - Week 9: (midterm exam 2)
+- Week 10:  Lawler 8.8, 8.12, 8.13, Rosenthal 4.1.12, 4.1.13
