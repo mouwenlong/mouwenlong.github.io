@@ -17,7 +17,7 @@ lecture | topic | book chapteres | notes ||
 03\/11 | Midterm exam \#2 | | [./midterm-2.pdf Solutions] ||
 03\/18 | Brownian motion and its martingale properties, reflection principle, Itô's integral | Rosenthal 4.1, Lawler 8.2, 8.3, 9.1, 9.2 | [./sta447-lec8.pdf Lecture 8] ||
 03\/25 | Itô's formula and applications| Lawler 9.1 -- 9.4 | [./sta447-lec9.pdf Lecture 9] ||
-04\/02 |  | |  ||
+04\/02 | Further examples of Itô's formula, Poisson (point) processes, continuous-time discrete-space Markov chains | Lawler 9.4, Rosenthal 4.3, 4.4 | [./sta447-lec10.pdf Lecture 10] ||
 ~~~
 
 == Recommended practice questions
@@ -32,3 +32,4 @@ lecture | topic | book chapteres | notes ||
 - Week 9: (midterm exam 2)
 - Week 10:  Lawler 8.8, 8.12, 8.13, Rosenthal 4.1.12, 4.1.13
 - Week 11: Lawler 9.1, 9.2, 9.3, 9.6, additional practice questions [../sta447w25/additional-practice-questions-week10.pdf set 1], [../sta447w25/additional-practice-questions-week11.pdf set 2]
+- Week 12: Rosenthal 4.3.17, 4.3.18, 4.4.14, 4.4.16, Durrett 2.29
