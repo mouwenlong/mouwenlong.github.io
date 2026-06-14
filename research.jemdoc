@@ -1,6 +1,12 @@
 # jemdoc: menu{MENU}{research.html}, nofooter  
 ==Papers
 
+- [https://arxiv.org/abs/2605.05081 Provable imitation learning for control of instability in partially-observed Vlasov--Poisson equations]
+-- Xiaofan Xia, Qin Li, *Wenlong Mou*
+
+- [https://arxiv.org/abs/2605.10716 What should post-training optimize? A test-time scaling law perspective]
+-- Muheng Li, Jian Qian, *Wenlong Mou*
+
 - [https://arxiv.org/abs/2510.02149
 Reinforcement Learning with Action-Triggered Observations]
 -- Alexander Ryabchenko, *Wenlong Mou*

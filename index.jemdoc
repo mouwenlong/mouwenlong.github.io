@@ -14,18 +14,22 @@ Welcome to my homepage!
 I am an Assistant Professor at the Department of Statistical Sciences, University of Toronto. I recently obtained my Ph.D. from the Department of EECS, UC Berkeley, where I was very fortunate to be advised by [https://people.eecs.berkeley.edu/~wainwrig/ Prof. Martin Wainwright] and [https://www.stat.berkeley.edu/~bartlett/ Prof. Peter Bartlett]. Prior to Berkeley, I received B.S. in Computer Science from Peking University in 2017, where I was very fortunate to work with [http://www.cis.pku.edu.cn/faculty/vision/wangliwei/ Prof. Liwei Wang]. 
 
 == Research
-My research focuses on mathematics of machine learning in the era of large AI models. In particular, I work on the following topics:
-- Post-training optimization of generative models. Reinforcement learning fine-tuning and test-time adaptation.
-- Practical structures that enables efficient reinforcement learning with function approximation. RL in continuous-time diffusion processes.
-- Stochastic approximation for large-scale machine learning.
-- Incorporation of machine learning into causal and semiparametric estimation problems.
+I work on the interplay between AI and dynamics. This includes AI for concrete scientific/engineering problems in physical systems, and the dynamics of learning algorithms. For AI4S applications, I work on:
+- Reinforcement learning for control of complex physical systems, such as plasma control for fusion energy, and control of quantum systems.
+- AI agents and machine learning methods for reduced-order modeling and numerical simulation of partial differential equations.
 
-On the applied side, I am interested in various applications of machine learning for engineering problems in the physical world.
+For theoretical foundations, I work on:
+- Post-training optimization and test-time adaptation of modern generative models, including diffusion models and large language models.
+- Reinforcement learning theory and algorithms with function approximation. The effect of PDE and dynamics structure on the fundamental possibilities of RL algorithms.
+- Incorporation of modern machine learning in causal inference.
+
 
 == Recruiting
 I am actively seeking Ph.D. students. Please see [./recruiting.html the post] for detailed information. If you are interested in collaborating with me, please don't hesitate to reach out. However, please be aware that I receive a high volume of emails daily, which may lead to some delays in my response. Your patience in this regard is greatly appreciated. Thank you.
 
 == News
+- May 2026, [https://arxiv.org/abs/2605.05081 New paper] on plasma control via imitation learning.
+- May 2026, [https://arxiv.org/abs/2605.10716 New paper] on post-training optimization based on test-time scaling laws.
 - May 2026, [https://arxiv.org/abs/2510.02149 Paper] on RL with action-triggered observations accepted to ICML 2026.
 - Apr 2026, [https://arxiv.org/abs/2604.13378 New paper] on stochastic approximation with decision-dependent Markovian noise.
 - Feb 2026, [https://arxiv.org/abs/2602.01485 New paper] on test-time scaling laws.
