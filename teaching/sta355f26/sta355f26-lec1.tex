@@ -1,0 +1,341 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+\usepackage{bm}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+% Personal notation and theorem environments.
+\input{../final_macros.tex}
+
+\newcommand{\coursenumber}{STA355F}
+\newcommand{\coursetitle}{Theory of Statistical Practice}
+\newcommand{\courseterm}{Fall 2026}
+\newcommand{\lecturenumber}{1}
+\newcommand{\lecturedate}{September 11, 2026}
+\newcommand{\lecturer}{Wenlong Mou}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\coursenumber: \coursetitle}
+\fancyhead[R]{Lecture \lecturenumber}
+\fancyfoot[C]{\lecturenumber--\arabic{page}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\newtheorem{example}{Example}
+\setcounter{section}{\numexpr\lecturenumber-1\relax}
+\renewcommand{\thepage}{\lecturenumber--\arabic{page}}
+
+\newcommand{\makelecturenotesheader}{%
+  \noindent
+  \textbf{\coursenumber: \coursetitle}%
+  \hfill
+  \textbf{\courseterm}
+
+  \begin{center}
+    {\Large\bfseries Lecture \lecturenumber: \lecturedate}
+  \end{center}
+
+  \noindent
+  \textbf{Lecturer:} \lecturer
+  \par\medskip
+  \hrule
+  \bigskip
+}
+
+\begin{document}
+
+\makelecturenotesheader
+\section{Outline}
+\paragraph{Part 1:} review of probability, statistical models and statistical problems.
+
+\paragraph{Part 2:} methodology.
+\begin{itemize}
+  \item Empirical distribution and bootstrap.
+  \item Parametric estimation and inference, including maximal likelihood estimation and confidence intervals.
+  \item Testing: $p$-values, likelihood ratio tests, and multiple testing.
+  \item Bayesian inference.
+\end{itemize}
+
+\paragraph{Part 3:} theory (tied to methodology).
+\begin{itemize}
+  \item Asymptotic theory.
+  \item Basics of decision theory.
+\end{itemize}
+
+\paragraph{Part 4:} Models.
+\begin{itemize}
+  \item Linear regression and generalized linear models.
+  \item Nonparametric regression and smoothing.
+\end{itemize}
+
+\section{Review/preview of probability theory}
+Basic concepts:
+\begin{itemize}
+  \item Probability space (sample space) $\Omega$, sample outcome $\omega \in \Omega$.
+  \item $\Prob$ is a mapping from (some)subsets of $\Omega$ to $[0,1]$ satisfying the axioms of probability.
+\end{itemize}
+
+Axioms of probability:
+\begin{enumerate}
+  \item $\Prob(A) \ge 0$ for any event $A$.
+  \item $\Prob(\Omega) = 1$.
+  \item For any countable collection of disjoint events $A_1, A_2, \ldots$, we have $\Prob(\bigcup_{i=1}^{\infty} A_i) = \sum_{i=1}^{\infty} \Prob(A_i)$.
+\end{enumerate}
+
+\paragraph{Independence of events:} Events $A$ and $B$ are independent if $\Prob(A \cap B) = \Prob(A)\Prob(B)$.
+
+\paragraph{Conditional probability:}
+\begin{itemize}
+  \item If $\Prob(B) > 0$, the conditional probability of $A$ given $B$ is defined as $\Prob(A \mid B) = \frac{\Prob(A \cap B)}{\Prob(B)}$.
+  \item For conditioning on zero-probability event, we only consider $B = \{X = x\}$ for a continuous random variable $X$ with density $f_X(x)$, where we use joint density to derive conditional density $f_{Y \mid X}(y \mid x) = \frac{f_{X,Y}(x,y)}{f_X(x)}$.
+\end{itemize}
+
+Bayes theorem: let $(A_i)_{i \in I}$ be a partition of $\Omega$ with $\Prob(A_i) > 0$ for all $i \in I$. Then for any event $B$ with $\Prob(B) > 0$, we have
+\begin{align*}
+  \Prob (A_i \mid B) = \frac{\Prob( A_i \cap B)}{\Prob (B)} = \frac{\Prob (B \mid A_i) \Prob (A_i)}{\Prob (B)}= \frac{\Prob(B \mid A_i)\Prob(A_i)}{\sum_{j \in I} \Prob(B \mid A_j)\Prob(A_j)}.
+\end{align*}
+
+\paragraph{Random variables:}
+\begin{align*}
+  X : \Omega \to \real.
+\end{align*}
+basic concepts: probability density function (for continuous random variables), cumulative distribution function, and probability mass function (for discrete random variables).
+
+\paragraph{Conditional distribution}
+For the purpose of this course, we only consider two cases:
+\begin{itemize}
+  \item \textbf{Discrete:} Let $X$ and $Y$ be discrete random variables. Then the conditional probability mass function of $Y$ given $X = x$ is defined as
+  \begin{align*}
+    \Prob(Y = y \mid X = x) = \frac{\Prob(X = x, Y = y)}{\Prob(X = x)}
+  \end{align*}
+  \item \textbf{Continuous:} Let $X$ and $Y$ be continuous random variables with joint density $f_{X,Y}(x,y)$. Then the conditional density of $Y$ given $X = x$ is defined as
+  \begin{align*}
+    f_{Y \mid X}(y \mid x) = \frac{f_{X,Y}(x,y)}{f_X(x)} = \frac{f_{X, Y} (x, y)}{\int f_{X,Y}(x,z) dz}.
+  \end{align*}
+\end{itemize}
+\begin{example}
+Consider a bivariate normal distribution $(X,Y) \sim N(\mu, \Sigma)$ with mean vector $\mu = (\mu_X, \mu_Y)$ and covariance matrix
+\begin{align*}
+  \Sigma = \begin{pmatrix}
+    \sigma_X^2 & \rho \sigma_X \sigma_Y \\
+    \rho \sigma_X \sigma_Y & \sigma_Y^2 
+  \end{pmatrix}.
+\end{align*}
+Then the conditional distribution of $Y$ given $X = x$ is also normal
+\begin{align*}
+  Y |X = x \sim \mathcal{N}\left(\mu_Y + \rho \frac{\sigma_Y}{\sigma_X} (x - \mu_X), (1 - \rho^2) \sigma_Y^2\right).
+\end{align*}
+\end{example}
+
+\paragraph{Expectations}
+\begin{itemize}
+  \item \textbf{Discrete case:} Let $X$ be a discrete random variable with probability mass function $p_X(x)$. Then the expectation of $X$ is defined as
+  \begin{align*}
+    \Exs[X] = \sum_{x} x p_X(x).
+  \end{align*}
+  \item \textbf{Continuous case:} Let $X$ be a continuous random variable with probability density function $f_X(x)$. Then the expectation of $X$ is defined as
+  \begin{align*}
+    \Exs[X] = \int_{-\infty}^{\infty} x f_X(x) dx.
+  \end{align*}
+\end{itemize}
+Note: expectations may not exist for some random variables, e.g., Cauchy distribution
+\begin{align*}
+  p (x) = \frac{1}{\pi(1+x^2)}, \quad x \in \real.
+\end{align*}
+Expectation is linear, i.e., for any random variables $X$ and $Y$ (regardless of their dependence structure) and constants $a$ and $b$, we have
+\begin{align*}
+  \Exs[aX + bY] = a \Exs[X] + b \Exs[Y].
+\end{align*}
+
+\subsection{Probability inequalities}
+For theoretical analysis, we often need statement like:
+\begin{quote}
+  With probability at least $1 - \delta$, we have $|\widehat{\theta} - \theta^*| \leq \varepsilon$.
+\end{quote}
+This requires us to study tail behavior of random variables. We will introduce some basic inequalities that are useful in this course.
+
+\paragraph{Markov inequality:} Let $X$ be a non-negative random variable and $a > 0$. Then
+\begin{align*}
+  \Prob(X \geq a) \leq \frac{\Exs[X]}{a}.
+\end{align*}
+Proof: note that $\bm{1}_{X \geq a} \leq \frac{X}{a}$, where $\bm{1}_{X \geq a}$ is the indicator function of the event $\{X \geq a\}$. Taking expectations on both sides, we have
+\begin{align*}
+  \Prob (X \geq a) = \Exs \big[ \bm{1}_{X \geq a} \big] \leq \Exs \big[  \frac{X}{a}\big],
+\end{align*}
+which proves the inequality.
+
+\paragraph{Chebyshev's inequality:} Suppose that $\Exs [X^2] < \infty$. Then for any $a > 0$, we have
+\begin{align*}
+  \Prob(|X - \Exs[X]| \geq a) \leq \frac{\var(X)}{a^2}.
+\end{align*}
+Proof: by applying Markov's inequality to the non-negative random variable $(X - \Exs[X])^2$, we have
+\begin{align*}
+  \Prob(|X - \Exs[X]| \geq a) = \Prob((X - \Exs[X])^2 \geq a^2) \leq \frac{\Exs[(X - \Exs[X])^2]}{a^2} = \frac{\var(X)}{a^2}.
+\end{align*}
+In general, if $\Exs[|X|^p] < \infty$ for some $p \geq 1$, we have
+\begin{align*}
+  \Prob(|X - \Exs[X]| \geq a) = \Prob(|X - \Exs[X]|^p \geq a^p) \leq \frac{\Exs[|X - \Exs[X]|^p]}{a^p}.
+\end{align*}
+If higher moment exists, we can get tighter bounds on the tail probability.
+
+\subsection{Convergence of random variables}
+Notions of convergence of random variables.
+\begin{itemize}
+  \item \textbf{Almost-sure convergence:} A sequence of random variables $(X_n)_{n \geq 1}$ converges almost surely to a random variable $X$ if
+  \begin{align*}
+    \Prob\left(\lim_{n \to \infty} X_n = X\right) = 1.
+  \end{align*}
+  We use the notation $X_n \xrightarrow{a.s.} X$ to denote almost-sure convergence.
+  \item \textbf{Convergence in probability:} A sequence of random variables $(X_n)_{n \geq 1}$ converges in probability to a random variable $X$ if for any $\varepsilon > 0$,
+  \begin{align*}
+    \lim_{n \to \infty} \Prob(|X_n - X| \geq \varepsilon) = 0.
+  \end{align*}
+  We use the notation $X_n \xrightarrow{p} X$ to denote convergence.
+  \item \textbf{$\mathbb{L}^p$ convergence:} For a fixed $p \geq 1$, a sequence of random variables $(X_n)_{n \geq 1}$ converges in $\mathbb{L}^p$ to a random variable $X$ if
+  \begin{align*}
+    \lim_{n \to \infty} \Exs[|X_n - X|^p] = 0.
+  \end{align*}
+  We use the notation $X_n \xrightarrow{\mathbb{L}^p} X$ to denote $\mathbb{L}^p$ convergence.
+\end{itemize}
+These 3 notions are all talking about random variables in the same probability space. By ``convergence'', the numbers need to be close in some sense. There's another notion of convergence that do not require the random variables to be in the same probability space, which is called convergence in distribution.
+\begin{itemize}
+  \item \textbf{Convergence in distribution:} A sequence of random variables $(X_n)_{n \geq 1}$ converges in distribution to a random variable $X$ if for any bounded continuous function $f$, we have
+  \begin{align*}
+    \lim_{n \to \infty} \Exs[f(X_n)] = \Exs[f(X)].
+  \end{align*}
+  We use the notation $X_n \xrightarrow{d} X$ to denote convergence in distribution.
+\end{itemize}
+This is about the marginal distribution of each terms in the sequence. It does not matter whether they are inter-dependent.
+
+\paragraph{Relations between notions of convergence:}
+\begin{enumerate}
+  \item Almost-sure convergence implies convergence in probability.
+  
+  Proof: Let $X_n \xrightarrow{a.s.} X$. Then for any $\varepsilon > 0$, we note that the set $\{n: |X_n - X| \geq \varepsilon\}$ is finite with probability 1. We can then define $M \mydefn \max\{n: |X_n - X| \geq \varepsilon\}$, which is a random variable. $\Prob (M < + \infty) = 1$. Consequently, we have $\Prob (|X_n - X| \geq \varepsilon) \leq \Prob (M \geq n) \rightarrow 0$ as $n \rightarrow \infty$.
+
+  Converse is false, i.e., there exists a sequence of random variables $(X_n)_{n \geq 1}$ that converges in probability to $X$ but does not converge almost surely to $X$.
+
+  \item $\mathbb{L}^p$ convergence implies convergence in probability.
+  
+  Proof: for any fixed $\varepsilon > 0$, we have
+  \begin{align*}
+    \Prob(|X_n - X| \geq \varepsilon) = \Prob(|X_n - X|^p \geq \varepsilon^p) \leq \frac{\Exs[|X_n - X|^p]}{\varepsilon^p} \rightarrow 0.
+  \end{align*}
+  \item Almost-sure and $\mathbb{L}^p$ convergences are generally not comparable.
+  \item Convergence in probability implies convergence in distribution. We call convergence in distribution as ``weak convergence''.
+  \item Converse if false in general. A sequence of random variables converging in distribution may not even live in the same probability space. However, if they actually live in the same probability space, and if the limit random variable is a constant, then convergence in distribution implies convergence in probability.
+\end{enumerate}
+
+Additional remarks on convergence in distribution. There are several equivalent definitions.
+\begin{itemize}
+  \item $X_n \xrightarrow{d} X$ if and only if the cumulative distribution functions $F_{X_n}(x) \to F_X(x)$ at all continuity points of $F_X$. (This applies only to 1-dimensional case, while the test function definition applies to general case.)
+  \item $X_n \xrightarrow{d} X$ if and only if for any bounded Lipschitz function $f$, we have $\Exs[f(X_n)] \to \Exs[f(X)]$. (A function $f$ is Lipschitz if there exists a constant $L$ such that $|f(x) - f(y)| \leq L |x - y|$ for all $x,y$.) So to show convergence in distribution, it suffices to show convergence of expectations for this smaller class of test functions.
+\end{itemize}
+
+\subsection{Law of large numbers and central limit theorems}
+\begin{theorem}[Weak law of large numbers]
+  Let $(X_n)_{n \geq 1}$ be a sequence of independent and identically distributed random variables with finite mean $\mu = \Exs[X_1]$. Then we have
+  \begin{align*}
+    \frac{1}{n} \sum_{i=1}^n X_i \xrightarrow{p} \mu.
+  \end{align*}
+\end{theorem}
+Remark: finite mean is necessary. For example, if $X_i$ follows a Cauchy distribution, then the sample mean does not converge to any constant.
+
+\begin{theorem}[Strong law of large numbers]
+  Under the same conditions as the weak law of large numbers, we have
+  \begin{align*}
+    \frac{1}{n} \sum_{i=1}^n X_i \xrightarrow{a.s.} \mu.
+  \end{align*}
+\end{theorem}
+
+\begin{proposition}
+  Suppose that $(X_n)_{n \geq 1}$ is a sequence of independent and identically distributed random variables with finite mean $\mu$ and finite variance $\sigma^2$. Then we have
+  \begin{align*}
+   \frac{1}{n} \sum_{i = 1}^n X_i \xrightarrow{\mathbb{L}^2} \mu.
+  \end{align*}
+\end{proposition}
+Proof: we can just compute the variance
+\begin{align*}
+  \Exs \Big[ \big| \frac{1}{n} \sum_{i = 1}^n X_i - \mu \big|^2 \Big] = \var (X_1) / n \to 0.
+\end{align*}
+
+\begin{theorem}[Central limit theorem]
+  Suppose that $(X_n)_{n \geq 1}$ is a sequence of independent and identically distributed random variables with finite mean $\mu$ and finite variance $\sigma^2$. Then, as $n \to \infty$, we have
+  \begin{align*}
+    \sqrt{n}\Big(\frac{1}{n} \sum_{i=1}^n X_i -  \mu\Big) \xrightarrow{d} N(0,\sigma^2),
+  \end{align*}
+  where $\sigma^2 = \var(X_1)$.
+\end{theorem}
+
+Multivariate version of CLT:
+\begin{theorem}
+  Suppose that $(X_n)_{n \geq 1}$ is a sequence of independent and identically distributed random vectors in $\real^d$ with finite mean vector $\mu$ and finite covariance matrix $\Sigma = \Exs \big[  (X_1 - \mu)(X_1 - \mu)^\top\big]$. Then, as $n \to \infty$, we have
+  \begin{align*}
+    \sqrt{n}\Big(\frac{1}{n} \sum_{i=1}^n X_i -  \mu\Big) \xrightarrow{d} N(0,\Sigma),
+  \end{align*}
+  where $\Sigma = \cov(X_1)$.
+\end{theorem}
+In statistics, we use CLT to quantify uncertainty of our estimators.
+
+For example, let $X_1, \ldots, X_n$ be independent and identically distributed random variables with mean $\mu$ and variance $\sigma^2$. $\mu$ and $\sigma$ are unknown. We want to estimate $\mu$ by the sample mean $\bar{X}_n = \frac{1}{n} \sum_{i=1}^n X_i$. By CLT, we have
+\begin{align*}
+  \sqrt{n}(\bar{X}_n - \mu) \xrightarrow{d} N(0, \sigma^2).
+\end{align*}
+This is fundamental to construct confidence intervals and hypothesis tests for $\mu$.
+
+Problem: $\sigma^2$ is unknown. So we cannot directly use above result. We can use sample variance to estimate $\sigma^2$:
+\begin{align*}
+  S_n^2 = \frac{1}{n} \sum_{i=1}^n (X_i - \bar{X}_n)^2.
+\end{align*}
+(it is also ok to normalize by $n-1$ instead of $n$).
+Then we have
+\begin{align*}
+  S_n^2 \xrightarrow{p} \sigma^2.
+\end{align*}
+Uncertainty quantification with the estimated version of variance is still valid:
+\begin{theorem}
+  Under the same conditions as the central limit theorem, we have
+  \begin{align*}
+    \sqrt{n}\Big(\frac{1}{n} \sum_{i=1}^n X_i -  \mu\Big) / S_n \xrightarrow{d} N(0,1).
+  \end{align*}
+\end{theorem}
+Proof contains two steps
+\begin{itemize}
+  \item Show that $S_n^2 \xrightarrow{p} \sigma^2$.
+  \item Conclude the CLT result.
+\end{itemize}
+Step 1: note that
+\begin{align*}
+  S_n^2 = \frac{1}{n} \sum_{i=1}^n (X_i - \bar{X}_n)^2 = \frac{1}{n} \sum_{i = 1}^n X_i^2 - \bar{X}_n^2.
+\end{align*}
+As $n \to \infty$, by the law of large numbers, we have
+\begin{align*}
+  \frac{1}{n} \sum_{i = 1}^n X_i^2 \xrightarrow{p} \Exs[X_1^2], \quad \bar{X}_n^2 \xrightarrow{p} (\Exs[X_1])^2.
+\end{align*}
+(Here we use the fact that if $X_n \xrightarrow{p} X$ and $Y_n \xrightarrow{p} Y$, then $X_n + Y_n \xrightarrow{p} X + Y$ and $X_n Y_n \xrightarrow{p} XY$.)
+
+Putting them together, we have
+\begin{align*}
+  S_n^2 \xrightarrow{p} \Exs[X_1^2] - (\Exs[X_1])^2 = \var(X_1) = \sigma^2.
+\end{align*}
+
+Second step: we need an additional result from probability theory, called Slutsky's theorem.
+\begin{theorem}[Slutsky's theorem]
+  Let $(X_n)_{n \geq 1}$ and $(Y_n)_{n \geq 1}$ be sequences of random variables such that $X_n \xrightarrow{d} X$ and $Y_n \xrightarrow{p} c$ for some constant $c$. Then we have
+  \begin{align*}
+    X_n + Y_n \xrightarrow{d} X + c, \quad X_n Y_n \xrightarrow{d} cX, \quad X_n / Y_n \xrightarrow{d} X / c \text{ if } c \neq 0.
+  \end{align*}
+\end{theorem}
+
+By Slutsky's theorem, we have
+\begin{align*}
+  \sqrt{n}\Big(\frac{1}{n} \sum_{i=1}^n X_i -  \mu\Big) / S_n = \sqrt{n}\Big(\frac{1}{n} \sum_{i=1}^n X_i -  \mu\Big) / \sigma \cdot \frac{\sigma}{S_n} \xrightarrow{d} N(0,1).
+\end{align*}
+
+\end{document}

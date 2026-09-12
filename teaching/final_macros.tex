@@ -1,0 +1,348 @@
+%!TEX root = EM_singular_models.tex
+
+% PDF margin etc settings
+%\setlength{\textwidth}{\paperwidth}
+%\addtolength{\textwidth}{-6cm}
+%\setlength{\textheight}{\paperheight}
+%\addtolength{\textheight}{-4cm}
+%\addtolength{\textheight}{-1.1\headheight}
+%\addtolength{\textheight}{-\headsep}
+%\addtolength{\textheight}{-\footskip}
+%\setlength{\oddsidemargin}{0.5cm}
+%\setlength{\evensidemargin}{0.5cm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% MACROS HERE
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\fixedpointtheta}{\widehat\theta_\obs}
+
+\newcommand{\cover}{N}
+\newcommand{\kinit}{\nu}
+\newcommand{\cdelta}{c_\threshold}
+\newcommand{\dndelta}{\omega}
+\newcommand{\kndelta}{\Upsilon}
+\newcommand{\kndeltanew}{\Psi}
+\newcommand{\radii}{\mathcal{R}}
+\newcommand{\event}{\mathcal{E}}
+\newcommand{\kevent}{\mathcal{D}}
+
+
+% Observations, dimension etc.
+\newcommand{\dims}{\ensuremath{d}}
+\newcommand{\samples}{\ensuremath{n}}
+\newcommand{\obs}{\samples}
+\newcommand{\real}{\ensuremath{\mathbb{R}}}
+\newcommand{\complex}{\ensuremath{\mathbb{C}}}
+\newcommand{\realdim}{\ensuremath{\real^\dims}}
+
+\newcommand{\smallthreshold}{\epsilon}
+
+% some mathcal notations
+\newcommand{\order}[1]{\ensuremath{\mathcal{O}\parenth{#1}}}
+
+% Basic statistics notation
+\newcommand{\xstar}{\ensuremath{x^*}}
+\newcommand{\xbar}{\ensuremath{\bar{x}}}
+% True parameter
+\newcommand{\thetastar}{\ensuremath{{\theta^*}}}
+% Estimate one
+\newcommand{\thetahat}{\ensuremath{\widehat{\theta}}}
+% Estimate two
+\newcommand{\thetatil}{\ensuremath{\widetilde{\theta}}}
+\newcommand{\thetabar}{\ensuremath{\bar{\theta}}}
+\newcommand{\yvec}{\ensuremath{y}}
+\newcommand{\Xmat}{\ensuremath{X}}
+
+% Distributions
+\newcommand{\distribution}{P}
+\newcommand{\density}{f}
+\newcommand{\gaussiandensity}{\phi}
+\newcommand{\NORMAL}{\ensuremath{\mathcal{N}}}
+\newcommand{\BER}{\ensuremath{\mbox{Ber}}}
+
+% Spaces
+\newcommand{\Xspace}{\ensuremath{\mathcal{X}}}
+\newcommand{\Yspace}{\ensuremath{\mathcal{Y}}}
+\newcommand{\Zspace}{\ensuremath{\mathcal{Z}}}
+
+
+% Brackets Size
+\newcommand{\brackets}[1]{\left[ #1 \right]}
+\newcommand{\parenth}[1]{\left( #1 \right)}
+\newcommand{\bigparenth}[1]{\big( #1 \big)}
+\newcommand{\biggparenth}[1]{\bigg( #1 \bigg)}
+\newcommand{\braces}[1]{\left\{ #1 \right \}}
+\newcommand{\abss}[1]{\left| #1 \right |}
+\newcommand{\angles}[1]{\left\langle #1 \right \rangle}
+\newcommand{\tp}{^\top}
+
+% Generic vectors and scalars
+\newcommand{\myvec}{u} % for generic vector
+\newcommand{\myvectwo}{v} % for generic vector
+\newcommand{\mymat}{B}
+\newcommand{\set}{{A}}
+\newcommand{\scalar}{\alpha}
+\newcommand{\tvscalar}{\epsilon}
+\newcommand{\tailboundscalar}{t}
+\newcommand{\term}{U}
+\newcommand{\myVarone}{\alpha_X}
+\newcommand{\myVartwo}{\alpha_Y}
+\newcommand{\myCovmat}{\Sigma}
+\newcommand{\xcord}[1]{x^{(#1)}}
+\newcommand{\xcordpop}[1]{X^{(#1)}}
+\newcommand{\ycordpop}[1]{Y^{(#1)}}
+\newcommand{\myVarthree}{\ensuremath{U}}
+\newcommand{\myVarfour}{\ensuremath{V}}
+\newcommand{\myfuntwo}{\ensuremath{g}}
+\newcommand{\numsteps}{t}
+\newcommand{\totalnumsteps}{T}
+\newcommand{\seqalpha}[1]{\alpha_{#1}}
+\newcommand{\seqnu}[1]{\nu^{(#1)}}
+\newcommand{\imax}{\ell_\smallthreshold}
+\newcommand{\basis}{e}
+\newcommand{\radem}{\varepsilon}
+\newcommand{\Tone}{T\ensuremath{_{0}}}
+\newcommand{\Ttwo}{T\ensuremath{_{2}}}
+\newcommand{\contractPar}[1]{\ensuremath{\gamma\parenth{#1}}}
+
+\newcommand{\simiid}{\overset{\mathrm{i.i.d.}}{\sim}}
+\newcommand{\eqd}{\overset{d}{=}}
+
+
+% EM updates
+\newcommand{\hidden}{Z}
+\newcommand{\qfun}[2]{Q(#1\vert#2)}
+\newcommand{\variable}{\theta}
+\newcommand{\weights}{w}
+\newcommand{\myfun}{q}
+\newcommand{\gradf}{\nabla \myfun}
+\newcommand{\hessf}{\nabla^2 \myfun}
+\newcommand{\iter}{t}
+\newcommand{\mupdate}{M}
+\newcommand{\mupdategeneral}{\ensuremath{M^{GN}}}
+
+
+
+
+% EM contractions
+\newcommand{\contractgene}{\ensuremath{\gamma^{GN}}}
+\newcommand{\updateMat}{\ensuremath{\Gamma_{\theta}}}
+\newcommand{\mymatTheta}{\ensuremath{B_{\theta}}}
+\newcommand{\sech}{\text{sech}}
+
+% Nhat's macros 
+\newcommand{\Rspace}{\ensuremath{\mathbb{R}}}
+\newcommand{\Ecal}{\ensuremath{\mathcal{E}}}
+\newcommand{\Ncal}{\ensuremath{\mathcal{N}}}
+\newcommand{\gradient}{\ensuremath{\nabla}}
+\newcommand{\smallweight}{\ensuremath{\epsilon^{sw}}}
+\newcommand{\smallnorm}{\ensuremath{\rho^{sw}}}
+\newcommand{\ball}{\ensuremath{\mathbb{B}}}
+\newcommand{\sphere}{\ensuremath{\mathbb{S}}}
+
+\newcommand{\diam}{\ensuremath{\text{diam}}}
+\newcommand{\upper}{\ensuremath{\bar{C}}}
+\newcommand{\sample}{\ensuremath{\xi}}
+\newcommand{\weight}{\ensuremath{\pi}}
+\newcommand{\contracasym}{\ensuremath{\rho}}
+\newcommand{\Fishermatrix}{\ensuremath{\mathcal{I}}}
+\newcommand{\barcontracasym}{\ensuremath{\bar{\rho}}}
+
+
+\newcommand{\TrueDensity}{\ensuremath{f}}
+\newcommand{\FitDensity}{\ensuremath{f}_{\theta}}
+\newcommand{\FitDensityfree}{\ensuremath{f}_{\pi, \theta}}
+\newcommand{\FitDensitygen}{\ensuremath{f}_{\pi, \theta_{1}, \theta_{2}}}
+\newcommand{\FitDensitymore}{\ensuremath{f}_{G}}
+\newcommand{\normden}{\ensuremath{\phi}}
+\newcommand{\mean}{\ensuremath{\theta}}
+\newcommand{\sd}{\ensuremath{\sigma}}
+\newcommand{\parFOS}{\ensuremath{\gamma}}
+\newcommand{\funQ}{\ensuremath{Q}}
+\newcommand{\updateM}{\ensuremath{M}}
+\newcommand{\weightFun}{\ensuremath{w}}
+\newcommand{\mydefn}{\ensuremath{:=}}
+\newcommand{\poincare}{\ensuremath{\tilde{C}}}
+\newcommand{\paraspace}{\ensuremath{\Theta}}
+\newcommand{\loglihood}{\ensuremath{F}}
+\newcommand{\prior}{\ensuremath{\pi}}
+\newcommand{\posterior}{\ensuremath{\Pi}}
+\newcommand{\boundcons}{\ensuremath{B}}
+\newcommand{\boundconstot}{\ensuremath{H}}
+\newcommand{\noise}{\ensuremath{\varepsilon}}
+\newcommand{\loglihoodgaus}{\ensuremath{F^{G}}}
+\newcommand{\loglihoodind}{\ensuremath{F^{I}}}
+\newcommand{\loglihoodlogit}{\ensuremath{F^{R}}}
+\newcommand{\noiseone}{\ensuremath{\varepsilon_{1}}}
+\newcommand{\noisetwo}{\ensuremath{\varepsilon_{2}}}
+
+%%%SDE_Bayesian_inf
+\newcommand{\weakcon}{\ensuremath{\psi}}
+\newcommand{\perturb}{\ensuremath{\zeta}}
+\newcommand{\inver}{\ensuremath{\xi}}
+
+% Universal constants
+\newcommand{\unicon}{c}
+\newcommand{\uniconnew}{c'}
+\newcommand{\uniconone}{c_1}
+\newcommand{\unicontwo}{c_2}
+
+% some parameters that you may define
+\newcommand{\scparam}{m} % strong  convexity parameter
+\newcommand{\smoothness}{L} % smoothness parameter
+\newcommand{\step}{h}
+
+
+%%%%%%%%% Distributions and Random variables %%%%%%%%%%%
+\newcommand{\rvg}{\xi} % to denote the random variable g
+\newcommand{\threshold}{\delta}
+
+
+%%%%%%%%% Basic Terms like defn, etal, tmix, polylog %%%%%%%%%%%
+\newcommand{\defn}{:=}
+\newcommand{\rdefn}{=:}
+\newcommand{\etal}{{et al.}}
+\newcommand{\polylog}{\text{poly-log}}
+
+% Some vector/matrix norms
+\newcommand{\matnorm}[3]{|\!|\!| #1 | \! | \!|_{{#2}, {#3}}}
+\newcommand{\matsnorm}[2]{|\!|\!| #1 | \! | \!|_{{#2}}}
+\newcommand{\vecnorm}[2]{\left\| #1\right\|_{#2}}
+\newcommand{\enorm}[1]{\vecnorm{#1}{2}} % euclidean norm
+\newcommand{\nucnorm}[1]{\ensuremath{\matsnorm{#1}{\footnotesize{\mbox{nuc}}}}}
+\newcommand{\fronorm}[1]{\ensuremath{\matsnorm{#1}{\footnotesize{\mbox{fro}}}}}
+\newcommand{\opnorm}[1]{\ensuremath{\matsnorm{#1}{\tiny{\mbox{op}}}}}
+%%% EM paper
+\newcommand{\constrainnorm}[1]{\vecnorm{#1}{[k]}} % euclidean norm
+
+\newcommand{\bigmatsnorm}[2]{{\Big|\!\Big|\!\Big| #1
+  \Big|\!\Big|\!\Big|}_{#2}}
+
+% Inner product
+\newcommand{\inprod}[2]{\ensuremath{\langle #1 , \, #2 \rangle}}
+
+% Kullback-Leibler
+\newcommand{\kull}[2]{\ensuremath{D_{\text{KL}}(#1\; \| \; #2)}}
+
+% Probability
+\newcommand{\Exs}{\ensuremath{{\mathbb{E}}}}
+\newcommand{\Prob}{\ensuremath{{\mathbb{P}}}}
+
+%Eigenvector / eigenvalue related notation
+\newcommand{\eig}[1]{\ensuremath{\lambda_{#1}}}
+\newcommand{\eigmax}{\ensuremath{\eig{\max}}}
+\newcommand{\eigmin}{\ensuremath{\eig{\min}}}
+
+% \DeclareMathOperator{\det}{det}
+\DeclareMathOperator{\modd}{mod}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\trace}{trace}
+\DeclareMathOperator{\abs}{abs}
+\DeclareMathOperator{\floor}{floor}
+\DeclareMathOperator{\vol}{vol}
+\DeclareMathOperator{\child}{child}
+\DeclareMathOperator{\parent}{parent}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\toeplitz}{toeplitz}
+
+
+
+
+\newtheoremstyle{named}{}{}{\itshape}{}{\bfseries}{.}{.5em}{\thmnote{#3's }#1}
+\theoremstyle{named}
+\newtheorem*{namedtheorem}{Lemma}
+
+%%%%%%%
+\theoremstyle{plain}
+
+% {Theorem, Proposition, Lemma, Corollary} numbered sequentially
+% throughout the paper
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{remark}{Remark}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% WIDEBAR COMMAND
+\newlength{\widebarargwidth}
+\newlength{\widebarargheight}
+\newlength{\widebarargdepth}
+\DeclareRobustCommand{\widebar}[1]{%
+  \settowidth{\widebarargwidth}{\ensuremath{#1}}%
+  \settoheight{\widebarargheight}{\ensuremath{#1}}%
+  \settodepth{\widebarargdepth}{\ensuremath{#1}}%
+  \addtolength{\widebarargwidth}{-0.3\widebarargheight}%
+  \addtolength{\widebarargwidth}{-0.3\widebarargdepth}%
+  \makebox[0pt][l]{\hspace{0.3\widebarargheight}%
+    \hspace{0.3\widebarargdepth}%
+    \addtolength{\widebarargheight}{0.3ex}%
+    \rule[\widebarargheight]{0.95\widebarargwidth}{0.1ex}}%
+  {#1}}
+
+
+
+%%% New version of \caption puts things in smaller type, single-spaced
+%%% and indents them to set them off more from the text.
+\makeatletter
+\long\def\@makecaption#1#2{
+        \vskip 0.8ex
+        \setbox\@tempboxa\hbox{\small {\bf #1:} #2}
+        \parindent 1.5em  %% How can we use the global value of this???
+        \dimen0=\hsize
+        \advance\dimen0 by -3em
+        \ifdim \wd\@tempboxa >\dimen0
+                \hbox to \hsize{
+                        \parindent 0em
+                        \hfil
+                        \parbox{\dimen0}{\def\baselinestretch{0.96}\small
+                                {\bf #1.} #2
+                                %%\unhbox\@tempboxa
+                                }
+                        \hfil}
+        \else \hbox to \hsize{\hfil \box\@tempboxa \hfil}
+        \fi
+        }
+\makeatother
+
+
+
+%% COMMENTING commands
+
+\long\def\comment#1{}
+\definecolor{battleshipgrey}{rgb}{0.52, 0.52, 0.51}
+\definecolor{darkgray}{rgb}{0.66, 0.66, 0.66}
+\definecolor{darkgreen}{rgb}{0.0, 0.2, 0.13}
+\definecolor{darkspringgreen}{rgb}{0.09, 0.45, 0.27}
+\definecolor{dukeblue}{rgb}{0.0, 0.0, 0.61}
+\definecolor{olivedrab7}{rgb}{0.24, 0.2, 0.12}
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.55}
+\definecolor{darkscarlet}{rgb}{0.34, 0.01, 0.1}
+\definecolor{candyapplered}{rgb}{1.0, 0.03, 0.0}
+\definecolor{ao(english)}{rgb}{0.0, 0.5, 0.0}
+\definecolor{applegreen}{rgb}{0.55, 0.71, 0.0}
+
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\mjwcomment}[1]{{\bf{{\red{{MJW --- #1}}}}}}
+\newcommand{\mwlcomment}[1]{{\bf{{\color{orange}{{Wenlong --- #1}}}}}}
+
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+\newcommand{\green}[1]{\textcolor{green}{#1}}
+\newcommand{\highlight}[1]{\textcolor{applegreen}{#1}}
+
+% comment lines
+\newcommand{\genecomment}[1]{{\bf{{\blue{{TEAM --- #1}}}}}}
+\newcommand{\rrdcomment}[1]{{\bf{{\blue{{RRD --- #1}}}}}}
+\newcommand{\nhcomment}[1]{{\bf{{\blue{{NH --- #1}}}}}}
+\newcommand{\kkcomment}[1]{{\bf{{\darkgreen{{KK --- #1}}}}}}
+
+
+\newcommand{\widgraph}[2]{\includegraphics[keepaspectratio,width=#1]{#2}}

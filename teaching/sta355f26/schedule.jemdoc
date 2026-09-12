@@ -6,7 +6,7 @@
 ~~~
 {}{table}{}
 lecture | topic | book chapters | notes ||
-09\/11 | introduction, review of probability theory | 1 -- 4 |  ||
+09\/11 | review of probability theory, probability inequalities, convergence of random variables, laws of large numbers, central limit theorem, Slutsky's theorem | 1 -- 5 | [./sta355f26-lec1.pdf Lecture 1] ||
 09\/18 |  |  |  ||
 09\/25 |  |  |  ||
 10\/02 |  |  |  ||
