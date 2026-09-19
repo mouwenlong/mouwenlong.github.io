@@ -130,6 +130,11 @@ By choosing $\alpha = \beta = \sqrt{n}/2$, we have
 \begin{align*}
   R(p; \widehat{p}_\pi)  = \frac{1}{4(1 + \sqrt{n})^2} = r_{\mathrm{minimax}}.
 \end{align*}
+\begin{center}
+  \includegraphics[width=0.78\textwidth]{./lec2-binomial-minimax-illustration.png}
+
+  \small Risk comparison for estimating a binomial proportion: the Bayes estimator with $\alpha = \beta = \sqrt{n}/2$ has constant risk below the worst-case risk of the sample proportion.
+\end{center}
 
 Remark: does it mean that we should always use the Bayes estimator with $\mathrm{Beta}(\sqrt{n}/2, \sqrt{n}/2)$ prior? Not necessarily.
 
@@ -187,6 +192,11 @@ If a risk vector $z \in \mathcal{C}$ is admissible, then it must be on the bound
 \begin{align*}
   \mathcal{C} \cap \{ z' \in \real^{|\Theta|} : z' \preceq z \} = \{ z \}.
 \end{align*}
+\begin{center}
+  \includegraphics[width=0.62\textwidth]{./lec2-separating-hyperplane-illustration.png}
+
+  \small Risk-set geometry when $\Theta = \{\theta_1, \theta_2\}$: an admissible risk vector lies on the lower boundary of $\mathcal{C}$ and admits a supporting hyperplane.
+\end{center}
 We use the following theorem in convex geometry:
 \begin{theorem}[Separating hyperplane theorem]
   Let $C_1, C_2 \subseteq \real^d$ be two disjoint convex sets. Then there exists a hyperplane that separates them, i.e., there exists $w \neq 0$ and $b \in \real$ such that
