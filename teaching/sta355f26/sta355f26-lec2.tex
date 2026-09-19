@@ -1,0 +1,282 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+\usepackage{bm}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+% Personal notation and theorem environments.
+\input{../final_macros.tex}
+
+\newcommand{\coursenumber}{STA355F}
+\newcommand{\coursetitle}{Theory of Statistical Practice}
+\newcommand{\courseterm}{Fall 2026}
+\newcommand{\lecturenumber}{2}
+\newcommand{\lecturedate}{September 18, 2026}
+\newcommand{\lecturer}{Wenlong Mou}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\coursenumber: \coursetitle}
+\fancyhead[R]{Lecture \lecturenumber}
+\fancyfoot[C]{\lecturenumber--\arabic{page}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\newtheorem{example}{Example}
+\setcounter{section}{0}
+\renewcommand{\thepage}{\lecturenumber--\arabic{page}}
+
+\newcommand{\makelecturenotesheader}{%
+  \noindent
+  \textbf{\coursenumber: \coursetitle}%
+  \hfill
+  \textbf{\courseterm}
+
+  \begin{center}
+    {\Large\bfseries Lecture \lecturenumber: \lecturedate}
+  \end{center}
+
+  \noindent
+  \textbf{Lecturer:} \lecturer
+  \par\medskip
+  \hrule
+  \bigskip
+}
+
+\begin{document}
+
+\makelecturenotesheader
+
+\section{Additional probability review}
+\subsection{Probabilistic convergence and arithmetic operations}
+\begin{theorem}
+  Suppose that $(X_n)_{n \geq 1}$ and $(Y_n)_{n \geq 1}$ are sequences of random variables, and $X$, $Y$ are random variables.
+  \begin{enumerate}
+    \item If $X_n \xrightarrow{p} X$ and $Y_n \xrightarrow{p} Y$, then $X_n + Y_n \xrightarrow{p} X + Y$ and $X_n Y_n \xrightarrow{p} XY$.
+    \item If $X_n \xrightarrow{\mathbb{L}^p} X$ and $Y_n \xrightarrow{\mathbb{L}^p} Y$, then $X_n + Y_n \xrightarrow{\mathbb{L}^p} X + Y$, but this does not necessarily hold for the product $X_n Y_n$.
+    \item (Slutsky's theorem) If $X_n \xrightarrow{d} X$ and $Y_n \xrightarrow{p} c$ for some constant $c$, then $X_n + Y_n \xrightarrow{d} X + c$, $X_n Y_n \xrightarrow{d} cX$, and $X_n / Y_n \xrightarrow{d} X / c$ if $c \neq 0$.
+  \end{enumerate}
+\end{theorem}
+Note: Slutsky's theorem does not hold true if $Y_n$ converges in distribution to a non-degenerate random variable $Y$ instead of a constant. On the other hand, it does not require any dependence structure between $X_n$ and $Y_n$.
+
+Intuition about Slutsky: $X_n \xrightarrow{d} X$ only tells you about the marginal distribution of $X_n$. It does not tell you anything about the joint distribution of $(X_n, Y_n)$. But if $Y_n \xrightarrow{p} c$, you are in a degenerate case, and the joint distribution of $(X_n, Y_n)$ does not matter.
+
+
+\subsection{\texorpdfstring{$o_p ()$ and $O_p ()$ notation}{op and Op notation}}
+Notations about limit of sequences: let $(a_n)_{n \geq 1}$ and $(b_n)_{n \geq 1}$ be sequences of real numbers. $b_n > 0$ for all $n$.
+\begin{itemize}
+  \item We say that $a_n = o(b_n)$ if $\lim_{n \to \infty} a_n / b_n = 0$.
+  \item We say that $a_n = O(b_n)$ if there exists a constant $C > 0$ such that $|a_n| \leq C b_n$ for all sufficiently large $n$.
+\end{itemize}
+e.g. $a_n = o(1)$ means $a_n \to 0$, and $a_n = O(1)$ means $a_n$ is bounded.
+
+\noindent e.g. when $a_n = 2 n^2 + n +1 $ and $b_n = n^2$, we have $a_n = O (b_n)$.
+
+\noindent e.g. when $a_n = 1/n$ and $b_n = \log n / n$, we have $a_n = o(b_n)$.
+
+\paragraph{Probablistic version:} Let $(X_n, Y_n)_{n \geq 1}$ be sequences of random variables, and $Y_n > 0$ with probability 1 for all $n$.
+\begin{itemize}
+  \item We say that $X_n = o_p(Y_n)$ if $X_n / Y_n \xrightarrow{p} 0$.
+  \item We say that $X_n = O_p (Y_n)$ if for any $\varepsilon > 0$, there exists a constant $C_\varepsilon > 0$ such that $\Prob(|X_n| \leq C_\varepsilon Y_n) \geq 1 - \varepsilon$ for all $n$. ($X_n/ Y_n$ is asymptotically tight).
+\end{itemize}
+Remarks:
+
+$o_p (1)$ means converges in probability to 0, and $O_p (1)$ means bounded in probability (probabilistic mass is not escaping to infinity as $n \to \infty$).
+
+Facts:
+\begin{itemize}
+  \item $O_P(1) + O_P(1) = O_P(1)$.
+  \item $o_P(1) + o_P(1) = o_P(1)$.
+  \item $O_P(1) \times o_P (1) = o_P(1)$.
+  \item $O_P(1) \times O_P(1) = O_P (1)$.
+\end{itemize}
+
+\subsection{Delta method}
+Motivation: the estimators in practice are not always sample average, but some nonlinear functions related to sample average. We want to understand the asymptotic distribution of these estimators.
+\begin{theorem}[Delta method]
+  Suppose that $(X_n)_{n \geq 1}$ is a sequence of random variables such that $\sqrt{n}(X_n - \mu) \xrightarrow{d} N(0, \sigma^2)$ for some constant $\mu$ and $\sigma^2 > 0$. ($X_n$ themselves do not need to be sample averages.) Let $g: \real \to \real$ be a continuously differentiable function at $\mu$ with $g'(\mu) \neq 0$. Then we have
+  \begin{align*}
+    \sqrt{n} \big(g(X_n) - g(\mu)\big) \xrightarrow{d} N(0, \sigma^2 (g'(\mu))^2).
+  \end{align*}
+\end{theorem}
+Proof idea: we use Taylor expansion of $g$ at $\mu$:
+\begin{align*}
+  g(X_n) = g(\mu) + g'(\mu)(X_n - \mu) + o_p (|X_n - \mu|).
+\end{align*}
+By assumption, we have
+\begin{align*}
+  \sqrt{n} g'(\mu)(X_n - \mu) \xrightarrow{d} N(0, \sigma^2 (g'(\mu))^2).
+\end{align*}
+So we just need to deal with the residual. Since $\sqrt{n} (X_n - \mu) = O_p(1)$, we have $o_p(|X_n - \mu|) = o_p(1/\sqrt{n})$. Therefore, $\sqrt{n} o_p(|X_n - \mu|) = o_p(1) \xrightarrow{p} 0$. By Slutsky's theorem, we conclude that
+\begin{align*}
+  \sqrt{n} \big(g(X_n) - g(\mu)\big) = \sqrt{n} g'(\mu)(X_n - \mu) + \sqrt{n} o_p(|X_n - \mu|) \xrightarrow{d} N(0, \sigma^2 (g'(\mu))^2).
+\end{align*}
+Note: each steps in above proof can be made more rigorous by expanding the definitions of $o_p$ and $O_p$.
+
+\bigskip
+\noindent \textbf{Remarks:}
+
+\begin{itemize}
+  \item Continuous differentiability is necessary. e.g., when $g(x) = |x|$, and $\mu = 0$. Then we have
+  \begin{align*}
+    \sqrt{n} (g(X_n) - g(\mu)) = \sqrt{n} |X_n| = |\sqrt{n} X_n| \xrightarrow{d} |Y| \text{ where } Y \sim N(0, \sigma^2).
+  \end{align*}
+  \item If $g' (\mu) = 0$, then the middle term in the Taylor expansion vanishes, and we have $g(X_n) - g(\mu) = o_p(|X_n - \mu|) = o_p(1/\sqrt{n})$. Technically, the Delta method result is still valid, as $\sqrt{n} (g(X_n) - g(\mu)) = o_p(1) \xrightarrow{d} 0$, which is a degenerate normal distribution. But this is not useful for characterizing the shape of the distribution. In this case, we need to use higher-order Taylor expansion to get a non-degenerate limiting distribution.
+\end{itemize}
+\begin{theorem}[second-order Delta method]
+  Suppose that $(X_n)_{n \geq 1}$ is a sequence of random variables such that $\sqrt{n}(X_n - \mu) \xrightarrow{d} N(0, \sigma^2)$ for some constant $\mu$ and $\sigma^2 > 0$. Let $g: \real \to \real$ be a twice continuously differentiable function at $\mu$ with $g'(\mu) = 0$ and $g''(\mu) \neq 0$. Then we have
+  \begin{align*}
+   \frac{2 n (g (X_n) - g (\mu))}{g'' (\mu) \sigma^2} \xrightarrow{d} \chi^2_1.
+  \end{align*}
+  Here $\chi^2_1$ is the probability distribution of $Y^2$ where $Y \sim N(0,1)$.
+\end{theorem}
+Proof is similar: use second-order Taylor expansion of $g$ at $\mu$:
+\begin{align*}
+  g(X_n) = g(\mu) + \frac{1}{2} g''(\mu) (X_n - \mu)^2 + o_p(|X_n - \mu|^2).
+\end{align*}
+We just use the fact
+\begin{align*}
+  n (X_n - \mu)^2 = (\sqrt{n} (X_n - \mu))^2 \xrightarrow{d} \sigma^2 Y^2 \text{ where } Y \sim N(0, 1).
+\end{align*}
+In principle, we can extend this to higher-order Delta method. But in practice, we usually only need first-order or second-order Delta method.
+
+\paragraph{Multivariate extension:} Suppose that $(X_n)_{n \geq 1}$ is a sequence of random vectors in $\real^d$ such that $\sqrt{n}(X_n - \mu) \xrightarrow{d} N(0, \Sigma)$ for some constant vector $\mu \in \real^d$ and positive definite covariance matrix $\Sigma$. Let $g: \real^d \to \real$ be a continuously differentiable function at $\mu$ with gradient $\nabla g(\mu) \neq 0$. Then we have
+\begin{align*}
+  \sqrt{n} (g(X_n) - g(\mu)) \xrightarrow{d} N(0, \nabla g(\mu)^\top \Sigma \nabla g(\mu)).
+\end{align*}
+Remark: we can also extend this to vector-valued functions $g: \real^d \to \real^k$ with Jacobian matrix $\nabla g(\mu) \in \real^{k \times d}$, and the limiting distribution is multivariate normal with covariance matrix $\nabla g(\mu) \Sigma \nabla g(\mu)^\top \in \real^{k \times k}$.
+
+Remark: we can also extend the second-order Delta method to multivariate case, using Taylor expansion with Hessian matrix $\nabla^2 g(\mu) \in \real^{d \times d}$. In such case, the limiting random variable is a quadratic form of a multivariate normal random vector, which is a generalized version of chi-squared distribution.
+
+
+\section{Statistical models and statistical inference}
+A ``statistical model'' is a class of probability distributions.
+\begin{itemize}
+  \item In probability theory, we work with a fixed and known probability distributions, and study its properties.
+  \item In statistics, we work with a class of probability distributions, and we do not know which distribution in the class is the true one. We want to learn about the true distribution from data.
+\end{itemize}
+Roughly speaking, statistical models can be divided into two categories: parametric models and nonparametric models.
+\begin{itemize}
+  \item Parametric models: the class of distributions is indexed by a finite-dimensional parameter $\theta \in \Theta \subseteq \real^d$. For example, the class of normal distributions $\{N(\mu, \sigma^2): \mu \in \real, \sigma^2 > 0\}$ is a parametric model with parameter $\theta = (\mu, \sigma^2) \in \real \times (0, \infty)$.
+  \item A nonparametric model is also ``parametrized'', but the parameter is infinite-dimensional. For example, the class of all distributions on $\real$ is a nonparametric model, where the parameter is the cumulative distribution function $F: \real \to [0,1]$ that is non-decreasing and right-continuous, which is an infinite-dimensional object.
+\end{itemize}
+More examples of nonparametric models:
+\begin{itemize}
+\item The set of all probability density functions $p$ on $[0, 1]$ such that $|p' (x)| \leq 1$ for all $x \in [0, 1]$. (we will revisit this at the end of this semester).
+\item The set of all probability distribution $\Prob$ on $\real$ such that $\Exs_\Prob[|X|^2] < + \infty$.
+\end{itemize}
+
+\subsection{Tasks in statistical inference}
+Overall, the goal of statistics is to learn about ``which distribution in the class is the true one'' from data. There are three main tasks in statistical inference:
+\begin{enumerate}
+  \item Point estimation.
+  \item Confidence intervals.
+  \item Hypothesis testing.
+\end{enumerate}
+
+\subsubsection{Point estimation}
+In general, given a statistical model $\{\Prob_\theta: \theta \in \Theta\}$, and a functional $T: \Theta \to \real^k$ that we want to estimate, we want to construct an estimator $\widehat{T}$ based on samples such that $\vecnorm{\widehat{T} - T(\theta^*)}{2}$ is small, where $\theta^*$ is the true parameter.
+
+Criteria for evaluating estimators: mean-squared error.
+\begin{align*}
+  \text{MSE}_\theta (\widehat{T}) = \Exs_\theta \Big[\vecnorm{\widehat{T} - T(\theta)}{2}^2 \Big].
+\end{align*}
+Here the notation $\vecnorm{x}{2}$ means the Euclidean norm of a vector $x \in \real^k$.
+
+In general, depending on the aspects of estimators that we want to evaluate, we may also use other norms and other loss functions.
+
+\paragraph{Bias-variance decomposition} For MSE, we have
+\begin{align*}
+  MSE_\theta (\widehat{T}) = \Exs_\theta \Big[\vecnorm{\widehat{T} - T(\theta)}{2}^2 \Big] = \Vert \underbrace{\Exs_\theta[\widehat{T}] - T(\theta)}_{\mathrm{bias}}\Vert_{2}^2 + \underbrace{\Exs_\theta \Big[\vecnorm{\widehat{T} - \Exs_\theta[\widehat{T}]}{2}^2\Big]}_{\mathrm{variance}}.
+\end{align*}
+We say that an estimator $\widehat{T}$ is unbiased if $\Exs_\theta[\widehat{T}] = T(\theta)$ for all $\theta \in \Theta$. In this case, the MSE is the variance of the estimator.
+
+In general, we want to make the optimal trade-off between bias and variance to minimize MSE. This is also related to model selection in machine learning.
+
+e.g. $X_1, X_2, \cdots, X_n \simiid \Prob$, and $\Exs_\Prob [X^2] < + \infty$. Suppose that we want to estimate the parameters
+\begin{align*}
+\mu (\Prob) = \Exs_\Prob[X], \quad \sigma^2 (\Prob) = \var_\Prob(X).
+\end{align*}
+(In the notation above, $\Prob$ corresponds to $\theta$, and $(\mu(\Prob), \sigma^2(\Prob))$ corresponds to $T(\theta)$.)
+
+Canonical choices:
+\begin{align*}
+  \widehat{\mu}_n = \frac{1}{n} \sum_{i=1}^n X_i, \quad \widehat{\sigma}_n^2 = \frac{1}{n - 1} \sum_{i=1}^n (X_i - \widehat{\mu}_n)^2.
+\end{align*}
+Straightforward calculations show that $\widehat{\mu}_n$ and $\widehat{\sigma}_n^2$ are unbiased estimators of $\mu(\Prob)$ and $\sigma^2(\Prob)$, respectively.
+
+Remark: we can also normalize $\widehat{\sigma}_n^2$ by $n$ instead of $n-1$. In this case, the estimator is biased, but it may have smaller variance. In general, we want to make the optimal trade-off between bias and variance to minimize MSE. Asymptotically, normalizing by $n$ or $n-1$ does not matter, as the difference is negligible when $n$ is large.
+
+Important properties of estimators:
+\begin{definition}
+  Given $X_1, X_2, \ldots, X_n \simiid \Prob$, an estimator $\widehat{T}_n$ is said to be \emph{consistent} if $\widehat{T}_n \xrightarrow{p} T(\theta^*)$ as $n \to \infty$, where $\theta^*$ is the true parameter.
+\end{definition}
+
+\begin{definition}
+  An estimator $\widehat{T}_n$ is said to be \emph{asymptotically normal} if there exists an increasing sequence of positive numbers $(a_n)_{n \geq 1}$ such that $a_n \to \infty$ as $n \to \infty$, and
+  \begin{align*}
+    a_n (\widehat{T}_n - T(\theta^*)) \xrightarrow{d} N(0, \Sigma),
+  \end{align*}
+  where $\Sigma$ is a positive definite covariance matrix.
+\end{definition}
+Consistency is a basic requirement, and asymptotic normality is a stronger property that allows us to quantify uncertainty of the estimator.
+
+\subsubsection{Confidence sets}
+\begin{definition}
+ For fixed $\alpha \in (0,1)$, a $(1 - \alpha)$-confidence set for $T(\theta)$ is a random set $C_n$ such that
+  \begin{align*}
+    \Prob_\theta(C_n \ni T(\theta)) \geq 1 - \alpha, \quad \forall \theta \in \Theta.
+  \end{align*}
+\end{definition}
+Note: $\theta$ here is NOT a random variable. The probability is taken with respect to the randomness of the data, which is used to construct the confidence set $C_n$. A random subset of $\real^k$ that contains the deterministic quantity $T(\theta)$ with probability at least $1 - \alpha$, for every possible $\theta \in \Theta$.
+
+\begin{definition}
+ Given $X_1, X_2, \ldots, X_n \simiid \Prob$, a $(1 - \alpha)$ asymptotic confidence set for $T(\theta)$ is a random set $C_n$ such that
+  \begin{align*}
+    \lim\inf_{n \to \infty} \Prob_\theta(C_n \ni T(\theta)) \geq 1 - \alpha, \quad \forall \theta \in \Theta.
+  \end{align*}
+\end{definition}
+
+Example: let $X_1, X_2, \cdots, X_n \simiid \mathrm{Ber} (\theta)$, for unknown $\theta \in (0,1)$.
+
+Different choices of (asymptotic) confidence intervals for $\theta$:
+\begin{itemize}
+  \item CI via asymptotic normality. From the corollary of CLT we have learned in the previous lecture, we have
+  \begin{align*}
+    \frac{\sqrt{n} (\bar{X}_n - \theta)}{\widehat{se}_n} \xrightarrow{d} \mathcal{N} (0, 1),
+  \end{align*}
+  where $\widehat{se}_n^2 = \frac{1}{n} \sum_{i=1}^n (X_i - \bar{X}_n)^2$ is the sample standard error.
+
+  We can then construct an asymptotic $(1 - \alpha)$ confidence interval for $\theta$ as
+  \begin{align*}
+    C_n = \Big[\bar{X}_n - z_{1 - \alpha/2} \cdot \widehat{se}_n / \sqrt{n} , \bar{X}_n + z_{1 - \alpha/2} \cdot \widehat{se}_n / \sqrt{n}\Big],
+  \end{align*}
+  where $z_{1 - \alpha/2}$ is the $(1 - \alpha/2)$-quantile of the standard normal distribution. This is asymptotically valid (and asymptoically exact):
+  \begin{align*}
+    \lim_{n \to \infty} \Prob_\theta(C_n \ni \theta) = 1 - \alpha, \quad \forall \theta \in (0,1).
+  \end{align*}
+  On the other hand, for finite $n$, this confidence interval may not have the desired coverage probability $1 - \alpha$.
+  \item CI via probability deviation inequalities. e.g., we can use Chebyshev's inequality
+  \begin{align*}
+    \Exs_\theta[(\bar{X}_n - \theta)^2] = \frac{\theta (1 - \theta)}{n} \leq \frac{1}{4 n}.
+  \end{align*}
+  By Chebyshev's inequality, we have
+  \begin{align*}
+    \Prob_\theta(|\bar{X}_n - \theta| \geq \varepsilon) \leq \frac{1}{4 n \varepsilon^2}.
+  \end{align*}
+  For this to be less than $\alpha$, we can choose $\varepsilon = \sqrt{1 / (4 n \alpha)}$. This gives a finite-sample valid confidence interval for $\theta$:
+  \begin{align*}
+    C_n = \Big[\bar{X}_n - \sqrt{\frac{1}{4 n \alpha}}, \bar{X}_n + \sqrt{\frac{1}{4 n \alpha}}\Big].
+  \end{align*}
+  This is valid for any finite $n$, but it is conservative, and the length of the confidence interval is typically larger than the asymptotic one.
+
+  Using more advanced probability deviation inequalities, we can sometimes achieve ``best-of-both-worlds'' confidence intervals that are valid for finite $n$ and also have good asymptotic properties.
+\end{itemize}
+
+
+\end{document}
