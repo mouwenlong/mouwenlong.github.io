@@ -1,11 +1,20 @@
 # jemdoc: menu{MENU}{research.html}, nofooter  
 ==Papers
 
+- [https://arxiv.org/abs/2609.08277 Adaptively Incorporating Directional Hints into Zeroth-Order Optimization]
+-- Alexander Ryabchenko, Jian Qian, *Wenlong Mou*
+-- Accepted to /NeurIPS/ 2026 (poster)
+
+- Online Imitation Learning for Stabilizing Vlasov--Poisson Plasmas
+-- Xiaofan Xia, Qin Li, *Wenlong Mou*
+-- Accepted to /NeurIPS/ 2026 (poster)
+
 - [https://arxiv.org/abs/2605.05081 Provable imitation learning for control of instability in partially-observed Vlasov--Poisson equations]
 -- Xiaofan Xia, Qin Li, *Wenlong Mou*
 
 - [https://arxiv.org/abs/2605.10716 What should post-training optimize? A test-time scaling law perspective]
 -- Muheng Li, Jian Qian, *Wenlong Mou*
+-- Accepted to /NeurIPS/ 2026 (poster)
 
 - [https://arxiv.org/abs/2510.02149
 Reinforcement Learning with Action-Triggered Observations]
@@ -14,6 +23,7 @@ Reinforcement Learning with Action-Triggered Observations]
 
 - [https://arxiv.org/abs/2602.01485 Predicting and improving test-time scaling laws via reward tail-guided search]
 -- Muheng Li, Jian Qian, *Wenlong Mou*
+-- Accepted to /NeurIPS/ 2026 (poster)
 
 - [https://arxiv.org/abs/2602.06930 Continuous-time reinforcement learning: ellipticity enables model-free value function approximation]
 -- *Wenlong Mou*
@@ -45,6 +55,7 @@ On Bellman equations for continuous-time policy evaluation: discretization and a
 - [https://arxiv.org/abs/2311.10076 
 A decorrelation method for general regression adjustment in randomized experiments]
 -- Fangzhou Su, *Wenlong Mou (equal contribution)*, Peng Ding, Martin J. Wainwright
+-- Accepted to /Journal of the Royal Statistical Society: Series B/ (JRSSB)
 
 - [https://arxiv.org/abs/2411.02909
 When is it worthwhile to jackknife? Breaking the quadratic barrier for Z-estimators]
