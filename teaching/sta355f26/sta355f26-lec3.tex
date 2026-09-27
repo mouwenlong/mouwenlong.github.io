@@ -258,29 +258,33 @@ We can show convergence of the sample quantile to the population quantile under 
     T_\tau (\widehat{F}_n) \xrightarrow{p} T_\tau (F) \quad \text{as } n \to \infty.
   \end{align*}
 \end{theorem}
-Proof idea: by Glivenko--Cantelli theorem, we have uniform convergence
+Proof. By the Glivenko--Cantelli theorem, we have uniform convergence
 \begin{align*}
   \sup_{x \in \real} |\widehat{F}_n(x) - F(x)| \xrightarrow{p} 0.
 \end{align*}
-By Assumption~\ref{assumption:lec3-quantile}, for any $\varepsilon > 0$, set $q = T_\tau(F)$ and $x_- = q - \varepsilon$, $x_+ = q + \varepsilon$. Then $F(x_-) < \tau < F(x_+)$. Let
+Fix $\varepsilon > 0$, and set $q = T_\tau(F)$, $x_- = q - \varepsilon$, and $x_+ = q + \varepsilon$. Assumption~\ref{assumption:lec3-quantile} gives $F(x_-) < \tau < F(x_+)$. Choose
 \begin{align*}
-  \delta = \min\{\tau - F(x_-), F(x_+) - \tau\} > 0.
+  \delta = \frac{1}{2}\min\{\tau-F(x_-),\,F(x_+)-\tau\}>0.
 \end{align*}
-On the event $\sup_x |\widehat{F}_n(x) - F(x)| < \delta$, we have $\widehat{F}_n(x_-) < \tau < \widehat{F}_n(x_+)$. Since $\widehat{F}_n$ is nondecreasing, its $\tau$-quantile lies between $x_-$ and $x_+$.
-
-In the illustration below, the blue curve is $F$, the orange steps are $\widehat{F}_n$, and the dashed horizontal line is level $\tau$. Their crossings of this level are bracketed by $x_-$ and $x_+$ when the uniform error is smaller than $\delta$.
-\begin{center}
-  \includegraphics[width=0.78\textwidth]{./lec3-quantile-consistency-illustration.png}
-
-  \small Uniform closeness of the two CDFs keeps the empirical $\tau$-quantile inside $[q-\varepsilon,q+\varepsilon]$.
-\end{center}
-
+On the event $E_n=\{\sup_x|\widehat{F}_n(x)-F(x)|<\delta\}$, the empirical CDF lies between the two dashed curves $F(x)-\delta$ and $F(x)+\delta$ in the illustration. At $x_-$, even the upper curve is below $\tau$; at $x_+$, even the lower curve is above $\tau$. Thus
+\begin{align*}
+  \widehat{F}_n(x_-) < F(x_-)+\delta < \tau
+  < F(x_+)-\delta < \widehat{F}_n(x_+).
+\end{align*}
+Since $\widehat{F}_n$ is nondecreasing, its first crossing of $\tau$ lies in $[x_-,x_+]$.
 Consequently,
 \begin{align*}
   \Prob\bigl(|T_\tau(\widehat{F}_n)-q| > \varepsilon\bigr)
-  \leq \Prob\Bigl(\sup_x |\widehat{F}_n(x)-F(x)| \geq \delta\Bigr) \longrightarrow 0,
+  \leq \Prob(E_n^c)
+  = \Prob\Bigl(\sup_x |\widehat{F}_n(x)-F(x)| \geq \delta\Bigr) \longrightarrow 0,
 \end{align*}
 which proves consistency of the sample quantile.
+
+\begin{center}
+  \includegraphics[width=0.78\textwidth]{./lec3-quantile-consistency-illustration-v2.png}
+
+  \small The dashed curves are $F\pm\delta$; the orange empirical CDF stays between them, so its $\tau$-crossing is bracketed by $x_-$ and $x_+$.
+\end{center}
 
 Remark: when $\tau$ can change with $n$, we need to be more careful. For example, we can consider $\tau > 1 - 1/n$. In such a case, the sample quantile is
 \begin{align*}
