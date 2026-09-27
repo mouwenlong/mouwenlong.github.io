@@ -16,10 +16,12 @@
 \newcommand{\coursenumber}{STA355F}
 \newcommand{\coursetitle}{Theory of Statistical Practice}
 \newcommand{\courseterm}{Fall 2026}
-\newcommand{\lecturenumber}{2}
+\newcounter{lecture}
+\setcounter{lecture}{2}
+\newcommand{\lecturenumber}{\arabic{lecture}}
 \newcommand{\lecturedate}{September 18, 2026}
 \newcommand{\lecturer}{Wenlong Mou}
-
+\newtheorem{assumption}{Assumption}
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\coursenumber: \coursetitle}
@@ -28,7 +30,18 @@
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0pt}
 \newtheorem{example}{Example}
-\setcounter{section}{0}
+\numberwithin{theorem}{lecture}
+\numberwithin{proposition}{lecture}
+\numberwithin{lemma}{lecture}
+\numberwithin{claim}{lecture}
+\numberwithin{corollary}{lecture}
+\numberwithin{definition}{lecture}
+\numberwithin{conjecture}{lecture}
+\numberwithin{remark}{lecture}
+\numberwithin{example}{lecture}
+\numberwithin{equation}{lecture}
+\counterwithin*{section}{lecture}
+\renewcommand{\theHsection}{\arabic{lecture}.\arabic{section}}
 \renewcommand{\thepage}{\lecturenumber--\arabic{page}}
 
 \newcommand{\makelecturenotesheader}{%
