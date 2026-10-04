@@ -1,0 +1,283 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+\usepackage{bm}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+% Personal notation and theorem environments.
+\input{../final_macros.tex}
+
+\newcommand{\coursenumber}{STA355F}
+\newcommand{\coursetitle}{Theory of Statistical Practice}
+\newcommand{\courseterm}{Fall 2026}
+\newcounter{lecture}
+\setcounter{lecture}{4}
+\newcommand{\lecturenumber}{\arabic{lecture}}
+\newcommand{\lecturedate}{October 2, 2026}
+\newcommand{\lecturer}{Wenlong Mou}
+\newtheorem{assumption}{Assumption}
+\numberwithin{assumption}{lecture}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\coursenumber: \coursetitle}
+\fancyhead[R]{Lecture \lecturenumber}
+\fancyfoot[C]{\lecturenumber--\arabic{page}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\newtheorem{example}{Example}
+\numberwithin{theorem}{lecture}
+\numberwithin{proposition}{lecture}
+\numberwithin{lemma}{lecture}
+\numberwithin{claim}{lecture}
+\numberwithin{corollary}{lecture}
+\numberwithin{definition}{lecture}
+\numberwithin{conjecture}{lecture}
+\numberwithin{remark}{lecture}
+\numberwithin{example}{lecture}
+\numberwithin{equation}{lecture}
+\counterwithin*{section}{lecture}
+\renewcommand{\theHsection}{\arabic{lecture}.\arabic{section}}
+\renewcommand{\thepage}{\lecturenumber--\arabic{page}}
+
+\newcommand{\makelecturenotesheader}{%
+  \noindent
+  \textbf{\coursenumber: \coursetitle}%
+  \hfill
+  \textbf{\courseterm}
+
+  \begin{center}
+    {\Large\bfseries Lecture \lecturenumber: \lecturedate}
+  \end{center}
+
+  \noindent
+  \textbf{Lecturer:} \lecturer
+  \par\medskip
+  \hrule
+  \bigskip
+}
+
+\begin{document}
+
+\makelecturenotesheader
+
+\section{Continued from last time: bootstrap}
+From high-level perspective, bootstrap is also a plug-in estimator: using empirical distribution over $n$ observed data to replace the population one, so that we can estimate the quantity of interest without knowing the population distribution.
+
+Different from the plug-in estimator, bootstrap is about uncertainty quantification about an existing estimator, e.g. construction of confidence intervals.
+
+In general, a bootstrap procedure consists of the following conceptual steps:
+\begin{itemize}
+  \item \textbf{Step I: Real vs. bootstrap world}: consider two parallel worlds:
+  \begin{align*}
+    F \Rightarrow X_1, X_2, \ldots, X_n \Rightarrow \widehat{T}_n = g (X_1, X_2, \cdots, X_n),
+  \end{align*}
+  here $g$ is a function that maps the data to the estimator. It can be any function.
+
+  Bootstrap world:
+  \begin{align*}
+    \widehat{F}_n \Rightarrow X_1^*, X_2^*, \ldots, X_n^* \Rightarrow \widehat{T}_n^* = g (X_1^*, X_2^*, \cdots, X_n^*).
+  \end{align*}
+  Operationally, we generate bootstrap samples $X_1^*, X_2^*, \ldots, X_n^*$ by sampling with replacement from the original samples $X_1, X_2, \ldots, X_n$.
+
+  Hope: the {\color{red}\textbf{conditional}} distribution of $\widehat{T}_n^*$ given the original samples $X_1, X_2, \ldots, X_n$ is a good approximation of the {\color{red}\textbf{marginal} }distribution of $\widehat{T}_n$. For the former, the randomness is coming only from the drawing with replacement procedure, while for the latter, the randomness is coming from the original data generating process.
+  \item \textbf{Step II: simulation.} Theoretically, we can compute the conditional distribution of $\widehat{T}_n^*$ given the original samples $X_1, X_2, \ldots, X_n$. But in practice, we usually cannot compute it analytically.$\widehat{T}_n^*$. Computational idea: Monte Carlo simulation.
+
+  {\color{blue}
+  General idea of Monte Carlo simulation: suppose that we want to compute $\Exs_\Prob [f (X)]$ with known $F$. Given a sample size $B > 0$, we can generate $B$ independent samples $Y_1, Y_2, \cdots, Y_B \simiid \Prob$, and by law of large numbers, we have
+  \begin{align*}
+    \frac{1}{B} \sum_{i=1}^B f (Y_i) \xrightarrow{p} \Exs_\Prob [f (X)] \quad \text{as } B \to \infty.
+  \end{align*}
+  Note that this is NOT a statistical procedure. This is just a computational method.
+  }
+
+  In Monte Carlo simulation for bootstrap, we generate $B$ independent ``bootstrap worlds'':
+  \begin{align*}
+    X_{1, 1}^*, X_{1, 2}^*, \ldots, X_{1, n}^* \simiid \widehat{F}_n,\\
+    X_{2, 1}^*, X_{2, 2}^*, \ldots, X_{2, n}^* \simiid \widehat{F}_n,\\
+    \vdots\\
+    X_{B, 1}^*, X_{B, 2}^*, \ldots, X_{B, n}^* \simiid \widehat{F}_n.
+  \end{align*}
+  For each bootstrap world, we repeat the same procedure to compute
+  \begin{align*}
+    \widehat{T}_{n}^{*, b} = g (X_{b, 1}^*, X_{b, 2}^*, \ldots, X_{b, n}^*), \quad b = 1, 2, \ldots, B.
+  \end{align*}
+  If the conditional distribution of $\widehat{T}_n^*$ given the original samples $X_1, X_2, \ldots, X_n$ is a good approximation of the marginal distribution of $\widehat{T}_n$, then conditionally on the data, $ \widehat{T}_{n}^{*, b} $ are good approximations of independent samples from the marginal distribution of $\widehat{T}_n$. In particular, if we want to estimate the standard error of $\widehat{T}_n$, we can use the Monte Carlo principle:
+  \begin{align*}
+    \widehat{se}_{\mathrm{bootstrap}, B} (\widehat{T}_n) = \sqrt{\frac{1}{B} \sum_{b=1}^B \big(\widehat{T}_{n}^{*, b} -  \frac{1}{B} \sum_{j=1}^B \widehat{T}_{n}^{*, j}\big)^2},
+  \end{align*}
+\end{itemize}
+Hope to get:
+\begin{align*}
+  \widehat{se}_{\mathrm{bootstrap}, B} (\widehat{T}_n) \underbrace{\approx}_{\mbox{known to be true for large }B} \widehat{se}_{\mathrm{bootstrap, idealized}} (\widehat{T}_n) \underbrace{\approx}_{?} {se}_F (\widehat{T}_n),
+\end{align*}
+where
+\begin{align*}
+  \widehat{se}_{\mathrm{bootstrap, idealized}} (\widehat{T}_n)^2 \mydefn \Exs_{\widehat{F}_n} \big[ | \widehat{T}_n^* - \Exs_{\widehat{F}_n} [\widehat{T}_n^*] |^2 \mid X_1, X_2, \cdots, X_n \big].
+\end{align*}
+The ``?'' step is not always true. It depends on properties of the estimator $\widehat{T}_n$ and the functional $T$ and the data-generating distribution $F$. We will discuss this in more details later in the course.
+
+
+\subsection{Bootstrap confidence intervals}
+\paragraph{Normal interval:}
+\begin{itemize}
+  \item Compute $\widehat{T}_n$ based on the original samples $X_1, X_2, \ldots, X_n$.
+  \item Use Monte Carlo simulation to compute $\widehat{se}_{\mathrm{bootstrap}, B} (\widehat{T}_n)$.
+  \item Construct the confidence interval as
+  \begin{align*}
+    \Big[\widehat{T}_n - z_{1 - \alpha/2} \cdot \widehat{se}_{\mathrm{bootstrap}, B} (\widehat{T}_n), \quad \widehat{T}_n + z_{1 - \alpha/2} \cdot \widehat{se}_{\mathrm{bootstrap}, B} (\widehat{T}_n)\Big],
+  \end{align*}
+\end{itemize}
+This works if (i) the asymptotic distribution of $\widehat{T}_n$ is normal, and (ii) the bootstrap standard error is a good approximation of the true standard error. There are cases where bootstrap is valid but the asymptotic distribution is not normal, and in such cases, we need to use other bootstrap confidence intervals.
+
+\paragraph{Pivotal interval.} In the construction of confidence intervals, we can use the pivotal quantity
+\begin{align*}
+  R_n = \widehat{T}_n - T(F).
+\end{align*}
+In the bootstrap world, we hope that the conditional distribution of $R_n^* = \widehat{T}_n^* - \widehat{T}_n$ given the original samples $X_1, X_2, \ldots, X_n$ is a good approximation of the marginal distribution of $R_n$.
+
+If we knew the distribution of $R_n$, suppose that $H$ is the CDF of $R_n$, $H (r) = \Prob(R_n \leq r)$, then we can construct a $(1 - \alpha)$ confidence interval for $T(F)$ as
+\begin{align*}
+  C_n = \Big[\widehat{T}_n - H^{-1} (1 - \alpha/2), \quad \widehat{T}_n - H^{-1} (\alpha/2)\Big].
+\end{align*}
+(if $H$ is known to be normal, this is the same as the normal interval). This transforms the question of constructing a confidence interval for $T(F)$ to the question of estimating the distribution of $R_n$.
+
+If the bootstrap distribution of $R_n^*$ is a good approximation of the distribution of $R_n$, then we can use the bootstrap distribution to estimate the quantiles of $R_n$:
+\begin{align*}
+  \widehat{H}_{\mathrm{bootstrap, ideal}} (r) \mydefn \Prob_{\widehat{F}_n} (R_n^* \leq r \mid X_1, X_2, \ldots, X_n).
+\end{align*}
+We can further use Monte Carlo simulation to compute the idealized bootstrap distribution $\widehat{H}_{\mathrm{bootstrap, ideal}}$ approximately:
+\begin{align*}
+  \widehat{H}_{\mathrm{bootstrap}, B} (r) = \frac{1}{B} \sum_{b=1}^B \bm{1}_{R_n^{*, b} \leq r}.
+\end{align*}
+This is a step function that jumps by $1/B$ at each of the bootstrap samples $R_n^{*, b}$. If bootstrap works, then we can use the quantiles of $\widehat{H}_{\mathrm{bootstrap}, B}$ to construct a confidence interval for $T(F)$:
+\begin{align*}
+  C_n = \Big[\widehat{T}_n - \widehat{H}_{\mathrm{bootstrap}, B}^{-1} (1 - \alpha/2), \quad \widehat{T}_n - \widehat{H}_{\mathrm{bootstrap}, B}^{-1} (\alpha/2)\Big].
+\end{align*}
+This does not require asymptotic normality of $\widehat{T}_n$, so potentially more robust than the normal interval. Roughly speaking, the pivotal interval requires the shape of the distribution of the pivot $R_n$ to be stable and independent of the unknown distribution $F$, though not necessarily normal.
+
+
+\paragraph{Percentile interval.} Bootstrap hope to approximate the distribution of $\widehat{T}_n$ using the conditional distribution of $\widehat{T}_n^*$ given the original samples $X_1, X_2, \ldots, X_n$. Idea: we can use the cdf of the bootstrap distribution to estimate the quantiles of $\widehat{T}_n$. This leads to a simple construction of the confidence interval:
+\begin{align*}
+  C_n = \Big[ \widehat{T}^*_{(\alpha / 2)},  \widehat{T}^*_{(1 - \alpha / 2)} \Big],
+\end{align*}
+where we denote $\widehat{T}^*_{(q)}$ as the $q$-th quantile of the bootstrap distribution. In practice, we still need to use Monte Carlo simulation to compute $\lceil\alpha B / 2\rceil$ and $\lceil (1 - \alpha / 2) B \rceil$ order statistics of the bootstrap samples $\widehat{T}_n^{*, 1}, \widehat{T}_n^{*, 2}, \ldots, \widehat{T}_n^{*, B}$.
+
+\subsection{When does bootstrap work?}
+First, let us try to find cases where bootstrap fails.
+\begin{example}\upshape
+  Let $X_1, X_2, \cdots, X_n \simiid \mathrm{Unif} \big( [0 , \theta] \big)$. We want to estimate $\theta = T(F) \mydefn \max \big\{ x: x \in \mathrm{supp} (F)\big\}$. And we can use plug-in method to estimate it.
+  \begin{align*}
+    \widehat{T}_n = T(\widehat{F}_n) = \max_{i=1, 2, \ldots, n} X_i.
+  \end{align*}
+  For estimation itself, this is a good estimator. Indeed, we can show that
+  \begin{align*}
+    \widehat{T}_n \xrightarrow{p} \theta, \qquad \Exs \big[ |\widehat{T}_n - \theta|^2 \big] = O(1/n^2).
+  \end{align*}
+  The issue happens when we try to quantify the uncertainty of the estimator $\widehat{T}_n$ using bootstrap.
+
+  Under the real world, we have
+  \begin{align*}
+    \Prob (\widehat{T}_n \leq t) = \Prob (X_1 \leq t, X_2 \leq t, \ldots, X_n \leq t) = \Prob (X_1 \leq t)^n = (t / \theta)^n, \quad 0 < t < \theta.
+  \end{align*}
+  On the other hand, in the bootstrap world, we have
+  \begin{align*}
+    X_1^*, X_2^*, \cdots, X_n^* \simiid \mathrm{Unif} \big(\{X_1, X_2, \cdots, X_n\} \big).
+  \end{align*}
+  We can then compute the bootstrap estimator $\widehat{T}_n^* = \max_{i=1, 2, \ldots, n} X_i^*$. Computing the conditional distribution of $\widehat{T}_n^*$ given the original samples $X_1, X_2, \ldots, X_n$ is a combinatorial task, which is manageable but tedious. But we can compute a simple quantity:
+  \begin{align*}
+    \Prob \big( \widehat{T}_n^* = \widehat{T}_n \mid X_1, X_2, \ldots, X_n \big) & = \Prob \big( X_{(n)} \mbox{ is selected in bootstrap samples} \big) \\
+    &= 1 - (1 - 1/n)^n \to 1 - 1/e \approx 0.632.
+  \end{align*}
+  So in the bootstrap world, the bootstrap estimator $\widehat{T}_n^*$ has at least constant probability ($1 - 1/e$) to be equal to the true maximum in the distribution support. But this conclude does not translate to the real world, where we have
+  \begin{align*}
+    \Prob (\widehat{T}_n = \theta) = 0.
+  \end{align*}
+  This reveals a failure mode of bootstrap. In particular, if we want to construct a confidence interval for $\theta$ with confidence level $1 - \alpha$, where $\alpha = 0.5$. If we were to use bootstrap samples to construct confidence interval, we could use
+  \begin{align*}
+    C_n = \big[ \widehat{T}_n, \widehat{T}_n \big] = \{ \widehat{T}_n\},
+  \end{align*}
+  because under the bootstrap world, we have $C_n^* = \{ \widehat{T}_n^*\}$
+  \begin{align*}
+    \Prob \big( C_n^* \ni \widehat{T}_n \big) = \Prob \big( \widehat{T}_n^* = \widehat{T}_n \big) \to 1 - 1/e > 0.5.
+  \end{align*}
+  But in the real world, $C_n$ covers the ground truth $\theta$ with probability $0$. So the bootstrap confidence interval fails to achieve the desired coverage level.
+\end{example}
+Remark: for this problem, suppose that we use an alternative estimator
+\begin{align*}
+  \widetilde{T}_n \mydefn \frac{2}{n} \sum_{i=1}^n X_i,
+\end{align*}
+which is also a consistent estimator. And in that case, bootstrap works (for quantifying uncertainty of $\widetilde{T}_n$). However, $\widetilde{T}_n$ is not a good estimator for $\theta$, since it has a slower convergence rate than $\widehat{T}_n$.
+
+\paragraph{A special case where bootstrap works.}
+Consider sample average estimator for $T (F) = \Exs_F [r (X)]$ for some function $r: \real \to \real$. Suppose that we use the plug-in estimator
+\begin{align*}
+  \widehat{T}_n = \frac{1}{n} \sum_{i=1}^n r(X_i).
+\end{align*}
+For this problem, we could use plug-in method for standard error estimation. But we can also use bootstrap to estimate the standard error.
+
+Conditionally on the original samples $X_1, X_2, \ldots, X_n$, in the bootstrap world, we have
+\begin{align*}
+  X_1^*, X_2^*, \ldots, X_n^* \simiid \mathrm{Unif} \big(\{X_1, X_2, \ldots, X_n\}\big), \qquad T_n^* = \frac{1}{n} \sum_{i=1}^n r(X_i^*).
+\end{align*}
+Now we consider standard error estimation. In the bootstrap world, we have
+\begin{align*}
+  \widehat{se}_{\mathrm{bootstrap, ideal}}^2 (\widehat{T}_n) &= \Exs_{\widehat{F}_n} \big[ | \widehat{T}_n^* - \Exs_{\widehat{F}_n} [\widehat{T}_n^*] |^2 \mid X_1, X_2, \ldots, X_n \big]\\
+  &= \Exs_{\widehat{F}_n} \big[ | \widehat{T}_n^* - \frac{1}{n} \sum_{j=1}^n r(X_j) |^2 \mid X_1, X_2, \ldots, X_n \big]
+\end{align*}
+Without using simulation, we can compute this quantity analytically, as the target quantity is the variance of $\mathrm{i.i.d.}$ sums. In particular, we have
+\begin{align*}
+  \widehat{se}_{\mathrm{bootstrap, ideal}}^2 (\widehat{T}_n) = \frac{1}{n} \cdot \frac{1}{n} \sum_{i=1}^n \big(r(X_i) - \frac{1}{n} \sum_{j=1}^n r(X_j)\big)^2.
+\end{align*}
+On the other hand, in the real world, we have
+\begin{align*}
+    \mathrm{se}_F (\widehat{T}_n)^2 = \frac{1}{n} \cdot \var_F (r(X)) = \frac{1}{n} \cdot \Exs_F \big[ | r(X) - \Exs_F [r(X)] |^2 \big].
+\end{align*}
+\begin{itemize}
+  \item
+By law of large numbers, the idealized bootstrap variance converges to the true variance:
+  \begin{align*}
+    \widehat{se}_{\mathrm{bootstrap, ideal}}^2 (\widehat{T}_n) \xrightarrow{p} \mathrm{se}_F^2 (\widehat{T}_n) \quad \text{as } n \to \infty.
+  \end{align*}
+  \item Furthermore, we note that $ \widehat{se}_{\mathrm{bootstrap, ideal}}^2 (\widehat{T}_n) $ is just $(1/n)$ times the empirical variance estimator computed from the original samples $X_1, X_2, \ldots, X_n$.
+  \item Here, we can also use CLT to show that the idealized bootstrap confidence interval (including the pivotal and percentile intervals) is asymptotically valid.
+\end{itemize}
+In general, the validity of bootstrap is a deep theoretical question. It crucially relies on a notion called \emph{Hadamard differentiability} of the functional $T$.
+
+Roughly speaking, Hadamard differentiability is a notion of smoothness of the functional $T$. Suppose that we want to estimate $T (F)$ using $T(F_n)$, where $F_n$ is the empirical distribution. We can think of $F_n$ as a perturbation of $F$, and we want to understand how the functional $T$ changes with respect to the perturbation.
+
+Technically, Hadamard differentiability is defined as: we say that $T$ is Hadamard differentiable at $F$ if there exists a continuous linear map $T_F': \mathcal{D} \to \real$ such that for any sequence of perturbations $h_n \rightarrow h$ and scalars $t_n \to 0$, we have
+\begin{align*}
+  \frac{T (F + t_n h_n) - T (F)}{t_n} \longrightarrow T_F' (h) \quad \text{as } n \to \infty,
+\end{align*}
+From the definition, you can see that this is a natural generalization of differentiable functions to infinite dimensional spaces. The linear map $T_F'$ is called the Hadamard derivative of $T$ at $F$.
+
+{\color{blue}
+To make an analogy, you can consider a differentiable finite-dimensional function $T: \real^d \to \real$. Consider perturbation of its arguments: for $t_n \rightarrow 0$ and $h_n \to h \in \real^d$, we have
+\begin{align*}
+  \frac{T (x + t_n h_n) - T (x)}{t_n} \longrightarrow \nabla T (x)^\top h \quad \text{as } n \to \infty,
+\end{align*}
+}
+If the space of data is finite, the true distribution $F$ can be represented as a vector in $\real^d$, and the functional $T$ can be thought of as a function from $\real^d$ to $\real$. In that case, Hadamard differentiability reduces to the usual notion of differentiability.
+
+\begin{theorem}
+  If $T$ is Hadamard differentiable at $F$, then for pivotal and percentile bootstrap confidence intervals, we have
+  \begin{align*}
+    \Prob \big( C_n \ni T(F) \big) \longrightarrow 1 - \alpha \quad \text{as } n \to \infty.
+  \end{align*}
+  under the idealized bootstrap setting, as $n \to \infty$. We can further exhibit the validity of the Monte Carlo simulation procedure, by sending $B \to \infty$ first and then $n \to \infty$.
+
+  Furthermore, if the true asymptotic distribution of $\widehat{T}_n - T(F)$ is normal, then the normal bootstrap confidence interval is also asymptotically valid.
+\end{theorem}
+Basically, Hadamard differentiability guarantees that the estimation procedures for the relevant quantities (e.g., standard error, quantiles) are consistent, and hence the bootstrap confidence intervals are asymptotically valid.
+
+\begin{corollary}
+ If the data space is finite, then for any differentiable function $T: \real^d \to \real$, the bootstrap confidence intervals for $T(F)$ constructed using $T (\widehat{F}_n)$ are asymptotically valid.
+\end{corollary}
+
+\end{document}

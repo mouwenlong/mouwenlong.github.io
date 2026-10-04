@@ -81,7 +81,7 @@ Intuition: $g$ does not contain redundant information.
   \item Sufficiency: $T(X)$ contains all information (contained in the data) about $\theta$, but there may be redundant information in $T(X)$.
   \item Completeness is complementary to sufficiency: $T(X)$ may incur loss of information, but on the other hand, if there's some redundancy in $T(X)$, we can find a function $g$ that extracts the redundant information, and then $\Exs_\theta [g(T(X))]$ will not depend on $\theta$.
 \end{itemize}
-e.g. Let $X_1, X_2, \cdots, X_n \simiid \mathrm{Unif} ([\theta - 1, \theta + 1])$.
+e.g. Let $X_1, X_2, \cdots, X_n \simiid \mathrm{Unif} ([\theta_1 - \theta_2, \theta_1 + \theta_2])$.
 \begin{itemize}
   \item For $T (X_1, \cdots, X_n) = (X_1, X_2, \cdots, X_n)$, we can take $g(T) = X_1 - X_2$. Then $\Exs_\theta [g(T)] = 0$ for all $\theta$, but $g(T)$ is not almost surely zero. So $T$ is not complete.
   \item For $T (X_1, \cdots, X_n) = (X_{(1)}, X_{(n)})$, we can show that $T$ is complete. (See Keener's textbook for a proof.)
@@ -105,7 +105,7 @@ So $\int_0^\theta g(t) t^{n-1} dt = 0$ for all $\theta$. So $g (t) = 0$ almost e
   is called full-rank if the following conditions hold:
   \begin{enumerate}
     \item $\eta (\Theta)$ has an interior point in $\real^k$.
-    \item $(T_1 (x), T_2 (x), \cdots, T_k (x))$ are linearly independent functions of $x$.
+    \item $(T_1 (x), T_2 (x), \cdots, T_k (x))$ are affinely independent functions of $x$.
   \end{enumerate}
 \end{definition}
 For example, for multivariate Gaussian with unknown mean and covariance, we need to take the upper triangular part of $xx^\top$ to get linearly independent functions. In general, for the practical exponential families you encounter, we can easily remove redundancy to get a full-rank exponential family.
