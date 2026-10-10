@@ -10,7 +10,7 @@ lecture | topic | book chapters | notes ||
 09\/18 | arithmetic of probabilistic convergence, small-o and big-O notation in probability, delta method, statistical models, point estimation, confidence sets | 5, 6 | [./sta355f26-lec2.pdf Lecture 2] ||
 09\/25 | hypothesis testing basics, empirical CDF and confidence bands, plug-in and quantile estimation, introduction to bootstrap | 7, 8 | [./sta355f26-lec3.pdf Lecture 3] ||
 10\/02 | bootstrap resampling and Monte Carlo simulation, bootstrap standard errors, normal, pivotal and percentile confidence intervals, bootstrap failure for the sample maximum, validity for sample averages and Hadamard differentiability | [https://link.springer.com/book/10.1007/978-0-387-21736-9 Wasserman, Chapter 8]; supplementary: van der Vaart 20.2, 23.2 | [./sta355f26-lec4.pdf Lecture 4] ||
-10\/09 |  |  |  ||
+10\/09 | parametric bootstrap, Z- and M-estimation, method of moments and maximum likelihood, consistency of M-estimators, uniform laws of large numbers and Wald's theorem | [https://link.springer.com/book/10.1007/978-0-387-21736-9 Wasserman, Chapters 8--9]; supplementary: van der Vaart 5.1--5.2, 5.5 | [./sta355f26-lec5.pdf Lecture 5] ||
 10\/16 |  |  |  ||
 10\/23 |  |  |  ||
 11\/06 |  |  |  ||

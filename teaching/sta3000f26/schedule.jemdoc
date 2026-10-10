@@ -10,7 +10,7 @@ lecture | topic | references | notes ||
 09\/18 | Bayes and minimax decision rules, duality and admissibility, sufficient statistics, Rao--Blackwellization, factorization theorem, exponential families, introduction to UMVUE | [https://erdogdu.github.io/csc2532/latex/notes_all.pdf Murat's notes, Chapter 1], Bickel and Doksum 3.2, 3.3, Keener 3.2, [https://sites.stat.washington.edu/jaw/COURSES/580s/581/LECTNOTES/ch13.pdf Jon Wellner's notes] | [./sta3000f26-lec2.pdf Lecture 2] ||
 09\/25 | complete sufficient statistics and UMVUE, Fisher information, classical and Bayesian Cramér--Rao bounds, local minimax risk | [https://sites.stat.washington.edu/jaw/COURSES/580s/581/LECTNOTES/ch13.pdf Jon Wellner's notes], Keener 3.2, 4.5, 4.6, Tsybakov 2.7.3 | [./sta3000f26-lec3.pdf Lecture 3] ||
 10\/02 | local minimax and local asymptotic minimax lower bounds, Neyman--Pearson lemma and likelihood ratio tests, total variation and Pinsker's inequality, Le Cam's two-point method, monotone likelihood ratios and UMP tests | [https://link.springer.com/book/10.1007/b13794 Tsybakov 2.3, 2.4, 2.7.3], [https://link.springer.com/book/10.1007/978-0-387-93839-4 Keener 12.1--12.3], van der Vaart 8.7 | [./sta3000f26-lec4.pdf Lecture 4] ||
-10\/09 |  |  |  ||
+10\/09 | two-sided testing and UMPU tests, multivariate Gaussian testing and minimax separation, mixture-prior and chi-squared lower bounds, M-estimation and empirical risk minimization, uniform convergence, covering and packing numbers | [https://link.springer.com/book/10.1007/978-0-387-93839-4 Keener 12.5--12.7], [https://link.springer.com/book/10.1007/b13794 Tsybakov 2.4, 2.7.4], van der Vaart 5.1--5.2, 19.2 | [./sta3000f26-lec5.pdf Lecture 5] ||
 10\/16 |  |  |  ||
 10\/23 |  |  |  ||
 11\/06 |  |  |  ||

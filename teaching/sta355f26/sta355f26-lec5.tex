@@ -1,0 +1,310 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+\usepackage{bm}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+% Personal notation and theorem environments.
+\input{../final_macros.tex}
+
+\newcommand{\coursenumber}{STA355F}
+\newcommand{\coursetitle}{Theory of Statistical Practice}
+\newcommand{\courseterm}{Fall 2026}
+\newcounter{lecture}
+\setcounter{lecture}{5}
+\newcommand{\lecturenumber}{\arabic{lecture}}
+\newcommand{\lecturedate}{October 9, 2026}
+\newcommand{\lecturer}{Wenlong Mou}
+\newtheorem{assumption}{Assumption}
+\numberwithin{assumption}{lecture}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\coursenumber: \coursetitle}
+\fancyhead[R]{Lecture \lecturenumber}
+\fancyfoot[C]{\lecturenumber--\arabic{page}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\newtheorem{example}{Example}
+\numberwithin{theorem}{lecture}
+\numberwithin{proposition}{lecture}
+\numberwithin{lemma}{lecture}
+\numberwithin{claim}{lecture}
+\numberwithin{corollary}{lecture}
+\numberwithin{definition}{lecture}
+\numberwithin{conjecture}{lecture}
+\numberwithin{remark}{lecture}
+\numberwithin{example}{lecture}
+\numberwithin{equation}{lecture}
+\counterwithin*{section}{lecture}
+\renewcommand{\theHsection}{\arabic{lecture}.\arabic{section}}
+\renewcommand{\thepage}{\lecturenumber--\arabic{page}}
+
+\newcommand{\makelecturenotesheader}{%
+  \noindent
+  \textbf{\coursenumber: \coursetitle}%
+  \hfill
+  \textbf{\courseterm}
+
+  \begin{center}
+    {\Large\bfseries Lecture \lecturenumber: \lecturedate}
+  \end{center}
+
+  \noindent
+  \textbf{Lecturer:} \lecturer
+  \par\medskip
+  \hrule
+  \bigskip
+}
+
+\begin{document}
+
+\makelecturenotesheader
+
+\section{Bootstrap continued}
+The bootstrap discussed last time draws samples $X_1^*, X_2^*, \ldots, X_n^*$ from the empirical distribution $\widehat{F}_n$ with replacement. This is called the nonparametric bootstrap. There are also other variants of bootstrap, including parametric bootstrap.
+
+Suppose that we have a parametric model $\{F_\theta: \theta \in \Theta\}$, and we assume that the true distribution $F$ is in this parametric family, i.e., $F = F_{\theta_0}$ for some unknown $\theta_0 \in \Theta$. In that case, instead of drawing from the empirical distribution $\widehat{F}_n$, we can draw samples from the estimated parametric distribution $F_{\widehat{\theta}_n}$, where $\widehat{\theta}_n$ is an estimator of $\theta_0$ based on the original samples $X_1, X_2, \ldots, X_n$.
+
+In other words, in the parametric bootstrap world, we have
+\begin{align*}
+  X_i^* \sim F_{\widehat{\theta}_n}, \quad i = 1, 2, \ldots, n,
+\end{align*}
+conditionally on the original samples $X_1, X_2, \ldots, X_n$. Then we can compute the bootstrap estimator $\widehat{T}_n^* = g(X_1^*, X_2^*, \ldots, X_n^*)$ and proceed with the bootstrap procedure as before. We can still perform Monte Carlo simulation to approximate the conditional distribution of $\widehat{T}_n^*$. Just as before, the hope is that the conditional distribution of $\widehat{T}_n^*$ given the original samples $X_1, X_2, \ldots, X_n$ is a good approximation of the marginal distribution of $\widehat{T}_n$. We can also construct confidence intervals using normal, pivotal, or percentile methods as before.
+
+\bigskip
+Remark:
+\begin{itemize}
+  \item If the parametric model is well-specified (the family $(F_\theta : \theta \in \Theta)$ contains the true distribution), parametric bootstrap can be more accurate.
+  \item It relies on parametric model being correct. There are important cases where we care about inference about a functional $T(F)$, but we do not want to assume a parametric model for $F$ (e.g. average treatment effect in causal inference; or prediction model in statistical learning). In that case, nonparametric bootstrap is more appropriate.
+\end{itemize}
+
+\section{$Z$-estimation and $M$-estimation}
+Roughly speaking, $Z$-estimation is solving an estimation equation, while $M$-estimation is solving an optimization problem.
+
+\paragraph{$Z$-estimators:} Suppose that $\Theta \in \real^d$, and you have $h: \real^d \times \mathcal{X} \to \real^d$. An $Z$-estimator $\thetahat_n$ solves the following estimating equation:
+\begin{align*}
+  \frac{1}{n} \sum_{i=1}^n h(\theta, X_i) = 0,
+\end{align*}
+where $X_1, X_2, \cdots, X_n \simiid \Prob$ for some unknown distribution $\Prob$.
+
+Note:
+\begin{itemize}
+  \item Solution may not always exist, and if it exists, it may not be unique. We usually need to impose some conditions to show existence of the solution (or just assume existence). And in the non-unique case, we can choose one of the solutions as the estimator.
+  \item Example: method of moments. Given a parametric model $\{F_\theta: \theta \in \Theta\}$, and data
+  \[
+    X_1, X_2, \ldots, X_n \simiid F_{\theta_0}
+  \]
+  for some unknown $\theta_0 \in \Theta$. When $X_i \in \real$, one estimating strategy is by moment matching. For $j \in \mathbb{N}_+$ and $\theta \in \Theta$, we define
+  \begin{align*}
+    \alpha_j (\theta) = \Exs_{F_\theta} [X^j].
+  \end{align*}
+  Consider the first $d$ moments, we can define the estimating function $h: \real^d \times \real \to \real^d$ as
+  \begin{align*}
+    h(\theta, x) = \begin{pmatrix}
+      x - \alpha_1 (\theta)\\
+      x^2 - \alpha_2 (\theta)\\
+      \vdots\\
+      x^d - \alpha_d (\theta)
+    \end{pmatrix}.
+  \end{align*}
+  The estimating equation is then
+  \begin{align*}
+    \frac{1}{n} \sum_{i = 1}^n X_i^j = \alpha_j (\thetahat_n), \quad j = 1, 2, \ldots, d.
+  \end{align*}
+  A canonical example is Gaussian distribution, where we match the mean and variance to estimate the parameters.
+\end{itemize}
+In general, $Z$-estimator does not impose any parametric assumption on the data distribution. So where does $\thetahat_n$ converge to?
+
+By law of large numbers, we have
+\begin{align*}
+  \frac{1}{n} \sum_{i=1}^n h(\theta, X_i) \xrightarrow{p} \Exs_\Prob [h(\theta, X)] \mydefn H(\theta) \quad \text{as } n \to \infty,
+\end{align*}
+for each fixed $\theta \in \Theta$. By $Z$-estimation, we hope that $\thetahat_n$ converges to the solution of the population estimating equation
+\begin{align*}
+  H(\theta) = \Exs_\Prob [h(\theta, X)] = 0,
+\end{align*}
+the solution of which is denoted as $\theta^*$ (assuming that the solution exists and is unique).
+
+Note: the target $\theta^*$ here does not have to be the data-generating mechanism. We may work without parametric model, and still have a well-defined target $\theta^*$ as the solution of the population estimating equation. In that case, we can think of $\theta^*$ as a population-level parameter that we want to estimate.
+
+\paragraph{$M$-estimators:} Suppose that $\Theta \in \real^d$, and you have loss function $f: \real^d \times \mathcal{X} \to \real$, an $M$-estimator $\thetahat_n$ solves the following optimization problem:
+\begin{align*}
+  \thetahat_n = \arg\min_{\theta \in \Theta} \frac{1}{n} \sum_{i=1}^n f(\theta, X_i).
+\end{align*}
+Remarks:
+\begin{itemize}
+\item Existence hold true under mild assumptions, e.g., if $\Theta$ is compact and $f$ is continuous. Uniqueness may not hold, but we can choose one of the minimizers as the estimator.
+\item The target of $M$-estimation is the minimizer of the population risk:
+\begin{align*}
+  \theta^* = \arg\min_{\theta \in \Theta} \underbrace{\Exs_\Prob [f(\theta, X)] }_{=: F(\theta)}.
+\end{align*}
+\item When $f (\cdot, x)$ is differentiable for every $x \in \mathcal{X}$, and when the minimizers are in the interior of $\Theta$ (e.g. when $\Theta = \real^d$), then the first-order optimality condition gives
+\begin{align*}
+  \frac{1}{n} \sum_{i=1}^n \nabla_\theta f(\thetahat_n, X_i) = 0, \qquad \Exs_\Prob [\nabla_\theta f(\theta^*, X)] = 0.
+\end{align*}
+In such a case, by taking $h(\theta, x) = \nabla_\theta f(\theta, x)$, we can see that the $M$-estimator is also a $Z$-estimator. But in general (with non-differentiable loss function or constrained optimization), $M$ estimation may not be formulated as $Z$-estimation. $Z$ and $M$ estimation are not comparable in general.
+\end{itemize}
+An important sub-class of $M$-estimation in parametric models is the maximum likelihood estimation (MLE). Suppose that we have a parametric model $\{F_\theta: \theta \in \Theta\}$, and we get $\mathrm{i.i.d.}$ samples $X_1, X_2, \ldots, X_n \sim F_{\theta^*}$ for some unknown $\theta^* \in \Theta$. We further assume that $F_\theta$ has a density function $p_\theta$ (in continuous or discrete sense). In such a case, the maximal likelihood estimator is defined as
+\begin{align*}
+  \thetahat_n^{\mathrm{MLE}} = \arg\max_{\theta \in \Theta} \frac{1}{n} \sum_{i=1}^n \log p_\theta (X_i)
+\end{align*}
+Note that here the joint likelihood of data is
+\begin{align*}
+  p_\theta (X_1, X_2, \ldots, X_n) = \prod_{i=1}^n p_\theta (X_i),
+\end{align*}
+so MLE is maximizing the joint likelihood of the data. MLE is a general idea -- $\Theta$ does not need to be finite-dimensional, and $p_\theta$ does not need to be a parametric model. Here, we will mostly focus on the parametric case.
+
+MLE is an $M$-estimator with loss function $f(\theta, x) = - \log p_\theta (x)$.
+
+Examples:
+\begin{itemize}
+  \item $X_1, X_2, \ldots, X_n \simiid \mathrm{Bernoulli} (\theta)$, $\theta \in (0, 1)$. Then the MLE is
+  \begin{align*}
+    \widehat{\theta}_n^{\mathrm{MLE}} = \arg\max_{\theta \in [0, 1]} \frac{1}{n} \sum_{i=1}^n \big( X_i \log \theta + (1 - X_i) \log (1 - \theta) \big) = \frac{1}{n} \sum_{i=1}^n X_i.
+  \end{align*}
+  Actually, this applies to any categorical distribution, where the MLE is just the empirical frequency of each category.
+  \item $X_1, X_2, \ldots, X_n \simiid \mathcal{N} (\mu, \sigma^2)$, with the unknown parameter $(\mu, \sigma^2) \in \real \times (0, \infty)$. Then the MLE is
+  \begin{align*}
+    (\widehat{\mu}_n^{\mathrm{MLE}}, \widehat{\sigma}_n^{2, \mathrm{MLE}}) = \arg\max_{(\mu, \sigma^2) \in \real \times (0, \infty)} \frac{1}{n} \sum_{i=1}^n \Big( -\frac{1}{2} \log (2\pi) - \frac{1}{2} \log (\sigma^2) - \frac{(X_i - \mu)^2}{2\sigma^2} \Big)
+  \end{align*}
+  By first-order optimality condition, we can compute the MLE as
+  \begin{align*}
+    \widehat{\mu}_n^{\mathrm{MLE}} = \frac{1}{n} \sum_{i=1}^n X_i, \qquad \widehat{\sigma}_n^{2, \mathrm{MLE}} = \frac{1}{n} \sum_{i=1}^n (X_i - \widehat{\mu}_n^{\mathrm{MLE}})^2.
+  \end{align*}
+  \item $X_1, X_2, \cdots, X_n \simiid \mathrm{Unif} ([0, \theta])$, for some unknown $\theta > 0$. Then the MLE is
+  \begin{align*}
+    \thetahat_n^{\mathrm{MLE}} = \arg\max_{\theta > 0} \frac{1}{n} \sum_{i=1}^n \log \big( \frac{1}{\theta} \bm{1}_{X_i \in [0, \theta]}  \big) = \max_{i=1, 2, \ldots, n} X_i.
+  \end{align*}
+  For this estimator, we have
+  \begin{align*}
+    \Prob (\thetahat_n^{\mathrm{MLE}} \leq t) = \Prob (X_1 \leq t, X_2 \leq t, \ldots, X_n \leq t) = (t / \theta)^n, \quad 0 < t < \theta.
+  \end{align*}
+  Integrating the tail probability, we know that
+  \begin{align*}
+    \Exs \big[ |\thetahat_n^{\mathrm{MLE}} - \theta|^2 \big] = O(1/n^2).
+  \end{align*}
+  So this estimator is not asymptotically normal, but it converges to the true parameter $\theta$ at a faster rate than $1/\sqrt{n}$.
+\end{itemize}
+Note: in the first two examples, MLE is also a $Z$-estimator, but in the last example, MLE is not a $Z$-estimator. In general, we have different theories for $Z$-estimation and $M$-estimation.
+\begin{itemize}
+  \item $M$ estimation requires less assumptions, and we can easily get consistency results under very weak assumptions.
+  \item $Z$ estimation requires more assumptions, but we can get asymptotic normality. We can also use this to derive asymptotic normality of $M$-estimation, by using the first-order optimality condition.
+\end{itemize}
+\section{Theoretical properties of $M$-estimation and $Z$-estimation}
+
+\subsection{Consistency theory of $M$-estimators}
+Recall that
+\begin{align*}
+  \thetahat_n = \arg\min_{\theta \in \Theta} F_n (\theta) = \frac{1}{n} \sum_{i=1}^n f(\theta, X_i), \qquad \theta^* = \arg\min_{\theta \in \Theta} F(\theta) = \Exs_\Prob [f(\theta, X)].
+\end{align*}
+If $F_n$ is close to $F$, and if $F$ has a unique minimizer, with some regular geometric conditions around its minimizer, then we can expect that $\thetahat_n$ is close to $\theta^*$. This consists of two steps:
+\begin{itemize}
+  \item Showing that $F (\thetahat_n)$ is close to $F (\theta^*)$ (i.e., the function value is close to the optimal value).
+  \item Use this together with the geometric conditions to show that $\thetahat_n$ is close to $\theta^*$. If $F$ is flat around $\theta^*$, then it could be possible that $\thetahat_n$ is far away from $\theta^*$, but still has a function value close to the optimal value. So we need conditions to avoid this.
+\end{itemize}
+\begin{theorem}
+  Assume that:
+  \begin{enumerate}
+  \item Uniform law of large numbers:
+  \begin{align*}
+    \sup_{\theta \in \Theta} |F_n (\theta) - F(\theta)| \xrightarrow{p} 0 \quad \text{as } n \to \infty.
+  \end{align*}
+  \item For any $\varepsilon > 0$, we have
+  \begin{align*}
+    \inf_{\theta \in \Theta: \|\theta - \theta^*\|_2 \geq \varepsilon} F(\theta) > F(\theta^*).
+  \end{align*}
+  \end{enumerate}
+  Then we have $\thetahat_n \xrightarrow{p} \theta^*$ as $n \to \infty$.
+\end{theorem}
+Remark:
+\begin{itemize}
+  \item The first condition requires uniform convergence of the loss functions (similar to Glivenko--Cantelli theorem), and the second condition requires that the population risk $F$ is not flat around its minimizer $\theta^*$.
+  \item Verifying these conditions can be challenging, and we will discuss simple sufficient conditions.
+\end{itemize}
+Proof of the theorem:
+\paragraph{Convergence of function value:} We note that
+\begin{align*}
+  0 \leq F (\thetahat_n) - F (\theta^*) = \underbrace{F (\thetahat_n) - F_n (\thetahat_n)}_{\text{That is new here}} + \underbrace{F_n (\thetahat_n) - F_n (\theta^*)}_{ \leq 0} + \underbrace{F_n (\theta^*) - F (\theta^*)}_{\xrightarrow{p} 0, \text{ by LLN}}.
+\end{align*}
+Note: we {\color{red}cannot} directly use (the non-uniform version of) law of large numbers to show that $F_n (\thetahat_n) - F (\thetahat_n) \xrightarrow{p} 0$, because $\thetahat_n$ is random and depends on the data. Evaluating a random function at a random point (with correlated randomness) is outside the scope of standard law of large numbers. But we can use the uniform law of large numbers to show that
+\begin{align*}
+  |F (\thetahat_n) - F_n (\thetahat_n)| \leq \sup_{\theta \in \Theta} |F_n (\theta) - F(\theta)| \xrightarrow{p} 0.
+\end{align*}
+So we have $F (\thetahat_n) - F (\theta^*) \xrightarrow{p} 0$ as $n \to \infty$.
+\paragraph{Convergence of the minimizer:} For fixed $\varepsilon > 0$, we let
+\begin{align*}
+  \delta \mydefn \inf_{\theta \in \Theta: \|\theta - \theta^*\|_2 \geq \varepsilon} F(\theta) - F(\theta^*) > 0.
+\end{align*}
+By convergence in probability of the function value, we have
+\begin{align*}
+  \Prob \big( F (\thetahat_n) - F (\theta^*) \geq \delta \big) \to 0 \quad \text{as } n \to \infty.
+\end{align*}
+By assumption, if $\|\thetahat_n - \theta^*\|_2 \geq \varepsilon$, then $F (\thetahat_n) - F (\theta^*) \geq \delta$. So we have
+\begin{align*}
+  \Prob \big( \|\thetahat_n - \theta^*\|_2 \geq \varepsilon \big) \leq \Prob \big( F (\thetahat_n) - F (\theta^*) \geq \delta \big) \to 0 \quad \text{as } n \to \infty.
+\end{align*}
+This shows that $\thetahat_n \xrightarrow{p} \theta^*$ as $n \to \infty$.
+
+Additional remark: the gap $F (\thetahat_n) - F_n (\thetahat_n)$ is the generalization gap in statistical machine learning. $F (\thetahat_n)$ is the population (test) loss, and $F_n (\thetahat_n)$ is the training loss on the training set. In machine learning, it happens quite often that your model could perfectly fit training data, but it does not generalize well to unseen test data. This is the overfitting phenomenon in machine learning. The uniform law of large number is basically saying that: ``if you use larger and larger sample size, with a fixed model class, the amount of overfitting will vanish''. Of course, this is an assumption, which may or may not hold depending on the model class.
+
+\paragraph{Verifying the two assumptions:} For the first assumption, we use
+\begin{theorem}[Wald's theorem]
+  Suppose that $\Theta$ is compact (in finite-dimensional case, compactness means bounded and closed), and $f (\theta, x)$ is continuous in $\theta$ for every $x \in \mathcal{X}$. Furthermore, assume that
+  \begin{align}
+    \Exs \Big[ \sup_{\theta \in \Theta} |f (\theta, X) | \Big] < + \infty.\label{eq:lec5-wald-condition}
+  \end{align}
+  Then we have
+  \begin{align*}
+    \sup_{\theta \in \Theta} |F_n (\theta) - F(\theta)| \xrightarrow{p} 0 \quad \text{as } n \to \infty.
+  \end{align*}
+\end{theorem}
+Remarks:
+\begin{itemize}
+  \item Actually, most of the works are done in this theorem, and the consistency theorem is just a direct corollary. Indeed, these two combined together are sometimes called Wald's consistency theorem.
+  \item The condition \eqref{eq:lec5-wald-condition} is coming from dominance convergence theorem. The class of functions $\{f (\theta, \cdot): \theta \in \Theta\}$ needs to be dominated by an integrable function. In practice, you can manually verify this by taking upper bound of $|f (\theta, x)|$ over $\theta \in \Theta$.
+  \item In finite-dimensional Euclidean spaces, compactness is equivalent to boundedness and closedness. In many practical problems, we minimize the loss function over unbounded domain, such as $\Theta = \real^d$. In such a case, uniform convergence may not hold. Usually, we first show convergence of a constrained estimator $\thetahat_n^{(R)} = \arg\min_{\theta \in \Theta: \|\theta\|_2 \leq R} F_n (\theta)$ for some very large $R$, and then use the fact that the loss grows to infinity as $\|\theta\|_2 \to \infty$ to show $\Prob (\thetahat_n^{(R)} = \thetahat_n) \to 1$ as $n \to \infty$. In that case, we can show that $\thetahat_n$ is consistent.
+  \item If $\Theta$ is infinite-dimensional, compactness roughly requires that $\Theta$ can be approximated by finite-dimensional structures. The theorem still holds true in such a case.
+\end{itemize}
+Proof idea: starting with a simple case -- if $\Theta = \{\theta_1, \theta_2, \cdots, \theta_M\}$ is finite. Then we have
+\begin{align*}
+  \Prob \Big( \sup_{\theta \in \Theta} |F_n (\theta) - F(\theta)| > \varepsilon \Big) \leq \sum_{j=1}^M \Prob \Big( |F_n (\theta_j) - F(\theta_j)| > \varepsilon \Big) \to 0 \quad \text{as } n \to \infty.
+\end{align*}
+For general compact $\Theta$, we can use discrete approximation of $\Theta$ to reduce it to the finite case, e.g., by taking $\varepsilon$-covering of $\Theta$:
+\begin{align*}
+  \Theta \subseteq \bigcup_{j=1}^M B(\theta_j, \varepsilon) \quad \text{for some } \theta_1, \theta_2, \ldots, \theta_M \in \Theta.
+\end{align*}
+Compactness ensures the existence of such a finite covering. Then we can use continuity of $f$ and the condition \eqref{eq:lec5-wald-condition} to show that the discretization error vanishes as $\varepsilon \to 0$.
+
+\paragraph{Verifying the second assumption:}
+\begin{proposition}
+ Suppose that $F$ is continuous and $\Theta$ is compact. If $\theta^*$ is the unique minimizer of $F$, then for any $\varepsilon > 0$, we have
+  \begin{align*}
+    \inf_{\theta \in \Theta: \|\theta - \theta^*\|_2 \geq \varepsilon} F(\theta) > F(\theta^*).
+  \end{align*}
+\end{proposition}
+Proof: $F$ is a continuous function on the domain
+\begin{align*}
+  \Theta_\varepsilon \mydefn \{\theta \in \Theta: \|\theta - \theta^*\|_2 \geq \varepsilon\},
+\end{align*}
+which is also compact. So $F$ achieves its minimum on $\Theta_\varepsilon$, and the minimum is strictly larger than $F(\theta^*)$ by uniqueness of the minimizer.
+
+\paragraph{Specializing to MLE:}
+\begin{align*}
+  F (\theta) &= - \Exs_{\theta^*} [\log p_\theta (X)]\\
+  &= \underbrace{\Exs_{\theta^*} \big[ \log p_{\theta^*} (X) \big]}_{\text{constant, independent of $\theta$}} + \underbrace{\Exs_{\theta^*} \Big[ \log \frac{p_{\theta^*} (X)}{p_\theta (X)} \Big]}_{\kull{\Prob_{\theta^*}}{\Prob_\theta}}.
+\end{align*}
+Kullback-Leibler divergence is always non-negative, and it is zero if and only if $\Prob_\theta = \Prob_{\theta^*}$. So if the parametric model is identifiable, i.e., $\theta_1 \neq \theta_2$ implies $\Prob_{\theta_1} \neq \Prob_{\theta_2}$, then this assumption is satisfied.
+
+
+
+
+
+
+
+\end{document}
