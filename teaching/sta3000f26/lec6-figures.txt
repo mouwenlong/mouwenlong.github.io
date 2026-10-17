@@ -1,0 +1,20 @@
+Lecture 6 figure sources
+
+lec6-covering-volume.png
+Created with the built-in GPT Image tool from the instructor's IMG_8158.HEIC
+whiteboard sketch (the original photo is not included in this public repository).
+Schematic: disjoint epsilon/2 balls centered in the unit ball, all contained
+in the enlarged ball of radius 1+epsilon/2. Geometry is illustrative, not to scale.
+
+Initial prompt:
+Use case: scientific-educational. Asset: formal mathematical lecture-note diagram, redraw the attached whiteboard reference with exact geometry, pure white background, crisp thin vector-like lines, no title, no long captions. A large solid blue circle centered at origin of radius 1, with a concentric dashed teal circle of radius 1+epsilon/2. Place 12 well-separated red point centers inside the unit disk, including one near its boundary. Around EVERY red center draw a teal circle of the SAME radius epsilon/2, circles pairwise disjoint, all fully contained within the outer dashed circle. The near-boundary small circle must protrude outside the blue unit disk but stay within the outer dashed circle, illustrating the volume comparison for a packing. All geometry truly circular, no overlapping small circles. Mark one radius from the origin to the solid boundary with label '1'. Mark a short radius from one red center to its small circle with label 'epsilon/2' rendered as mathematical ε/2. Label the outside dashed boundary '1 + ε/2' with an unobtrusive leader. Label one red point θ_i. Composition landscape 3:2, diagram takes most of canvas with generous white margin, serif math labels, muted blue and teal, red center points. Preserve the mathematical meaning of the reference, remove photo background and handwriting.
+
+Correction prompt:
+Edit this formal packing diagram with ONE targeted correction: make every small teal circle have exactly the same radius as the small circle centered at the red point near the middle-left. The boundary small circle at the top must be reduced to this common radius too; keep its red center inside the solid blue unit circle, with its teal circle crossing the blue boundary but entirely within the outer dashed circle. Preserve every other style, label, color and composition. Mathematical diagram, pure white background.
+
+lec6-dyadic-integral.pdf and lec6-dyadic-integral.png
+Generated deterministically by lec6-dyadic-integral.py (Python, numpy, matplotlib).
+Run: python3 lec6-dyadic-integral.py
+The sample curve is g(epsilon)=sqrt(log(1/epsilon)) with D=1.
+Rectangles use [delta_(m+2), delta_(m+1)] and right-endpoint heights.
+The proof in the notes applies to any nonnegative nonincreasing g.

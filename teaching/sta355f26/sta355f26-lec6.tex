@@ -1,0 +1,286 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+\usepackage{bm}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+% Personal notation and theorem environments.
+\input{../final_macros.tex}
+
+\newcommand{\coursenumber}{STA355F}
+\newcommand{\coursetitle}{Theory of Statistical Practice}
+\newcommand{\courseterm}{Fall 2026}
+\newcounter{lecture}
+\setcounter{lecture}{6}
+\newcommand{\lecturenumber}{\arabic{lecture}}
+\newcommand{\lecturedate}{October 16, 2026}
+\newcommand{\lecturer}{Wenlong Mou}
+\newtheorem{assumption}{Assumption}
+\numberwithin{assumption}{lecture}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\coursenumber: \coursetitle}
+\fancyhead[R]{Lecture \lecturenumber}
+\fancyfoot[C]{\lecturenumber--\arabic{page}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\newtheorem{example}{Example}
+\numberwithin{theorem}{lecture}
+\numberwithin{proposition}{lecture}
+\numberwithin{lemma}{lecture}
+\numberwithin{claim}{lecture}
+\numberwithin{corollary}{lecture}
+\numberwithin{definition}{lecture}
+\numberwithin{conjecture}{lecture}
+\numberwithin{remark}{lecture}
+\numberwithin{example}{lecture}
+\numberwithin{equation}{lecture}
+\counterwithin*{section}{lecture}
+\renewcommand{\theHsection}{\arabic{lecture}.\arabic{section}}
+\renewcommand{\thepage}{\lecturenumber--\arabic{page}}
+
+\newcommand{\makelecturenotesheader}{%
+  \noindent
+  \textbf{\coursenumber: \coursetitle}%
+  \hfill
+  \textbf{\courseterm}
+
+  \begin{center}
+    {\Large\bfseries Lecture \lecturenumber: \lecturedate}
+  \end{center}
+
+  \noindent
+  \textbf{Lecturer:} \lecturer
+  \par\medskip
+  \hrule
+  \bigskip
+}
+
+\begin{document}
+
+\makelecturenotesheader
+
+\section{$M$-estimation continued}
+For MLE, uniqueness of population minimizer is automatically satisfied when identifiable.
+
+\paragraph{Non-example:} Gaussian mixture model.
+\begin{align*}
+  X_1, X_2, \cdots, X_n \simiid \frac{1}{2} \mathcal{N} (\mu, 1) + \frac{1}{2} \mathcal{N} (- \mu, 1),
+\end{align*}
+for some $\mu \in \real$. By flipping the sign of $\mu$, we get the same distribution. So the model is not identifiable, and the population minimizer is not unique.
+
+In such a case, we may consider estimation up to equivalence class, e.g., we can restrict the parameter space to $\Theta = [0, \infty)$, and then the population minimizer is unique.
+
+On the other hand, if identifiability does hold, we have
+\begin{corollary}
+  If the parametric model is identifiable, and if $\Theta$ is compact, $p_\theta (x)$ is continuous in $\theta$ for every $x \in \mathcal{X}$, and $\Exs_{\theta^*} [\sup_{\theta \in \Theta} |\log p_\theta (X)|] < + \infty$, then the MLE is consistent:
+  \begin{align*}
+    \thetahat_n^{\mathrm{MLE}} \xrightarrow{p} \theta^* \quad \text{as } n \to \infty.
+  \end{align*}
+\end{corollary}
+
+\section{$Z$-estimation and asymptotic normality}
+On the one hand, we do not have a general consistency theory for $Z$-estimation. For $M$-estimation, at least we know the minimizer exists when $\Theta$ is compact and the loss is continuous. But for $Z$-estimation, the solution may not exist, and even if it exists, it may not be unique.
+
+So for the $Z$-estimation theory, we start with the assumption that there exists a solution, and we assume it is already a consistent estimator. Locally, under certain regularity conditions, we can show asymptotic normality of the estimator. This is a local theory, and it does not guarantee existence or uniqueness of the solution.
+
+\paragraph{Problem setup:}
+\begin{itemize}
+  \item Suppose there exists $\theta^* \in \Theta$ such that $H (\theta^*) = 0$.
+  \item Suppose that for any $\varepsilon > 0$,
+  we have
+  \begin{align*}
+    \Prob \big( \text{$\exists \theta \in \Theta \cap \ball (\theta^*, \varepsilon)$, such that $H_n (\theta) = 0$} \big) \to 1 \quad \text{as } n \to \infty,
+  \end{align*}
+and when the solution exists, we call it $\thetahat_n$.
+
+{\color{blue} Note: this local existence assumption implies that $\thetahat_n$ is a consistent estimator of $\theta^*$.}
+
+\item Assume $h (\theta; x)$ is continuously differentiable in $\theta$ (at least locally around $\theta^*$) for every $x \in \mathcal{X}$.
+\item $\nabla_\theta H (\theta^*) \in \real^{d \times d}$ is non-singular (invertible).
+\end{itemize}
+
+\begin{theorem}
+  Under above setup, we have
+  \begin{align*}
+    \sqrt{n} (\thetahat_n - \theta^*) \xrightarrow{d} \mathcal{N} (0, \nabla_\theta H (\theta^*)^{-1} \Sigma^* (\nabla_\theta H (\theta^*))^{- \top}), \quad \text{as } n \to \infty,
+  \end{align*}
+  where $\Sigma^* = \Exs \big[ h(\theta^*, X) h(\theta^*, X)^\top \big]$.
+\end{theorem}
+Proof: by consistency of $\thetahat_n$, we can apply Taylor expansion
+\begin{align*}
+  0 = H_n (\thetahat_n) = \underbrace{H_n (\theta^*)}_{\text{i.i.d. average}} + \underbrace{\nabla_\theta H_n (\theta^*) (\thetahat_n - \theta^*)}_{\text{Involves quantity of interest}} + o_p (\|\thetahat_n - \theta^*\|_2).
+\end{align*}
+For the matrix pre-factor $\nabla H_n (\theta^*)$, we have
+\begin{align*}
+  \nabla H_n (\theta^*) = \frac{1}{n} \sum_{i=1}^n \nabla_\theta h(\theta^*, X_i) \xrightarrow{p} \Exs [\nabla_\theta h(\theta^*, X)] = \nabla_\theta H (\theta^*),
+\end{align*}
+and for the first term $H_n (\theta^*)$, we have
+\begin{align*}
+  \sqrt{n} H_n (\theta^*) = \frac{1}{\sqrt{n}} \sum_{i=1}^n h(\theta^*, X_i) \xrightarrow{d} \mathcal{N} (0, \Sigma^*) \quad \text{as } n \to \infty,
+\end{align*}
+by multivariate central limit theorem. Putting them together, since $\nabla_\theta H_n (\theta^*) \to \nabla_\theta H (\theta^*)$ in probability and the limit is invertible, we have
+\begin{align*}
+  \big(\thetahat_n - \theta^* \big) = \nabla_\theta H_n (\theta^*)^{-1} \cdot  H_n (\theta^*) + o_p (\|\thetahat_n - \theta^*\|_2).
+\end{align*}
+By Slutsky's theorem, we have
+\begin{align*}
+  \sqrt{n} \nabla_\theta H_n (\theta^*)^{-1} \cdot  H_n (\theta^*)  \xrightarrow{d} \mathcal{N} (0, \nabla_\theta H (\theta^*)^{-1} \Sigma^* (\nabla_\theta H (\theta^*))^{- \top}), \quad \text{as } n \to \infty,
+\end{align*}
+This also implies that $\sqrt{n} (\thetahat_n - \theta^*) = O_p (1)$, so the remainder term $o_p (\|\thetahat_n - \theta^*\|_2) = o_p (1/\sqrt{n})$ is negligible. This completes the proof.
+
+\paragraph{Statistical inference based on this result:} $\Sigma^*$ and $\nabla_\theta H (\theta^*)$ are unknown, but we can estimate them based on data.
+\begin{align*}
+  \widehat{\Sigma}_n &= \frac{1}{n} \sum_{i=1}^n h(\thetahat_n, X_i) h(\thetahat_n, X_i)^\top,\\
+ \widehat{J}_n &= \frac{1}{n} \sum_{i=1}^n \nabla_\theta h(\thetahat_n, X_i).
+\end{align*}
+Assuming continuity and existence of the population quantities, we have $\widehat{\Sigma}_n \xrightarrow{p} \Sigma^*$ and $\widehat{J}_n \xrightarrow{p} \nabla_\theta H (\theta^*)$. So we can use plug-in estimator to estimate the asymptotic covariance matrix, and we have
+\begin{align*}
+  \sqrt{n} \Big( \widehat{J}_n^{-1} \widehat{\Sigma}_n \widehat{J}_n^{-\top} \Big)^{-1/2} (\thetahat_n - \theta^*) \xrightarrow{d} \mathcal{N} (0, I_d), \quad \text{as } n \to \infty.
+\end{align*}
+We can then build confidence sets and perform hypothesis testing based on this result.
+
+Remark: this is just one method for inference. We can also use bootstrap to estimate the asymptotic covariance matrix, or we can use bootstrap to directly estimate the distribution of $\thetahat_n$.
+
+\paragraph{Implication to $M$-estimation:} If the loss function is continuously differentiable, then the $M$-estimator is also a $Z$-estimator. So we can use this result to derive asymptotic normality of $M$-estimation.
+
+
+Verifying the problem setup:
+\begin{itemize}
+  \item Existence of $\theta^*$: satisfied under differentiability when $\theta^*$ is in the interior of $\Theta$.
+  \item Local existence of $\thetahat_n$: guaranteed by consistency of $\thetahat_n$ (using the theory of $M$-estimation).
+  \item Differentiability of $h (\theta, X) = \nabla_\theta f(\theta, X)$: satisfied when $f$ is {\color{red} twice} continuously differentiable in $\theta$.
+  \item Non-singularity of $\nabla_\theta H (\theta^*) = \nabla^2 F(\theta^*)$. Since $\theta^*$ is the minimizer of $F$, this condition is equivalent to the Hessian of $F$ being positive definite at $\theta^*$.
+\end{itemize}
+In such a case, we have
+\begin{align*}
+  \sqrt{n} (\thetahat_n - \theta^*) \xrightarrow{d} \mathcal{N} (0, \nabla^2 F(\theta^*)^{-1} \Sigma^* \nabla^2 F(\theta^*)^{-1}), \quad \text{as } n \to \infty,
+\end{align*}
+where $\Sigma^* = \Exs [\nabla_\theta f(\theta^*, X) \nabla_\theta f(\theta^*, X)^\top]$.
+
+\paragraph{Specialization to MLE:} Under similar conditions as above, we can compute
+\begin{align*}
+  \Sigma^* = \Exs_{\theta^*} [\nabla_\theta \log p_{\theta^*} (X) \nabla_\theta \log p_{\theta^*} (X)^\top], \qquad \nabla^2 F(\theta^*) = - \Exs_{\theta^*} [\nabla_\theta^2 \log p_{\theta^*} (X)].
+\end{align*}
+\begin{theorem}[Fisher's identity]
+  $\Sigma^* = \nabla^2 F(\theta^*)$, which is also called the Fisher information matrix, denoted as $I(\theta^*)$.
+\end{theorem}
+Proof: first, for the score function $\nabla \log p_{\theta} (X)$, we have
+\begin{align}
+  \Exs_{\theta} [\nabla_\theta \log p_{\theta} (X)]  = \int p_\theta (x) \nabla_\theta \log p_\theta (x) dx = \int \nabla_\theta p_{\theta} (x) dx = \nabla_\theta \int p_{\theta} (x) dx = 0.\label{eq:lec6-score-mean-zero}
+\end{align}
+We can differentiate both sides of \eqref{eq:lec6-score-mean-zero}, for the $i, j$-th entry of the matrix, we have
+\begin{align*}
+  \int \partial_{\theta_i} \partial_{\theta_j} \log p_\theta (x) \cdot  p_\theta (x) dx + \int \partial_{\theta_j} \log p_\theta (x) \cdot \partial_{\theta_i} \log p_\theta (x) \cdot p_\theta (x) dx = 0.
+\end{align*}
+By collecting these entries into a matrix, we have
+\begin{align*}
+  \Exs_{\theta} [\nabla_\theta^2 \log p_\theta (X)] + \Exs_{\theta} [\nabla_\theta \log p_\theta (X) \nabla_\theta \log p_\theta (X)^\top] = 0.
+\end{align*}
+Using the Fisher's identity in combination with the asymptotic normality result, we have
+\begin{align*}
+  \sqrt{n} (\thetahat_n - \theta^*) \xrightarrow{d} \mathcal{N} (0, I(\theta^*)^{-1}), \quad \text{as } n \to \infty,
+\end{align*}
+for MLE, under the same regularity conditions as above.
+
+\bigskip
+
+Remarks:
+\begin{itemize}
+  \item Intuitively, the Fisher information matrix $I(\theta^*)$ measures how much information the data contains about the unknown parameter $\theta^*$. The larger the Fisher information, the smaller the asymptotic variance of the MLE, and the more accurate the estimation.
+  \item There are cases where the Fisher information matrix is singular, and in such a case, the asymptotic normality may not hold. But MLE may still be consistent, and it may converge at a slower rate than $1/\sqrt{n}$.
+  \item For inference, we just need to use plug-in method to estimate the Fisher information matrix.
+\end{itemize}
+
+\subsection{Cram\'{e}r--Rao lower bound}
+Fisher information is important because it captures the fundamental possibility of estimation. One example is the Cram\'{e}r--Rao lower bound, which gives a lower bound on the variance of any unbiased estimator.
+
+Idea: we want to find the best one among all possible estimators. This is generally not possible (decision theory), but we can restrict to unbiased estimators. Then we can show that the variance of any unbiased estimator is lower bounded by the inverse of Fisher information matrix.
+
+\begin{theorem}[Cram\'{e}r--Rao lower bound]
+  Suppose that $\thetahat_n$ is an unbiased estimator of $\theta$, i.e., $\Exs_{\theta} [\thetahat_n] = \theta$. Then we have
+  \begin{align*}
+    \mathrm{Cov}_{\theta} (\thetahat_n) \succeq I(\theta)^{-1},
+  \end{align*}
+  where $A \succeq B$ means that $A - B$ is positive semi-definite.
+\end{theorem}
+Proof (for simplicity, we consider the one-dimensional case): by unbiasedness, we have
+\begin{align}
+  \theta = \int \thetahat_n (x_1, x_2, \ldots, x_n) \prod_{i=1}^n p_\theta (x_i) dx_1 dx_2 \cdots dx_n, \qquad \text{for all } \theta \in \Theta.\label{eq:lec6-cramer-rao-unbiasedness}
+\end{align}
+Differentiating both sides of \eqref{eq:lec6-cramer-rao-unbiasedness} with respect to $\theta$, we have
+\begin{align}
+  1 &= \int \thetahat_n (x_1, x_2, \ldots, x_n) \cdot \sum_{i=1}^n \partial_\theta \log p_\theta (x_i) \cdot \prod_{i=1}^n p_\theta (x_i) dx_1 dx_2 \cdots dx_n\label{eq:lec6-cramer-rao-derivative}
+\end{align}
+On the other hand, we have score identity~\eqref{eq:lec6-score-mean-zero}:
+\begin{align}
+  0 &= \int \sum_{i=1}^n \partial_\theta \log p_\theta (x_i) \cdot \prod_{i=1}^n p_\theta (x_i) dx_1 dx_2 \cdots dx_n.\label{eq:lec6-cramer-rao-score-identity}
+\end{align}
+\eqref{eq:lec6-cramer-rao-derivative} $- ~\theta \times$ \eqref{eq:lec6-cramer-rao-score-identity}, we have
+\begin{align*}
+  1 &= \int (\widehat{\theta}_n - \theta) \cdot \sum_{i=1}^n \partial_\theta \log p_\theta (x_i) \cdot \prod_{i=1}^n p_\theta (x_i) dx_1 dx_2 \cdots dx_n = \Exs_\theta \Big[ \underbrace{(\widehat{\theta}_n - \theta)}_{\text{estimation error}} \cdot \sum_{i=1}^n \partial_\theta \log p_\theta (X_i)  \Big]\\
+  &\leq \sqrt{\var_\theta (\thetahat_n - \theta)} \cdot \sqrt{\var_\theta \Big( \sum_{i=1}^n \partial_\theta \log p_\theta (X_i) \Big)} = \sqrt{\var_\theta (\thetahat_n)} \cdot \sqrt{n I (\theta)},
+\end{align*}
+which proves the Cram\'{e}r--Rao lower bound.
+
+Remarks:
+\begin{itemize}
+  \item Unbiasedness is very restrictive, and MLE itself is not unbiased in general. So this lower bound itself does not prove optimality of MLE.
+  \item However, Fisher information is useful beyond the context of unbiasedness. In particular, people have discovered that $\mathcal{N} (0, I(\theta^*)^{-1})$ is the optimal asymptotic distribution of any regular estimator. This asymptotic optimality result does not require unbiasedness, and it is a much stronger result than Cram\'{e}r--Rao lower bound. So we actually know that MLE is asymptotically optimal among all regular estimators, and it achieves the best possible asymptotic variance. This theory is known as H\'{a}jek--Le Cam local asymptotic minimax theorem, which is beyond the scope of this course.
+\end{itemize}
+
+\subsection{Additional topics}
+Computational algorithms for $M$ and $Z$ estimation:
+\begin{itemize}
+  \item In some cases, we can solve them with very high precision.
+  \item In some cases, we want to build statistical theory for approximate solutions that are computed from algorithms.
+\end{itemize}
+Here I present two classical examples.
+
+\paragraph{Newton's method:} Suppose we want to solve $H_n (\theta) = 0$. We can use Newton's method to iteratively update the solution:
+\begin{align*}
+  \theta^{(t+1)} = \theta^{(t)} - \nabla_\theta H_n (\theta^{(t)})^{-1} H_n (\theta^{(t)}).
+\end{align*}
+(under certain conditions, this converges at super-linear rate locally around the true solution).
+
+On the other hand, for statistical analysis, sometimes just one-step Newton's method is enough.
+
+\begin{theorem}
+  Starting from estimator $\widetilde{\theta}_n$, and suppose that $\vecnorm{\widetilde{\theta}_n - \theta^*}{2} = O_p (1/\sqrt{n})$, then we can define one-step Newton's method estimator as
+  \begin{align*}
+    \widehat{\theta}_n = \widetilde{\theta}_n - \nabla_\theta H_n (\widetilde{\theta}_n)^{-1} H_n (\widetilde{\theta}_n).
+  \end{align*}
+  Then we have
+  \begin{align*}
+    \sqrt{n} (\widehat{\theta}_n - \theta^*) \xrightarrow{d} \mathcal{N} (0, \nabla_\theta H (\theta^*)^{-1} \Sigma^* (\nabla_\theta H (\theta^*))^{- \top}), \quad \text{as } n \to \infty.
+  \end{align*}
+\end{theorem}
+Operationally, this allows us to find a computable estimator that is asymptotically equivalent to the $Z$-estimator.
+
+Proof idea:
+\begin{align*}
+   &\widetilde{\theta}_n - \nabla_\theta H_n (\widetilde{\theta}_n)^{-1} H_n (\widetilde{\theta}_n)\\
+   &= \widetilde{\theta}_n - {\color{blue}\nabla_\theta H_n (\widetilde{\theta}_n)^{-1}} \Big\{ H_n (\theta^*) + {\color{blue}\nabla H_n (\theta^*)} (\widetilde{\theta}_n - \theta^*) + o_p (\vecnorm{\widetilde{\theta}_n - \theta^*}{2}) \Big\}
+\end{align*}
+The terms in {\textcolor{blue}{blue}} asymptotically cancels, and the residual is negligible under our assumption. This gives
+\begin{align*}
+  \thetahat_n = \theta^* - \nabla H_n (\theta^*)^{-1} H_n (\theta^*) + o_p (1/\sqrt{n}),
+\end{align*}
+which proves the asymptotic normality of $\thetahat_n$.
+
+\paragraph{Stochastic gradient descent:}
+\begin{align*}
+  \theta_{t + 1} = \theta_t - \eta_t \nabla_\theta f(\theta_t, X_{t + 1}),
+\end{align*}
+for $t = 0,1, \cdots, n - 1$.
+
+Polyak--Juditsky--Ruppert averaging: $\thetahat_n = \frac{1}{n} \sum_{t=1}^n \theta_t$.
+
+Under certain condition, we can show that $\thetahat_n$ is asymptotically normal and achieves the same asymptotic covariance as the $M$-estimator.
+\end{document}
