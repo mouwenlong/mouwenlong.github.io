@@ -69,8 +69,9 @@
 \makelecturenotesheader
 
 \section{Covering and packing numbers}
+Throughout this section, covering balls are open, and an $\epsilon$-packing has pairwise distances at least $\epsilon$.
 \begin{lemma}[duality]
-  For any set $K$ and metric $\rho$, we have
+  For any nonempty totally bounded metric space $(K,\rho)$ and $\epsilon>0$, we have
   \begin{align*}
     M (K; \rho, 2 \epsilon) \overset{(i)}{\leq} N (K; \rho, \epsilon) \overset{(ii)}{\leq} M (K; \rho, \epsilon).
   \end{align*}
@@ -115,7 +116,7 @@ which gives us
 \begin{align*}
   N \geq \frac{\vol (\ball_2^d (1))}{\vol(\ball_2^d (\epsilon))} = \Big( \frac{1}{\epsilon} \Big)^d.
 \end{align*}
-Technically, the gap between the upper bound and lower bound is a factor of $2^d$. But in statistical applications, we usually use log covering number, and the resulting difference is just a constant factor. In particular, we have
+The ratio between these displayed upper and lower bounds is $(2+\epsilon)^d$. In statistical applications, we usually use the log covering number. Uniformly for $0<\epsilon\leq 1/2$, the two bounds imply
 \begin{align*}
   \log N (K; \|\cdot\|_2, \epsilon) \asymp d \log (1/\epsilon).
 \end{align*}
@@ -126,9 +127,9 @@ Recall that we are interested in
 \end{align*}
 We need to show uniform convergence of $F_n (\theta)$ to $F (\theta)$.
 \begin{theorem}[Wald]
-  Suppose that $\Theta$ is compact (with respect to some metric $\rho$), and $f (x; \theta)$ is continuous in $\theta$ (with respect to $\rho$) for each $x$. Suppose furthermore that
+  Let $X_1,\ldots,X_n$ be i.i.d., let $(\Theta,\rho)$ be a nonempty compact metric space, and let $f(x;\theta)$ be measurable in $x$ and continuous in $\theta$ for each $x$. Write $F_n(\theta)=n^{-1}\sum_{i=1}^n f(X_i;\theta)$ and $F(\theta)=\Exs[f(X;\theta)]$. Suppose furthermore that
   \begin{align*}
-    \Exs \Big[ \sup_{\theta \in \Theta} f (X; \theta) \Big] < + \infty.
+    \Exs \Big[ \sup_{\theta \in \Theta} |f (X; \theta)| \Big] < + \infty.
   \end{align*}
   (i.e., the class has an integrable envelope function). Then we have
   \begin{align*}
@@ -136,33 +137,22 @@ We need to show uniform convergence of $F_n (\theta)$ to $F (\theta)$.
   \end{align*}
 \end{theorem}
 
-\paragraph{Proof.} Fix $\varepsilon > 0$. Since $f (x; \theta)$ is continuous in $\theta$ and $\Theta$ is compact, we know that $F$ is uniformly continuous on $\Theta$. Therefore, there exists $\delta > 0$ such that for any $\theta_1, \theta_2 \in \Theta$ with $\rho(\theta_1, \theta_2) < \delta$, we have $|F (\theta_1) - F (\theta_2)| < \varepsilon$. (This is used to control the discretization error).
+\paragraph{Proof.} Let $G(X)=\sup_{\theta\in\Theta}|f(X;\theta)|$, and define the uniform modulus
+\begin{align*}
+  M_\delta(X)=
+  \sup_{\substack{\theta,\theta'\in\Theta\\ \rho(\theta,\theta')\leq\delta}}
+  |f(X;\theta)-f(X;\theta')|.
+\end{align*}
+For each $X$, continuity on the compact set $\Theta$ implies uniform continuity, so $M_\delta(X)\to0$ as $\delta\downarrow0$. Also $M_\delta(X)\leq2G(X)$. Dominated convergence therefore gives $\Exs[M_\delta(X)]\to0$. In particular, $F$ is continuous.
 
-Let $(\theta_i)_{i = 1}^N$ be a $\delta$-covering of $\Theta$. Since the set $\Theta$ is compact, we know that $N < +\infty$.
+For fixed $\delta>0$, choose a finite $\delta$-cover $\{\theta_1,\ldots,\theta_N\}$ of $\Theta$. The triangle inequality gives
 \begin{align*}
-  \sup_{\theta \in \Theta} |F_n (\theta) - F (\theta)| &\leq \max_{i = 1, \cdots, N} \sup_{\theta: \rho (\theta, \theta_i) \leq \delta} \Big\{\underbrace{|F_n (\theta_i) - F (\theta_i)|}_{\max_{i} (\cdots) \xrightarrow{p} 0, ~{\color{red} T_1}} + \underbrace{|F (\theta_i) - F (\theta)|}_{\leq \varepsilon} + \underbrace{|F_n (\theta) - F_n (\theta_i)|}_{\text{problematic term},~ {\color{red} T_3}} \Big\}
+  \sup_{\theta\in\Theta}|F_n(\theta)-F(\theta)|
+  &\leq \underbrace{\max_{1\leq i\leq N}|F_n(\theta_i)-F(\theta_i)|}_{T_1}\\
+  &\quad+\Exs[M_\delta(X)]
+  +\underbrace{\frac1n\sum_{j=1}^n M_\delta(X_j)}_{T_3}.
 \end{align*}
-We can upper bound the problematic term as follows:
-\begin{align*}
-  \mathrm{problematic term} &=  \max_{i = 1, \cdots, N} \sup_{\theta: \rho (\theta, \theta_i) \leq \delta} \Big| \frac{1}{n} \sum_{j=1}^n \big( f (X_j; \theta) - f (X_j; \theta_i) \big) \Big |\\
-  &\leq \max_{i = 1, \cdots, N}  \frac{1}{n} \sum_{j=1}^n  \underbrace{\sup_{\theta: \rho (\theta, \theta_i) \leq \delta} \big| f (X_j; \theta) - f (X_j; \theta_i) \big|}_{\text{i.i.d. average of this}}
-\end{align*}
-By law of large numbers, we have
-\begin{align*}
-  \max_{i = 1, \cdots, N}  \frac{1}{n} \sum_{j=1}^n  \sup_{\theta: \rho (\theta, \theta_i) \leq \delta} \big| f (X_j; \theta) - f (X_j; \theta_i) \big| &\xrightarrow{p} \max_{i = 1, \cdots, N} \Exs \Big[ \sup_{\theta: \rho (\theta, \theta_i) \leq \delta} \big| f (X; \theta) - f (X; \theta_i) \big| \Big]\\
-  &\leq \sup_{\theta \in K} \Exs \Big[ \sup_{\theta': \rho (\theta, \theta') \leq \delta} \big| f (X; \theta) - f (X; \theta') \big| \Big],
-\end{align*}
-which is the worst-case modulus-of-continuity of $f (X; \theta)$ in $\theta$, at scale $\delta$.
-
-For any $\theta \in \Theta$, define
-\begin{align*}
-  M_\delta (\theta) \mydefn \sup_{\theta': \rho (\theta, \theta') \leq \delta} \big| f (X; \theta) - f (X; \theta') \big|.
-\end{align*}
-We know that for each fixed $\theta$, we have pointwise convergence $M_\delta (\theta) \to 0$ as $\delta \to 0$, by continuity of $f (X; \theta)$ in $\theta$. On the other hand, we also have $M_\delta (\theta) \leq 2 \sup_{\theta \in \Theta} |f (X; \theta)|$, which is integrable by assumption. Therefore, by dominated convergence theorem, we have
-\begin{align*}
-  \Exs [M_\delta (\theta)] \rightarrow 0, \qquad \forall \theta \in \Theta.
-\end{align*}
-By Dini's theorem and the compactness of $\Theta$, we know that the convergence is uniform in $\theta$.
+For this fixed finite cover, $T_1\to0$ in probability by the law of large numbers and a finite union bound. The same law gives $T_3\to\Exs[M_\delta(X)]$ in probability. Given any $\varepsilon>0$, first choose $\delta$ so that $2\Exs[M_\delta(X)]<\varepsilon/2$, and then let $n\to\infty$. The displayed bound proves the claimed uniform convergence.
 
 \paragraph{Remarks:}
 \begin{enumerate}
@@ -176,15 +166,15 @@ For the term $\color{red} T_1$, we note that
   &\qquad\leq \sum_{i = 1}^N \Prob (|F_n (\theta_i) - F (\theta_i)| > \varepsilon)\\
   &\qquad\leq N \cdot \max_{i = 1, \cdots, N} \Prob (|F_n (\theta_i) - F (\theta_i)| > \varepsilon).
 \end{align*}
-If $f$ is bounded by $1$, then we can use Hoeffding's inequality to get
+If $0\leq f(x;\theta)\leq 1$, then we can use Hoeffding's inequality to get
 \begin{align*}
   \Prob \Big( \max_{i = 1, \cdots, N} |F_n (\theta_i) - F (\theta_i)| > \varepsilon \Big) \leq 2N e^{-2n\varepsilon^2}.
 \end{align*}
 By taking $\varepsilon = \sqrt{\frac{\log (2N / \delta)}{2n}}$,  we have the high-probability bound.
 
-On the other hand, if $f$ is unbounded (or even heavy-tailed), we cannot directly apply Hoeffding's inequality. Na\"{i}ve application of Chebyshev's inequality gives us $\varepsilon \asymp \sqrt{N / n}$, which is not useful when $N$ is large.
+On the other hand, if $f$ is unbounded (or even heavy-tailed), we cannot directly apply Hoeffding's inequality. If the variances are uniformly bounded, a naive Chebyshev union bound gives $\varepsilon$ of order $\sqrt{N/n}$ at a fixed failure probability, which is not useful when $N$ is large.
 
-This can be overcome by ``symmetrization method'' and Rademacher complexity.
+Symmetrization and Rademacher complexity give a more flexible approach; quantitative bounds still require suitable moment or envelope conditions.
 
 \bigskip
 For the term $\color{red} T_3$, we can bound it as long as we have quantitative bound on the modulus-of-continuity of $f (X; \theta)$ in $\theta$. But on the other hand, this type of one-step discretization argument is fundamentally sub-optimal. We can do better by using ``chaining method'', which is a multi-step discretization argument.
@@ -200,7 +190,7 @@ For notation simplicity, we drop the parametrization by $\theta$ and write $f (X
 \begin{align*}
   \Exs \Big[\sup_{f \in \mathcal{F}} |(P_n - P) f| \Big].
 \end{align*}
-Here $\mathcal{F} = \{f (X; \theta): \theta \in \Theta\}$ is the function class induced by the parametrization $\theta \in \Theta$.
+Here $\mathcal F=\{x\mapsto f(x;\theta):\theta\in\Theta\}$ is the function class induced by the parametrization. Assume this class is nonempty, has a measurable integrable envelope, and is pointwise separable: a countable subclass approximates every $f$ pointwise. These conditions ensure that the suprema and expectations below are measurable. The Rademacher variables are independent of the data.
 
 The ``symmetrized version'' of the above quantity is
 \begin{align*}
@@ -223,7 +213,7 @@ We know that by introducing Rademacher random variables $\varepsilon_i \simiid \
 \begin{align*}
   \big( f(X_i) - f (X_i') \big)_{i = 1}^n \overset{d}{=} \big( \varepsilon_i (f(X_i) - f (X_i')) \big)_{i = 1}^n,
 \end{align*}
-so we have
+jointly over $f\in\mathcal F$: each pair $(X_i,X_i')$ can be swapped independently without changing the joint law. Thus
 \begin{align*}
   \text{above} &= \Exs \Big[ \sup_{f \in \mathcal{F}} \Big| \frac{1}{n} \sum_{i = 1}^n \varepsilon_i (f(X_i) - f (X_i')) \Big| \Big] \leq 2 \mathcal{R}_n (\mathcal{F}).
 \end{align*}
@@ -247,13 +237,17 @@ Following the arguments in the previous section, we can bound it using concentra
 \end{align*}
 
 \subsection{Discretization and chaining}
-Following the same idea as before, we bound $R_n (A)$ for an infinite set $A \subseteq \real^n$.
+Following the same idea as before, we bound $R_n(A)$ for a nonempty bounded set $A\subseteq\real^n$. Write
+\begin{align*}
+  \vecnorm{a}{n}=\sqrt{\frac1n\sum_{i=1}^n a_i^2}.
+\end{align*}
+For all diameter-based bounds below, assume $0\in A$. This anchor is necessary for an absolute supremum: a nonzero singleton has diameter zero but positive Rademacher complexity. For a general bounded set and any $a_0\in A$, translation instead gives
+\begin{align*}
+  R_n(A)\leq R_n(A-a_0)+\frac{\vecnorm{a_0}{n}}{\sqrt n}.
+\end{align*}
 
 \paragraph{One-step discretization:}
-Let $(a^{(i)})_{i = 1}^N$ be an $\varepsilon$-covering of $A$ with respect to the normalized metric
-\begin{align*}
-  \vecnorm{a}{n} = \sqrt{\frac{1}{n} \sum_{i = 1}^n a_i^2}.
-\end{align*}
+Let $(a^{(i)})_{i = 1}^N$ be a minimum-cardinality $\varepsilon$-covering of $A$ with respect to this normalized metric, and write $N(\varepsilon)=N(A;\vecnorm{\cdot}{n},\varepsilon)$.
 Denote $\pi (a) \mydefn \arg\min_{a^{(i)}} \vecnorm{a - a^{(i)}}{n}$ as the projection of $a$ onto the covering set. Then we have
 \begin{align*}
 R_n(A) &\leq \underbrace{\Exs \Big[ \sup_{a \in A} n^{-1}|\varepsilon^\top (a - \pi(a))| \Big]}_{(\text{C.--S.})\quad \leq \sup_{a \in A} \vecnorm{a - \pi (a)}{n}} + \underbrace{\Exs \Big[ \sup_{a \in A} n^{-1}|\varepsilon^\top \pi(a)| \Big] }_{\leq \sqrt{\frac{2\log (2 N)}{n}} \cdot \mathrm{diam} (A)}\\
@@ -261,7 +255,7 @@ R_n(A) &\leq \underbrace{\Exs \Big[ \sup_{a \in A} n^{-1}|\varepsilon^\top (a - 
 \end{align*}
 Is this argument tight?
 
-Consider $A$ being a unit ball in $d$-dimensional subspace (this could come from using a $d$-dimensional linear model for $\mathcal{F}$) By choosing $\varepsilon = O (1/n)$, we have
+Consider $A$ being the unit ball under $\vecnorm{\cdot}{n}$ in a $d$-dimensional subspace of $\real^n$, where $1\leq d\leq n$ (as in a $d$-dimensional linear model for $\mathcal{F}$). By choosing $\varepsilon = O (1/n)$, we have
 \begin{align*}
   R_n (A) \leq O (\sqrt{\frac{d \log n }{ n}}).
 \end{align*}
@@ -275,37 +269,39 @@ Now let us consider a sequence of discrete approximations to $A$ (not necessaril
 \end{align*}
 Denote $\pi_m (a) \mydefn \arg\min_{a^{(i)} \in A_m} \vecnorm{a - a^{(i)}}{n}$ as the projection of $a$ onto the $m$-th covering set.
 
-Concretely, we choose $A_m$ to be $\delta_m$-covering of $A$ with respect to the normalized metric $\vecnorm{\cdot}{n}$ (with $\delta_m \downarrow 0$ to be chosen). For each $a \in A$, we have the decomposition
+For $m\geq1$, choose $A_m$ to be a $\delta_m$-covering of $A$ with respect to $\vecnorm{\cdot}{n}$, where $\delta_m\downarrow0$. At scale zero we only require $\sup_{a\in A}\vecnorm{a}{n}\leq\delta_0$. For each $a \in A$, we have the decomposition
 \begin{align*}
   a = \sum_{m = 0}^\infty \big( \pi_{m + 1} (a) - \pi_{m } (a) \big).
 \end{align*}
+More precisely, a finite sum through scale $M$ has remainder $a-\pi_M(a)$, whose normalized norm is at most $\delta_M$. Cauchy--Schwarz bounds its contribution to $R_n(A)$ by $\delta_M$, uniformly in $a$, so the remainder vanishes as $M\to\infty$.
 So we have
 \begin{align*}
   \Exs \Big[ \sup_{a \in A} n^{-1} |\varepsilon^\top a| \Big] \leq \sum_{m = 0}^\infty \Exs \Big[ \sup_{a \in A} n^{-1} |\varepsilon^\top (\pi_{m + 1} (a) - \pi_m (a))| \Big].
 \end{align*}
 Each term measures the complexity at scale $\delta_m$, and each term takes supremum over a finite set. So we have
 \begin{align*}
-  \Exs \Big[ \sup_{a \in A} n^{-1} |\varepsilon^\top (\pi_{m + 1} (a) - \pi_m (a))| \Big] \leq (\delta_m + \delta_{m + 1}) \cdot \sqrt{\frac{2 \log |A_m| \cdot |A_{m + 1}|}{n}}
+  \Exs \Big[ \sup_{a \in A} n^{-1} |\varepsilon^\top (\pi_{m + 1} (a) - \pi_m (a))| \Big] \leq (\delta_m + \delta_{m + 1}) \cdot \sqrt{\frac{2 \log \big(2|A_m|\,|A_{m + 1}|\big)}{n}}.
 \end{align*}
 
 By manipulating this type of bounds carefully, we can arrive at a nice form
 \begin{theorem}[Dudley's chaining bound]
-  There exists a universal constant $c > 0$ such that
+  For a nonempty bounded set $A\subseteq\real^n$ containing $0$, there exists a universal constant $c > 0$ such that
   \begin{align*}
-    R_n (A) \leq c\int_0^{\mathrm{diam} (A)} \sqrt{\frac{\log N (A; \vecnorm{\cdot}{n}, \epsilon)}{n}} d \epsilon.
+    R_n (A) \leq c\int_0^{\mathrm{diam} (A)} \sqrt{\frac{\log \big(2N (A; \vecnorm{\cdot}{n}, \epsilon)\big)}{n}} d \epsilon.
   \end{align*}
 \end{theorem}
-Proof: Let $D$ be the diameter of $A$ under $\vecnorm{\cdot}{n}$. Let $\delta_m = 2^{-m} D$, and we have
+Proof: Let $D$ be the diameter of $A$ under $\vecnorm{\cdot}{n}$. If $D=0$, then $A=\{0\}$ and the claim is immediate. Otherwise, let $\delta_m = 2^{-m} D$, choose minimum-cardinality covers for $m\geq1$, and set $A_0=\{0\}$. The anchor ensures $\vecnorm{a-\pi_0(a)}{n}\leq D$. We have
 \begin{align*}
-\delta_m + \delta_{m + 1} = 3 \cdot 2^{-m - 1} D, \quad  |A_m| \cdot |A_{m + 1}| \leq |A_{m + 1}|^2 = N (A; \vecnorm{\cdot}{n}, \delta_{m + 1})^2.
+\delta_m + \delta_{m + 1} = 3 \cdot 2^{-m - 1} D,\qquad
+2|A_m|\,|A_{m+1}|\leq \big(2N(A;\vecnorm{\cdot}{n},\delta_{m+1})\big)^2.
 \end{align*}
 Substituting to the bound, we have
 \begin{align*}
-  R_n (A) \leq \sum_{m = 0}^\infty 3 \cdot 2^{-m - 1} D \cdot \sqrt{\frac{4 \log N (A; \vecnorm{\cdot}{n}, \delta_{m + 1})}{n}}
+  R_n (A) \leq \sum_{m = 0}^\infty 3 \cdot 2^{-m - 1} D \cdot \sqrt{\frac{4 \log \big(2N (A; \vecnorm{\cdot}{n}, \delta_{m + 1})\big)}{n}}.
 \end{align*}
 To compare this dyadic sum with an integral, put
 \begin{align*}
-  g(\epsilon) = \sqrt{\frac{\log N(A;\vecnorm{\cdot}{n},\epsilon)}{n}}.
+  g(\epsilon) = \sqrt{\frac{\log \big(2N(A;\vecnorm{\cdot}{n},\epsilon)\big)}{n}}.
 \end{align*}
 The covering number, and hence $g$, is nonincreasing in $\epsilon$.
 On $[\delta_{m+2},\delta_{m+1}]$, we therefore have
@@ -334,32 +330,54 @@ For an infinite sum, apply the comparison first to finite partial sums and then 
 \bigskip
 \noindent \textbf{Remarks}:
 \begin{itemize}
-  \item Dudley integral may diverge in certain case (when the log-covering number grows too fast). In this case, you may consider a truncated version of the integral. Using a finite collection of scales, and bounding the rest using Cauchy--Schwarz, we can still get a finite bound.
+  \item For bounded $A\subseteq\real^n$, the entropy integral is finite; divergence becomes possible in general function spaces or for a worst-case uniform entropy integral. A truncated bound is also useful quantitatively: use finitely many scales and bound the residual by Cauchy--Schwarz to obtain
   \begin{align*}
-    R_n (A) \leq \delta + c\int_\delta^{\mathrm{diam} (A)} \sqrt{\frac{\log N (A; \vecnorm{\cdot}{n}, \epsilon)}{n}} d \epsilon.
+    R_n (A) \leq 4\delta + c\int_\delta^{\mathrm{diam} (A)} \sqrt{\frac{\log \big(2N (A; \vecnorm{\cdot}{n}, \epsilon)\big)}{n}} d \epsilon,\qquad 0<\delta\leq D.
   \end{align*}
-  You can further optimize over $\delta$ to get the best bound.
-  \item Dudley's chaining bound is tight for many function classes, but not always. There are more advanced chaining techniques (generic chaining) that can give tight bounds for all function classes.
+  For $\delta<D/2$, stop at a scale $\delta_M\in[2\delta,4\delta)$: the residual is at most $4\delta$, and the rectangle comparison only uses intervals above $\delta$. For $\delta\geq D/2$, use $R_n(A)\leq D\leq2\delta$. You can further optimize over $\delta$.
+  \item Dudley's bound is sharp for many classes, but not always. Generic chaining gives sharp bounds for Gaussian processes; a universally sharp characterization for Rademacher processes requires additional ideas.
 \end{itemize}
 
 \subsection{Back to function classes}
-Recall that we want to bound $\Exs \Big[\sup_{f \in \mathcal{F}} |(P_n - P) f| \Big]$. We assume (as in Wald's theorem) that $\mathcal{F}$ has an envelope function $G$, i.e., $|f (X)| \leq G (X)$ for all $f \in \mathcal{F}$. But here we assume that $\Exs [G^2 (X)] < + \infty$.
+Recall that we want to bound $\Exs[\sup_{f\in\mathcal F}|(P_n-P)f|]$. Retain the measurability and pointwise separability conditions above, and assume a measurable finite envelope $G\geq0$ satisfying $|f(x)|\leq G(x)$ for every $f$ and $\Exs[G^2(X)]<\infty$.
 
 \begin{theorem}
-  Under above setup, we have
+  Let $\mathcal F$ and $G$ satisfy these conditions. There is a universal constant $c>0$ such that, whenever the entropy integral below is finite,
   \begin{align*}
-    \Exs \Big[\sup_{f \in \mathcal{F}} |(P_n - P) f| \Big] \leq c \sqrt{\frac{\Exs [G^2 (X)]}{n}}\int_0^{1} \sqrt{\log \sup_{Q} N (\mathcal{F}; \mathbb{L}^2 (Q), \vecnorm{G}{\mathbb{L}^2 (Q)} \epsilon)} d \epsilon,
+    \Exs\Big[\sup_{f\in\mathcal F}|(P_n-P)f|\Big]
+    \leq c\sqrt{\frac{\Exs[G^2(X)]}{n}}
+    \int_0^1\sqrt{\log\Big(2\sup_Q
+      N(\mathcal F;\mathbb L^2(Q),\vecnorm{G}{\mathbb L^2(Q)}u)\Big)}\,du.
   \end{align*}
+  The supremum is over finitely supported probability measures $Q$ with $\vecnorm{G}{\mathbb L^2(Q)}>0$. If $G$ is identically zero, the left side is zero and no entropy condition is needed.
 \end{theorem}
-Chaining under the worst-case distribution $Q$.
+This is chaining under a worst-case distribution $Q$. The factor $2$ inside the logarithm also accounts for taking an absolute supremum.
 
-Proof: Using symmetrization and chaining, we have the conditional expectation bound:
+Proof: Given the data, let $A=\{(f(X_1),\ldots,f(X_n)):f\in\mathcal F\}$ and $S=\sqrt{P_nG^2}$. Adjoining $0$ does not change the absolute supremum. Moreover,
 \begin{align*}
-  \Exs \Big[ \sup_{f \in \mathcal{F}} |(P_n - P) f|  \Big| X_1, \ldots, X_n \Big] \leq \frac{c}{\sqrt{n}} \int_0^{\sqrt{P_n G^2}} \sqrt{\log N (\mathcal{F}; \mathbb{L}^2 (P_n), \epsilon)} d \epsilon.
+  \mathrm{diam}(A\cup\{0\})\leq2S,\qquad
+  N(A\cup\{0\};\vecnorm{\cdot}{n},\epsilon)
+  \leq N(\mathcal F;\mathbb L^2(P_n),\epsilon)+1.
 \end{align*}
-The metric and integral upper limit are data-dependent. We use change-of-variable to pull this integral upper limit outside, and then replace $P_n$ using the worst-case distribution $Q$ to get the final bound. For the envelope function, we use the bound
+Apply the anchored chaining bound to $A\cup\{0\}$. Since
+$\log(2(N+1))\leq2\log(2N)$ and the entropy is nonincreasing in its radius, the integral over $[0,2S]$ is at most twice the corresponding integral over $[0,S]$. Thus, conditionally on the data,
 \begin{align*}
-  \Exs \big[ \sqrt{P_n G^2} \big] \leq \sqrt{\Exs [P_n G^2]} = \sqrt{\Exs [G^2 (X)]}.
+  \Exs_\varepsilon\Big[\sup_{f\in\mathcal F}
+      \Big|\frac1n\sum_{i=1}^n\varepsilon_i f(X_i)\Big|
+      \,\Big|\,X_1,\ldots,X_n\Big]
+  \leq \frac{c}{\sqrt n}\int_0^S
+      \sqrt{\log\Big(2N(\mathcal F;\mathbb L^2(P_n),\epsilon)\Big)}\,d\epsilon.
 \end{align*}
+If $S=0$, every sample value is zero and this conditional complexity is zero. If $S>0$, substitute $\epsilon=Su$. The empirical measure $P_n$ is one of the finitely supported measures in the theorem, so its normalized entropy is bounded by the supremum over $Q$.
+
+Only after taking expectation over the data do we apply symmetrization:
+\begin{align*}
+  \Exs\Big[\sup_{f\in\mathcal F}|(P_n-P)f|\Big]
+  &\leq2\mathcal R_n(\mathcal F)\\
+  &\leq \frac{c\,\Exs[S]}{\sqrt n}
+    \int_0^1\sqrt{\log\Big(2\sup_Q
+      N(\mathcal F;\mathbb L^2(Q),\vecnorm{G}{\mathbb L^2(Q)}u)\Big)}\,du.
+\end{align*}
+Finally, Jensen's inequality gives $\Exs[S]\leq\sqrt{\Exs[G^2(X)]}$, proving the result. If $\Exs[G^2(X)]=0$, the envelope vanishes almost surely and the empirical-process supremum is zero directly.
 
 \end{document}
