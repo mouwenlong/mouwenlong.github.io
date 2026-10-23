@@ -1,6 +1,9 @@
 # jemdoc: menu{MENU}{research.html}, nofooter  
 ==Papers
 
+- [https://arxiv.org/abs/2610.30292 GAV: A scientific experimentation environment for PDE agents]
+-- Muheng Li, *Wenlong Mou*
+
 - [https://arxiv.org/abs/2609.08277 Adaptively Incorporating Directional Hints into Zeroth-Order Optimization]
 -- Alexander Ryabchenko, Jian Qian, *Wenlong Mou*
 -- Accepted to /NeurIPS/ 2026
