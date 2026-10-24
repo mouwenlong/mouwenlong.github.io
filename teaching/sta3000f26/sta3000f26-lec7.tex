@@ -1,0 +1,368 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+% Personal notation and theorem environments.
+\input{../final_macros.tex}
+
+\newcommand{\coursenumber}{STA3000F}
+\newcommand{\coursetitle}{Advanced Theory of Statistics}
+\newcommand{\courseterm}{Fall 2026}
+\newcounter{lecture}
+\setcounter{lecture}{7}
+\newcommand{\lecturenumber}{\arabic{lecture}}
+\newcommand{\lecturedate}{October 23, 2026}
+\newcommand{\lecturer}{Wenlong Mou}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\coursenumber: \coursetitle}
+\fancyhead[R]{Lecture \lecturenumber}
+\fancyfoot[C]{\lecturenumber--\arabic{page}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\usepackage{bm}
+
+\renewcommand{\thepage}{\lecturenumber--\arabic{page}}
+
+\newtheorem{example}{Example}
+\numberwithin{theorem}{lecture}
+\numberwithin{proposition}{lecture}
+\numberwithin{lemma}{lecture}
+\numberwithin{claim}{lecture}
+\numberwithin{corollary}{lecture}
+\numberwithin{definition}{lecture}
+\numberwithin{conjecture}{lecture}
+\numberwithin{remark}{lecture}
+\numberwithin{example}{lecture}
+\numberwithin{equation}{lecture}
+\counterwithin*{section}{lecture}
+\renewcommand{\theHsection}{\arabic{lecture}.\arabic{section}}
+
+\newcommand{\makelecturenotesheader}{%
+  \noindent
+  \textbf{\coursenumber: \coursetitle}%
+  \hfill
+  \textbf{\courseterm}
+
+  \begin{center}
+    {\Large\bfseries Lecture \lecturenumber: \lecturedate}
+  \end{center}
+
+  \noindent
+  \textbf{Lecturer:} \lecturer
+  \par\medskip
+  \hrule
+  \bigskip
+}
+
+\begin{document}
+
+\makelecturenotesheader
+\section{General empirical process bound continued}
+Example of the general theorem: consider $\Theta \subseteq \ball (0, R)$ in $d$-dimensional Euclidean space, and consider the function class parametrized by $\theta \in \Theta$:
+\begin{align*}
+  \mathcal{F} = \{f_\theta: \theta \in \Theta\}
+\end{align*}
+(e.g. generalized linear model)
+
+We assume that $f_\theta$ is Lipschitz in $\theta$ for every $x$, i.e., there exists $M(x)$ such that
+\begin{align*}
+  |f_\theta (x) - f_{\theta'} (x)| \leq M(x) \|\theta - \theta'\|_2, \quad \forall \theta, \theta' \in \Theta.
+\end{align*}
+(We allow the Lipschitz constant to depend on $x$.) We also assume that $\Exs [M^2 (X)] < + \infty$.
+
+In such a case, we can apply the main theorem to bound $\Exs \big[\sup_{f \in \mathcal{F}} |(P_n - P) f| \big]$. To start with, we need to construct an envelope function for the function class $\mathcal{F}$. We can take
+\begin{align*}
+  G (x) = |f_{\theta_0} (x)| + 2 R M(x),
+\end{align*}
+for some fixed $\theta_0 \in \Theta$. Then we have
+\begin{align*}
+  |f_\theta (x)| \leq G (x), \quad \forall \theta \in \Theta.
+\end{align*}
+Now we need to bound the covering number of $\mathcal{F}$ with respect to the $\mathbb{L}^2 (Q)$ metric, for any distribution $Q$. First, we note that
+\begin{align*}
+  N ( \mathcal{F}, \mathbb{L}^2 (Q), \varepsilon \|G\|_{\mathbb{L}^2 (Q)}) & \leq N (\mathcal{F}, \mathbb{L}^2 (Q), \varepsilon \|M\|_{\mathbb{L}^2 (Q)} R).
+\end{align*}
+Now we need to bound the right-hand-side by direct construction of a covering set. Let $(\theta_i)_{i = 1}^N$ be an $\delta$-covering of $\Theta$ with respect to the $\ell_2$ norm. For any $\theta \in \Theta$, there exists some $\theta_i$ such that $\|\theta - \theta_i\|_2 \leq \delta$. Then we have
+\begin{align*}
+  \vecnorm{f_\theta - f_{\theta_i}}{\mathbb{L}^2 (Q)}^2 = \int | f_\theta (x) - f_{\theta_i} (x)|^2 d Q(x) \leq \int M^2 (x) \|\theta - \theta_i\|_2^2 d Q(x) \leq \delta^2 \|M\|_{\mathbb{L}^2 (Q)}^2.
+\end{align*}
+That means $(f_{\theta_i})_{i = 1}^N$ is a $\delta \|M\|_{\mathbb{L}^2 (Q)}$-covering of $\mathcal{F}$ with respect to the $\mathbb{L}^2 (Q)$ metric. Therefore, by taking $\delta = \varepsilon R$, we have
+\begin{align*}
+  N (\mathcal{F}, \vecnorm{\cdot}{\mathbb{L}^2 (Q)}, \varepsilon R \vecnorm{M}{\mathbb{L}^2 (Q)} ) \leq N (\Theta, \|\cdot\|_2, \varepsilon R) \leq N (\ball_2^d (R), \|\cdot\|_2, \varepsilon R) \leq \Big( 1 + \frac{2}{\varepsilon} \Big)^d.
+\end{align*}
+Substituting this bound into the main theorem, we have
+\begin{align*}
+  \Exs \Big[\sup_{f \in \mathcal{F}} |(P_n - P) f| \Big] &\leq c \sqrt{\frac{\Exs [G^2 (X)]}{n}}\int_0^{1} \sqrt{\log \big(2\sup_{Q} N (\mathcal{F}; \mathbb{L}^2 (Q), \vecnorm{G}{\mathbb{L}^2 (Q)} \epsilon)\big)} d \epsilon\\
+  &\leq c' \sqrt{\frac{\Exs [G^2 (X)]}{n}}\int_0^{1} \sqrt{d\log (1/\epsilon)} d \epsilon\\
+  &\leq c'' \cdot \big( \vecnorm{f_{\theta_0}}{\mathbb{L}^2 (\Prob)} + R \vecnorm{M}{\mathbb{L}^2 (\Prob)}  \big)  \sqrt{\frac{d}{n}}.
+\end{align*}
+This applies to a broad class of Lipschitz models. On the other hand, some function classes may not be continuously parametrized by a finite-dimensional parameter $\theta$.
+
+e.g. consider the function class
+\begin{align*}
+  \mathcal{F} = \Big\{ \bm{1}_{x \in [\theta_1, \theta_2]}: \theta_1, \theta_2 \in \mathbb{R} \Big\},
+\end{align*}
+is a very simple function class parametrized by two parameters $\theta_1, \theta_2$, but not continuously. The above argument does not apply. On the other hand, covering/packing number is a robust notion --- as long as the function class is ``simple'', we can still get a good bound.
+
+\section{Combinatorial notion of complexity: VC dimension}
+First, let us consider binary functions mapping from $\mathcal{X}$ to $\{0, 1\}$ (we will extend back to real-valued functions later). Consider a class of functions $\mathcal{F}$.
+
+\begin{definition}[shattering]
+  A set of points $\{x_1, \ldots, x_n\} \subset \mathcal{X}$ is said to be shattered by $\mathcal{F}$ if for every subset $S \subset \{1, \ldots, n\}$, there exists a function $f \in \mathcal{F}$ such that
+  \begin{align*}
+    f (x_i) = \begin{cases}
+      1, & i \in S\\
+      0, & i \notin S
+    \end{cases}, \quad i = 1, \ldots, n.
+  \end{align*}
+\end{definition}
+Intuitively, a function class $\mathcal{F}$ needs to be ``rich enough'' to realize all possible labelings of the points in the set $\{x_1, \ldots, x_n\}$, in order to shatter it. From machine learning perspective, you can also think of shattering as a classifier being able to fit any possible labeling of the points in the set $\{x_1, \ldots, x_n\}$.
+
+Based on the notion of shattering, we can define the Vapnik-Chervonenkis (VC) dimension of a function class $\mathcal{F}$.
+\begin{definition}[VC dimension]
+  The VC dimension of a function class $\mathcal{F}$ is defined as the largest integer $d$ such that there exists a set of $d$ points in $\mathcal{X}$ that can be shattered by $\mathcal{F}$. If no such largest integer exists, we say that the VC dimension is infinite.
+\end{definition}
+Intuitively, this is the largest number of data points that the binary classifier class can fit perfectly for any possible labeling.
+
+\begin{example}\upshape Indicator of line segments in $\mathbb{R}$: $\mathcal{F} = \{\bm{1}_{x \in [\theta_1, \theta_2]}: \theta_1, \theta_2 \in \mathbb{R}\}$. Consider any 3 points $x_1 < x_2 < x_3$. For the labeling $(1, 0, 1)$, there is no line segment that can realize this labeling. Therefore, the VC dimension of this function class is at most 2. On the other hand, for any 2 points $x_1 < x_2$, we can realize all possible labelings $(0, 0), (0, 1), (1, 0), (1, 1)$ by choosing appropriate line segments. Therefore, the VC dimension of this function class is exactly 2.
+
+More generally, you can consider union of $K$ disjoint intervals in $\mathbb{R}$:
+\begin{align*}
+  \mathcal{F} = \Big\{\bm{1}_{x \in \bigcup_{k = 1}^K [\theta_{2k - 1}, \theta_{2k}]}: \theta_1 < \theta_2 < \cdots < \theta_{2K} \in \mathbb{R}\Big\}.
+\end{align*}
+By putting $2K + 1$ points on real line with alternating labeling $(1, 0, 1, 0, \ldots, 0, 1)$, we can see that the VC dimension of this function class is at most $2K$.
+\end{example}
+
+\subsection{Structural results on VC dimension}
+Idea: If a function class has finite VC dimension, then it is ``simple'' in some sense, and we can bound its covering number.
+
+Key result:
+\begin{theorem}[Sauer's lemma]
+  Let $\mathcal{F}$ be a class of binary functions with VC dimension $d$. Then for any $n \geq d$, we have
+  \begin{align*}
+    \Big| \Big\{ (f (x_1), \ldots, f (x_n)) : f \in \mathcal{F} \Big\} \Big| \leq \underbrace{\binom{n}{0} + \binom{n}{1} + \cdots + \binom{n}{d}}_{\Phi_d (n)} \leq \Big( \frac{e n}{d} \Big)^d.
+  \end{align*}
+\end{theorem}
+Remark: consider the cardinality of all possible labelings of $n$ points by a function class $\mathcal{F}$. 
+\begin{itemize}
+  \item When $n \leq d$, all the $2^n$ possible labelings can be realized by $\mathcal{F}$.
+  \item The definition of VC dimension only tells us that for $n = d + 1$, there exists at least one labeling that cannot be realized by $\mathcal{F}$.
+  \item Sauer's lemma tells us that once we pass the threshold $n > d$, the number of realizable labelings is bounded by a polynomial in $n$ (with degree $d$), which is much smaller than the total number of possible labelings $2^n$.
+\end{itemize}
+Proof idea: induction on $(n + d)$. The result is trivial when $n = d$ or when $d = 0$.
+
+By induction hypothesis, let us assume that the conclusion holds for $(n - 1, d - 1)$ and $(n - 1, d)$. Consider the set of $n$ points $\{x_1, \ldots, x_n\}$. We separate the labeling of the last point $x_n$ from the first $n - 1$ points.
+
+Consider any label sequence $b_1, \ldots, b_{n - 1} \in \{0, 1\}^{n - 1}$, there are 3 possibilities:
+\begin{enumerate}
+\item There is no function $f \in \mathcal{F}$ that realizes the labeling $(b_1, \ldots, b_{n - 1})$ on the first $n - 1$ points.
+\item Both labelings $(b_1, \ldots, b_{n - 1}, 0)$ and $(b_1, \ldots, b_{n - 1}, 1)$ can be realized by some functions in $\mathcal{F}$.
+\item Only one of the labelings $(b_1, \ldots, b_{n - 1}, 0)$ and $(b_1, \ldots, b_{n - 1}, 1)$ can be realized by some function in $\mathcal{F}$.
+\end{enumerate}
+The idea is to form a decomposition of the set $\{ (f (x_1), \ldots, f (x_n)) : f \in \mathcal{F} \}$ based on the labeling of the first $n - 1$ points. The first case does not contribute to the cardinality. For the second and third cases, we can decompose the class into $\mathcal{F}_1$ and $\mathcal{F}_2$ according to the following rule (here we abuse the notation a bit, and think of $\mathcal{F}_1$ and $\mathcal{F}_2$ are defined on the domain $\{x_1, \ldots, x_{n}\}$, and equivalently, they are just labeling sequences):
+\begin{itemize}
+\item In case 2, suppose $f_1, f_2 \in \mathcal{F}$ realize the labelings $(b_1, \ldots, b_{n - 1}, 0)$ and $(b_1, \ldots, b_{n - 1}, 1)$ respectively. We add $f_1$ to $\mathcal{F}_1$ and $f_2$ to $\mathcal{F}_2$. 
+\item In case 3, there is only one function $f \in \mathcal{F}$ that realizes the labeling $(b_1, \ldots, b_{n - 1}, b_n)$ for some $b_n \in \{0, 1\}$. We add $f$ to $\mathcal{F}_1$.
+\end{itemize}
+By this construction, we have
+\begin{align*}
+  |\mathcal{F} (x_1, \ldots, x_n)| = |\mathcal{F}_1 | + |\mathcal{F}_2 |.
+\end{align*}
+For the set $\mathcal{F}_1$, we note that this set is formed by mapping all the achievable labelings of the first $n - 1$ points to an element in $\mathcal{F}_1$. So we have
+\begin{align*}
+  |\mathcal{F}_1| = |\mathcal{F} (x_1, \ldots, x_{n - 1})| \leq \Phi_d (n - 1),
+\end{align*}
+by induction hypothesis.
+
+For the set $\mathcal{F}_2$, we claim that
+\begin{align}
+  \text{VCdim} (\mathcal{F}_2) \leq d - 1.\label{eq:lec6-vc-dim-f2}
+\end{align}
+To prove this claim, we argue by contradiction. Suppose that there exists $(x_{k_1}, x_{k_2}, \cdots, x_{k_d})$ that can be shattered by $\mathcal{F}_2$. Because $\mathcal{F}_2$ is formed by sequences that allow free labeling of the last point $x_n$, we can add this free labeling to the set of $d$ points. This means that $(x_{k_1}, x_{k_2}, \cdots, x_{k_d}, x_n)$ can be shattered by $\mathcal{F}$. This contradicts the assumption that $\mathcal{F}$ has VC dimension $d$. Therefore, we have proved the claim~\eqref{eq:lec6-vc-dim-f2}. By induction hypothesis, we have
+\begin{align*}
+  |\mathcal{F}_2| \leq \Phi_{d - 1} (n - 1).
+\end{align*}
+So we conclude that
+\begin{align*}
+  |\mathcal{F} (x_1, \ldots, x_n)| = |\mathcal{F}_1 | + |\mathcal{F}_2 | \leq \Phi_d (n - 1) + \Phi_{d - 1} (n - 1) = \Phi_d (n),
+\end{align*}
+which completes the induction step. The last inequality in the theorem follows from the standard bound on binomial coefficients.
+
+
+
+\paragraph{Application of Sauer's lemma: VC dimension of composite classes} Consider two classes of binary functions $\mathcal{F}_1$ and $\mathcal{F}_2$, with VC dimensions $d_1$ and $d_2$ respectively. For any binary operation $\clubsuit$ (e.g. AND, OR, XOR), we can define a composite class of functions
+\begin{align*}
+  \mathcal{F} = \{f_1 \clubsuit f_2: f_1 \in \mathcal{F}_1, f_2 \in \mathcal{F}_2\}.
+\end{align*}
+Can we bound the VC dimension of $\mathcal{F}$ in terms of $d_1$ and $d_2$?
+
+Given $(x_1, \ldots, x_n)$, we can consider the set of achievable labelings by $\mathcal{F}$:
+\begin{align*}
+  \mathcal{F} (x_1, \ldots, x_n) = \{(f_1 (x_1) \clubsuit f_2 (x_1), \ldots, f_1 (x_n) \clubsuit f_2 (x_n)): f_1 \in \mathcal{F}_1, f_2 \in \mathcal{F}_2\}.
+\end{align*}
+The cardinality of this set is bounded by
+\begin{align*}
+  |\mathcal{F} (x_1, \ldots, x_n)| \leq |\mathcal{F}_1 (x_1, \ldots, x_n)| \cdot |\mathcal{F}_2 (x_1, \ldots, x_n)| \leq \Big( \frac{e n}{d_1} \Big)^{d_1} \cdot \Big( \frac{e n}{d_2} \Big)^{d_2}.
+\end{align*}
+On the other hand, let $d$ be the VC dimension of $\mathcal{F}$. By definition, we have
+\begin{align*}
+  2^d = \max_{x_1, \ldots, x_d} |\mathcal{F} (x_1, \ldots, x_d)| \leq \Big( \frac{e d}{d_1} \Big)^{d_1} \cdot \Big( \frac{e d}{d_2} \Big)^{d_2}.
+\end{align*}
+Solving for $d$ through this inequality, there exists a universal constant $c > 0$ such that
+\begin{align*}
+  d \leq c (d_1 + d_2).
+\end{align*}
+
+
+\paragraph{Additional examples of VC dimension:} Consider the class of linear classifiers in $\mathbb{R}^d$:
+\begin{align*}
+  \mathcal{F} = \Big\{f_\theta (x) = \bm{1}_{\theta^\top x \geq 0}: \theta \in \mathbb{R}^d\Big\}.
+\end{align*}
+We claim that $\text{VCdim} (\mathcal{F}) = d$. For the upper bound, consider any $(d + 1)$ points in $\mathbb{R}^d$: $x_1, \ldots, x_{d + 1}$. For any possible labeling $(b_1, b_2, \cdots, b_{d + 1}) \in \{0, 1\}^{d + 1}$, suppose that they can be realized by some linear classifier $f_\theta$.
+
+On the other hand, we note that these $(d + 1)$ points are linearly dependent in $\mathbb{R}^d$. That means there exists some not-all-zero coefficients $(\alpha_1, \ldots, \alpha_{d + 1})$ such that
+\begin{align*}
+  \sum_{i = 1}^{d + 1} \alpha_i x_i = 0.
+\end{align*}
+Multiplying all coefficients by $-1$ if necessary, we may assume that $\alpha_j < 0$ for some $j$. Let us consider the labeling $b_i = \bm{1}_{\alpha_i \geq 0}$, and let $\theta$ be the linear classifier that realizes this labeling. Then we have
+\begin{align*}
+  \sum_{i = 1}^{d + 1} \alpha_i \theta^\top x_i = \theta^\top \sum_{i = 1}^{d + 1} \alpha_i x_i = 0, \quad \text{and} \quad \alpha_i \theta^\top x_i \geq 0, \quad \forall i = 1, \ldots, d + 1.
+\end{align*}
+The only possibility is that $\alpha_i \theta^\top x_i = 0$ for all $i = 1, \ldots, d + 1$. For each $i$, either $\alpha_i = 0$ or $\theta^\top x_i = 0$.
+
+However, $\alpha_j < 0$ gives $b_j = 0$, so $\theta^\top x_j < 0$ and hence $\alpha_j \theta^\top x_j > 0$, a contradiction. Thus no set of $d + 1$ points can be shattered, and $\text{VCdim} (\mathcal{F}) \leq d$.
+
+For the lower bound, take the standard basis vectors $e_1, \ldots, e_d$. For any labeling $(b_1, \ldots, b_d) \in \{0, 1\}^d$, choose $\theta = (2b_1 - 1, \ldots, 2b_d - 1)^\top$. Then $f_\theta (e_i) = b_i$ for every $i$. Hence these $d$ points are shattered, proving $\text{VCdim} (\mathcal{F}) = d$.
+
+\subsection{VC dimension and covering number}
+Recall that the goal is to bound the $\mathbb{L}^2 (Q)$ covering number of a function class $\mathcal{F}$ for any distribution $Q$ (for binary classes, $G \equiv 1$ is an envelope function). We have the following result:
+\begin{theorem}
+  For any $Q$, we have
+  \begin{align*}
+    \log N (\mathcal{F}; \mathbb{L}^2 (Q), \varepsilon) \leq c \cdot \text{VCdim} (\mathcal{F}) \cdot \log (1/\varepsilon),
+  \end{align*}
+  for some universal constant $c > 0$.
+\end{theorem}
+Proof: Let $f_1, f_2, \cdots, f_N$ be a maximal $\varepsilon$-packing of $\mathcal{F}$ with respect to the $\mathbb{L}^2 (Q)$ metric. For any $i, j \in [N]$, we have
+\begin{align*}
+  \varepsilon^2 \leq \vecnorm{f_i - f_j}{\mathbb{L}^2 (Q)}^2 = \int |f_i (x) - f_j (x)|^2 d Q(x) = Q (\{x: f_i (x) \neq f_j (x)\}).
+\end{align*}
+The idea is to use probabilistic method: we draw $n$ i.i.d. samples $X_1, \ldots, X_n \simiid Q$. For any $i, j \in [N]$, we have
+\begin{align*}
+  \Prob \Big( \big( f_i(X_1), f_i (X_2), \ldots, f_i (X_n) \big) = \big( f_j(X_1), f_j (X_2), \ldots, f_j (X_n) \big) \Big) \leq (1 - \varepsilon^2)^n \leq \exp (- n \varepsilon^2).
+\end{align*}
+Then we can take union bound over all pairs $(i, j)$, and we have
+\begin{align*}
+  \Prob \Big( \exists i, j \in [N], \text{ not distinguishable under} \big\{X_1, \ldots, X_n\big\} \Big) \leq \binom{N}{2} \exp (- n \varepsilon^2) \leq N^2 \exp (- n \varepsilon^2).
+\end{align*}
+We choose $n = \frac{4 \log N}{\varepsilon^2}$, then the right-hand-side is less than $1/2$. That means there exists a set of $n$ points $\{x_1, \ldots, x_n\}$ such that all the functions in the packing set are distinguishable on this set of points. That means
+\begin{align*}
+  N = \Big| \Big\{ (f_i (x_1), \ldots, f_i (x_n)) : i \in [N]\Big\} \Big| \leq \Big| \Big\{ (f (x_1), \ldots, f (x_n)) : f \in \mathcal{F}\Big\} \Big| \leq \Phi_d (n) \leq \Big( \frac{e n}{d} \Big)^d = \Big( \frac{4 e \log N}{d \varepsilon^2} \Big)^d.
+\end{align*}
+Solving for $N$, we have
+\begin{align*}
+  \log N \leq c d \log (1/\varepsilon),
+\end{align*}
+for some universal constant $c > 0$.
+
+e.g. for linear classifiers in $\real^d$, $\mathcal{F} = \{ f(x) = \bm{1}_{\theta^\top x > 0} : \theta \in \real^d  \}$, we have
+\begin{align*}
+  \Exs \big[ \sup_{f \in \mathcal{F}}|(P_n - P) f| \big] \leq \frac{c}{\sqrt{n}} \int_0^1 \sqrt{d \log (1/ \varepsilon)} d \varepsilon \leq c' \sqrt{\frac{d}{n}}.
+\end{align*}
+This can also be used to bound the generalization error (gap between training and test error) of linear classifiers in $\real^d$.
+
+\subsection{VC subgraph dimension for real-valued function classes}
+Idea: to extend the notion of VC dimension to real-valued function classes.
+
+\begin{definition}[VC subgraph dimension]
+  For a real-valued function class $\mathcal{F}$, we define
+  \begin{align*}
+    \text{VCdim} (\mathcal{F}) := \text{VCdim} (\{ (t, x) \mapsto \bm{1}_{f(x) \geq t}: f \in \mathcal{F}\}).
+  \end{align*}
+\end{definition}
+Intuitively, we augment one dimension to the input space to transform the real-valued function class into a binary function class, while keeping its complexity.
+
+e.g. consider the class of linear functions in $\real^d$:
+\begin{align*}
+  \mathcal{F} = \{ f_\theta (x) = \theta^\top x: \theta \in \real^d\}.
+\end{align*}
+We note that $t_i \geq f_\theta (x_i)$ is equivalent to the fact that
+\begin{align*}
+  \begin{bmatrix}
+    -\theta^\top & 1
+  \end{bmatrix} \begin{bmatrix}
+    x_i\\
+    t_i
+  \end{bmatrix} \geq 0,
+\end{align*}
+which becomes a subclass of the $(d + 1)$-dimensional linear classifiers. So we have $\text{VCdim} (\mathcal{F}) \leq d + 1$.
+
+Furthermore, suppose that $\phi$ is a strictly increasing function, we can consider a generalized linear function class
+\begin{align*}
+  \mathcal{F} = \{ f_\theta (x) = \phi(\theta^\top x): \theta \in \real^d\}.
+\end{align*}
+We note that $t_i \geq f_\theta (x_i)$ is equivalent to the fact that
+\begin{align*}
+  \begin{bmatrix}
+    -\theta^\top & 1
+  \end{bmatrix}
+  \begin{bmatrix}
+    x_i\\
+    \phi^{-1} (t_i)
+  \end{bmatrix} \geq 0,
+\end{align*}
+which is also a subclass of the $(d + 1)$-dimensional linear classifiers.
+
+The nice thing about VC subgraph dimension is that it bounds the $\mathbb{L}^2 (Q)$ covering number with respect to an envelope function, which is exactly what we need for the general empirical process bound. We have the following result:
+\begin{theorem}
+  Let $\mathcal{F}$ be a real-valued function class with envelope function $G$. Then we have
+  \begin{align*}
+   \sup_{Q} \log N (\mathcal{F}; \mathbb{L}^2 (Q), \varepsilon \|G\|_{\mathbb{L}^2 (Q)}) \leq \big( c_1 / \varepsilon \big)^{c_2 \text{VCdim} (\mathcal{F})},
+  \end{align*}
+  for some universal constants $c_1, c_2 > 0$.
+\end{theorem}
+
+Proof: for a pair of functions $f, g \in \mathcal{F}$, we have
+\begin{align*}
+  \vecnorm{f - g}{\mathbb{L}^2 (Q)}^2 &= \int |f(x) - g(x)|^2 d Q(x) \leq 2 \int G(x) |f(x) - g(x)| d Q(x)\\
+  &=2 \int G(x) \int | \bm{1}_{t \leq f(x)} - \bm{1}_{t \leq g(x)} | dt~ d Q(x)\\
+  &= 2 \iint_{(t, x): |t| \leq G(x)} G (x) \cdot | \bm{1}_{t \leq f(x)} - \bm{1}_{t \leq g(x)} | dt~ d Q(x).
+\end{align*}
+(The idea is to relate the $\mathbb{L}^2 (Q)$ distance between $f$ and $g$ to the the indicator functions)
+
+By Cauchy--Schwarz inequality, we have
+\begin{align*}
+  &2 \iint_{(t, x): |t| \leq G(x)} G (x) \cdot | \bm{1}_{t \leq f(x)} - \bm{1}_{t \leq g(x)} | dt~ d Q(x)\\
+  &\leq 2 \sqrt{\iint_{(t, x): |t| \leq G(x)} \big( \sqrt{G (x)} \big)^2 dt~ d Q(x)} \cdot \sqrt{\iint_{(t, x): |t| \leq G(x)} \big( \sqrt{G(x)}  | \bm{1}_{t \leq f(x)} - \bm{1}_{t \leq g(x)} | \big)^2 dt~ d Q(x)}.
+\end{align*}
+For the first integral, we note that
+\begin{align*}
+  \iint_{(t, x): |t| \leq G(x)} \big( \sqrt{G (x)} \big)^2 dt~ d Q(x) = 2 \int G^2 (x) d Q(x) = 2 \|G\|_{\mathbb{L}^2 (Q)}^2.
+\end{align*}
+For the second integral, it is
+\begin{align*}
+  \iint_{(t, x): |t| \leq G(x)}  | \bm{1}_{t \leq f(x)} - \bm{1}_{t \leq g(x)} |^2  G(x) dt~ d Q(x),
+\end{align*}
+which is the $\mathbb{L}^2 (G (x) dt d Q(x))$-distance of two indicator functions. Indeed, we can construct a probability measure
+\begin{align*}
+  d \widetilde{Q} (t, x) \propto G(x)dt~ d Q(x).
+\end{align*}
+We have
+\begin{align*}
+  \iint_{(t, x): |t| \leq G(x)}  | \bm{1}_{t \leq f(x)} - \bm{1}_{t \leq g(x)} |^2  G(x) dt~ d Q(x) = \vecnorm{\bm{1}_{t \leq f(x)} - \bm{1}_{t \leq g(x)}}{\mathbb{L}^2 (\widetilde{Q})}^2 \cdot 2 \|G\|_{\mathbb{L}^2 (Q)}^2.
+\end{align*}
+That means an $\varepsilon$-covering of the class of indicator functions $\{(t, x) \mapsto \bm{1}_{t \leq f(x)}: f \in \mathcal{F}\}$ with respect to the $\mathbb{L}^2 (\widetilde{Q})$ metric leads to a $2 \vecnorm{G}{\mathbb{L}^2 (Q)} \sqrt{\varepsilon}$-covering of the class $\mathcal{F}$ with respect to the $\mathbb{L}^2 (Q)$ metric. By the previous result on VC dimension, we have the final bound.
+
+
+
+\end{document}
