@@ -1,0 +1,296 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+\usepackage{bm}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+% Personal notation and theorem environments.
+\input{../final_macros.tex}
+
+\newcommand{\coursenumber}{STA355F}
+\newcommand{\coursetitle}{Theory of Statistical Practice}
+\newcommand{\courseterm}{Fall 2026}
+\newcounter{lecture}
+\setcounter{lecture}{8}
+\newcommand{\lecturenumber}{\arabic{lecture}}
+\newcommand{\lecturedate}{November 13, 2026}
+\newcommand{\lecturer}{Wenlong Mou}
+\newtheorem{assumption}{Assumption}
+\numberwithin{assumption}{lecture}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\coursenumber: \coursetitle}
+\fancyhead[R]{Lecture \lecturenumber}
+\fancyfoot[C]{\lecturenumber--\arabic{page}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\newtheorem{example}{Example}
+\numberwithin{theorem}{lecture}
+\numberwithin{proposition}{lecture}
+\numberwithin{lemma}{lecture}
+\numberwithin{claim}{lecture}
+\numberwithin{corollary}{lecture}
+\numberwithin{definition}{lecture}
+\numberwithin{conjecture}{lecture}
+\numberwithin{remark}{lecture}
+\numberwithin{example}{lecture}
+\numberwithin{equation}{lecture}
+\counterwithin*{section}{lecture}
+\renewcommand{\theHsection}{\arabic{lecture}.\arabic{section}}
+\renewcommand{\thepage}{\lecturenumber--\arabic{page}}
+
+\newcommand{\makelecturenotesheader}{%
+  \noindent
+  \textbf{\coursenumber: \coursetitle}%
+  \hfill
+  \textbf{\courseterm}
+
+  \begin{center}
+    {\Large\bfseries Lecture \lecturenumber: \lecturedate}
+  \end{center}
+
+  \noindent
+  \textbf{Lecturer:} \lecturer
+  \par\medskip
+  \hrule
+  \bigskip
+}
+
+\begin{document}
+
+\makelecturenotesheader
+
+\section{Continued from last time}
+Note: $p$-value is a measure of how extreme the observed data is under $H_0$. It is NOT the probability that $H_0$ is true given the observed data. Under our frequentist framework, $H_0$ is either true or false, and it does not have a probability distribution. The $p$-value is a random variable, and it has a distribution under $H_0$.
+
+\paragraph{Useful fact:} If $T(X)$ has a continuous distribution under $H_0$, then the $p$-value has a uniform distribution on $[0,1]$ under $H_0$.
+
+This is a direct corollary of the probability theory fact: If $X$ is a continuous random variable with CDF $F$, then $F(X) \sim \mathrm{Unif} (0,1)$.
+
+In many applications, especially when we are testing many hypotheses simultaneously, we directly work with $p$-values instead of the original test statistics. You can think of $p$-values as a standardized version of the test statistics, which are all on the same scale $[0,1]$.
+
+\subsection{Multiple hypothesis testing}
+Consider a collection of testing problems:
+\begin{align*}
+H_{0, i} \quad vs. \quad H_{1, i}, \quad i = 1, 2, \cdots, m.
+\end{align*}
+Let $P_1, P_2, \cdots, P_m$ be the $p$-values computed from data for these $m$ testing problems. How do we make these $m$ decisions?
+
+\paragraph{Na\"{i}ve approach:} reject every $H_{0, i}$ with $P_i \leq \alpha$. We have that
+\begin{align*}
+\Prob_{H_{0, i}} (\mbox{Type-I error} (i)) \leq \alpha, \quad \text{for all } i = 1, 2, \cdots, m.
+\end{align*}
+Usually, in scientific applications, making a rejection is consider a ``scientific discovery''. The problem is: if we test a lot of hypotheses at the same time, even if there's no signal at all, we still expect to make some discoveries by chance.
+
+For example, if $P_i$'s are all independent. Under the global null $\bigcap_{i=1}^m H_{0, i}$, we have
+\begin{align*}
+  \Prob_{H_{0, 1}, \cdots, H_{0, m}} (\mbox{at least one Type-I error}) = 1 - (1 - \alpha)^m.
+\end{align*}
+By taking $m \approx 1/ \alpha$, we have $1 - (1 - \alpha)^m \approx 1 - e^{-1} \approx 0.63$. So even if all null hypotheses are true, we still expect to make a discovery with probability $0.63$.
+
+\paragraph{Bonferroni correction:} A strict requirement that no type-I error is allowed (with high probability). This method tries to control the family-wise error rate (FWER):
+\begin{align*}
+  \mathrm{FWER} = \Prob_{H_{0, 1}, \cdots, H_{0, m}} (\mbox{at least one Type-I error}) \leq \alpha.
+\end{align*}
+In order to control FWER, we can use the Bonferroni correction: reject $H_{0, i}$ if $P_i \leq \alpha / m$. Then by union bound, we have
+\begin{align*}
+  \mathrm{FWER} = \Prob_{H_{0, 1}, \cdots, H_{0, m}} (\mbox{at least one Type-I error}) \leq \sum_{i=1}^m \Prob_{H_{0, i}} (\mbox{Type-I error} (i)) \leq m \cdot \frac{\alpha}{m} = \alpha.
+\end{align*}
+Problem: sometimes FWER is too strict requirement. In many applications, we can tolerate a few false discoveries, as long as the proportion of false discoveries is small. This leads to the notion of false discovery rate (FDR).
+
+\paragraph{False discovery rate (FDR):} Idea: within the discoveries we made, we want to control the proportion of false discoveries.
+
+We first define False Discovery Proportion (FDP):
+\begin{align*}
+  \mathrm{FDP} = \begin{dcases}\frac{\# \{ i: H_{0, i} \text{ is rejected and } H_{0, i} \text{ is true} \}}{\# \{ i: H_{0, i} \text{ is rejected} \}}, & \text{if any rejections are made},\\
+  0, & \text{otherwise} .
+  \end{dcases}
+\end{align*}
+False discovery rate (FDR) is defined as
+\begin{align*}
+  \mathrm{FDR} = \Exs [\mathrm{FDP}].
+\end{align*}
+Goal: we want to control FDR at level $\alpha$, i.e., $\mathrm{FDR} \leq \alpha$.
+
+Most popular procedure: Benjamini--Hochberg (BH) procedure.
+\begin{itemize}
+  \item Sort the $p$-values in ascending order: $P_{(1)} \leq P_{(2)} \leq \cdots \leq P_{(m)}$.
+  \item Let $\ell_i = i \alpha / m$, for $i = 1, 2, \cdots, m$, and compute the index
+  \begin{align*}
+    K = \max \{ i: P_{(i)} \leq \ell_i \}.
+  \end{align*}
+  \item Reject the $K$ null hypotheses corresponding to the $K$ smallest $p$-values.
+\end{itemize}
+BH procedure controls FDR at level $\alpha$ under the assumption that the $p$-values are independent. There are also some extensions of BH procedure to handle dependent $p$-values. (by way of contrast, Bonferroni correction does not require independence assumption.)
+
+\subsection{Permutation tests}
+Consider the two-sample testing problem: we have two groups of data, $X_1, X_2, \cdots, X_n \simiid \Prob_{X}$ and $Y_1, Y_2, \cdots, Y_m \simiid \Prob_{Y}$, and we want to test
+\begin{align*}
+  H_0: \Prob_{X} = \Prob_{Y} \quad \text{vs.} \quad H_1: \Prob_{X} \neq \Prob_{Y}.
+\end{align*}
+Idea: under $H_0$, these $(n + m)$ samples are exchangeable, and if we make a random permutation, it will have the same distribution.
+
+Concretely, we can start with a test statistic $T(X_1, \cdots, X_n, Y_1, \cdots, Y_m)$. For each permutation $\sigma$ of $\{1, 2, \cdots, n + m\}$ (a one-to-one mapping from the index set $\{1, 2, \cdots, n + m\}$ to itself), we can compute the permuted test statistic
+\begin{align*}
+  T_\sigma = T(\underbrace{Z_{\sigma(1)}, \cdots, Z_{\sigma(n)}}_{\text{Use them as $X$-samples}}, \underbrace{Z_{\sigma(n+1)}, \cdots, Z_{\sigma(n+m)}}_{\text{Use them as $Y$-samples}}).
+\end{align*}
+where $Z_i = X_i$ for $i = 1, 2, \cdots, n$, and $Z_{n+j} = Y_j$ for $j = 1, 2, \cdots, m$.
+
+Then we reject $H_0$ if the observed test statistic $T(X_1, \cdots, X_n, Y_1, \cdots, Y_m)$ is too extreme compared to the distribution of $\{T_\sigma\}$ for randomly sampled permutations $\sigma$, i.e., we can compute the $p$-value as
+\begin{align*}
+  p\mbox{-value} = \frac{1}{(m + n)!} \sum_{\sigma} \bm{1}_{\{ T_\sigma \geq T(X, Y) \}}.
+\end{align*}
+Choice of test statistic: typically, we use some statistic that captures the difference between the two groups, e.g.
+\begin{itemize}
+  \item Difference of means: $T(X, Y) = |\overline{X} - \overline{Y}|$.
+  \item Difference of mean of some functions: $T(X, Y) = |\frac{1}{n} \sum_{i=1}^n f(X_i) - \frac{1}{m} \sum_{j=1}^m f(Y_j)|$.
+  \item Maximum mean discrepancy (MMD): $T(X, Y) = \sup_{f \in \mathcal{F}} |\frac{1}{n} \sum_{i=1}^n f(X_i) - \frac{1}{m} \sum_{j=1}^m f(Y_j)|$, where $\mathcal{F}$ is a class of functions.
+\end{itemize}
+Similar to bootstrap, we can also use Monte Carlo approximation to compute the $p$-value for permutation test:
+
+\bigskip
+
+For $b = 1, 2, \cdots, B$:
+\begin{itemize}
+  \item Sample $\sigma_b$ uniformly from the set of all permutations of $\{1, 2, \cdots, n + m\}$.
+  \item Compute the permuted test statistic $T_{\sigma_b}$.
+\end{itemize}
+Then we can approximate the $p$-value as
+\begin{align*}
+  p\mbox{-value} \approx \frac{1}{B} \sum_{b=1}^B \bm{1}_{\{ T_{\sigma_b} \geq T(X, Y) \}}.
+\end{align*}
+When we take $B$ large enough, this approximation is accurate.
+
+\section{Likelihood ratio tests}
+Consider a general testing problem:
+\begin{align*}
+  H_0: \theta \in \Theta_0 \quad \text{vs.} \quad H_1: \theta \in \Theta_1,
+\end{align*}
+where $\Theta_0$ and $\Theta_1$ are disjoint subsets of $\Theta$.
+
+Likelihood ratio test (LRT) is analogous to the maximal likelihood estimator (MLE) approach. When we have the likelihood function, we can apply this general idea. Concretely, we compare the maximized likelihood values under the null and alternative hypotheses. Intuitively, if $H_0$ is false, then maximizing the likelihood over $\Theta_0$ will impose a genuine restriction on the search space, and the maximized likelihood value will be smaller than that under $\Theta$.
+
+Concretely, we define the likelihood ratio statistic as
+\begin{align*}
+  \Lambda (X) = 2 \log \sup_{\theta \in \Theta} p_\theta (X) - 2 \log \sup_{\theta \in \Theta_0} p_\theta (X).
+\end{align*}
+(Here $X$ denotes all the observed data. For i.i.d. data, $X = (X_1, X_2, \cdots, X_n)$.)
+
+We reject $H_0$ when $\Lambda (X)$ is too large.
+
+\paragraph{Specialization to parametric models and subspace constraints:}
+
+\begin{theorem}
+  Let $\Theta = \real^d$ and $\Theta_0$ be a $k$-dimensional linear subspace of $\real^d$. Suppose that the log-likelihood function $\ell (\theta) = \log p_\theta (X)$ is twice continuously differentiable, and the Fisher information matrix $I(\theta) = - \Exs_\theta [\nabla^2 \ell (\theta)]$ is positive definite for all $\theta \in \Theta$. Then under $H_0$, we have
+  \begin{align*}
+    \Lambda (X) \xrightarrow{d} \chi^2_{d - k}, \quad \text{as } n \to \infty.
+  \end{align*}
+\end{theorem}
+Operationally, this is easily implementable: we just compute the constrained and unconstrained MLEs, and compare the maximized likelihood values. The asymptotic distribution of the likelihood ratio statistic is a known $\chi^2$ distribution, which allows us to compute the rejection threshold without any additional estimation.
+
+Remark:
+\begin{itemize}
+  \item We can relax the requirement that $\Theta$ being the whole $\real^d$ space, and allow it to be an open subset of $\real^d$, as long as the MLEs are in the interior of $\Theta$.
+  \item We can also extend the result to the case where $\Theta_0$ is a $k$-dimensional smooth manifold, instead of a linear subspace.
+\end{itemize}
+Proof idea: under $H_0$, the true parameter is $\theta_0 \in \Theta_0$. We can do a Taylor expansion of the log-likelihood function around $\theta_0$:
+\begin{align*}
+  \sum_{i = 1}^n \log p_\theta (X_i) &= \underbrace{\sum_{i = 1}^n \log p_{\theta_0} (X_i)}_{\mbox{fixed}} + (\theta - \theta_0)^\top \sum_{i = 1}^n \nabla \log p_{\theta_0} (X_i)\\
+  &\qquad + \frac{1}{2} (\theta - \theta_0)^\top \sum_{i = 1}^n \nabla^2 \log p_{\theta_0} (X_i) (\theta - \theta_0) + \underbrace{o_p(n \|\theta - \theta_0\|^2)}_{ = o_p (1), \mbox{ ignored}}.
+\end{align*}
+By law of large numbers,
+\begin{align*}
+  \sum_{i = 1}^n \nabla^2 \log p_{\theta_0} (X_i) = n \Exs_{\theta_0} [\nabla^2 \log p_{\theta_0} (X_i)] + o_p(n) = - n I(\theta_0) + o_p(n).
+\end{align*}
+So at a $\sqrt{n}$-scale, locally around $\theta_0$, the likelihood function is
+\begin{align*}
+  \mbox{constant} + n (\theta - \theta_0)^\top \bar{S}_n - \frac{n}{2} (\theta - \theta_0)^\top I(\theta_0) (\theta - \theta_0) + o_p (1),
+\end{align*}
+where $\bar{S}_n = \frac{1}{n} \sum_{i=1}^n \nabla \log p_{\theta_0} (X_i)$ is the average score function.
+
+Both the constrained and unconstrained quadratic problems have closed-form solutions, and we can compute the likelihood ratio statistic to get the asymptotic distribution. The details are omitted here.
+
+\section{Statistical decision theory}
+Motivation: how to compare different statistical procedures, and how to choose the best one.
+
+\bigskip
+
+Motivating example: Let $X_1, X_2, \cdots, X_n \simiid \mathcal{N} (\theta, 1)$, and we want to estimate $\theta$. We can consider the following three estimators:
+\begin{align*}
+  \widehat{\theta}^{(1)}_n = \bar{X}_n, \quad \widehat{\theta}^{(2)}_n = \frac{1}{n + 1} \sum_{i=1}^n X_i,\quad \widehat{\theta}^{(3)}_n = 0.
+\end{align*}
+Natural criterion: mean squared error (MSE):
+\begin{align*}
+  \Exs \big[ (\widehat{\theta}^{(i)}_n - \theta)^2 \big] = \mathrm{bias}^2 (\widehat{\theta}^{(i)}_n) + \mathrm{var} (\widehat{\theta}^{(i)}_n), \quad i = 1, 2, 3.
+\end{align*}
+By computation, we find
+\begin{align*}
+  \mathrm{MSE}_\theta (\widehat{\theta}^{(1)}_n) = \frac{1}{n}, \quad \mathrm{MSE}_\theta (\widehat{\theta}^{(2)}_n) = \frac{n + \theta^2}{(n + 1)^2}, \quad \mathrm{MSE}_\theta (\widehat{\theta}^{(3)}_n) = \theta^2.
+\end{align*}
+Though $\thetahat^{(1)}_n$ is a natural choice, it is not the best choice for all $\theta$. For example, $\thetahat^{(2)}_n$ has smaller MSE than $\thetahat^{(1)}_n$ when $\theta = 0$, and $\thetahat^{(3)}_n$ has even smaller MSE. On the other hand, $\thetahat^{(1)}_n$ is favorable when $\theta$ is large.
+
+\bigskip
+
+For a more principled comparison, let us start by setting up a general framework.
+\begin{itemize}
+  \item Loss function $L (\theta, \thetahat)$, e.g., squared error loss $L (\theta, \thetahat) = \vecnorm{\thetahat - \theta}{2}^2$.
+  \item Risk function:
+  \begin{align*}
+    R (\theta; \thetahat) = \Exs_\theta [L (\theta, \thetahat(X))].
+  \end{align*}
+\end{itemize}
+The goal of statistical estimation is to find an estimator $\thetahat$ that has small risk for all $\theta \in \Theta$. However, as we have seen in the motivating example, it is usually impossible to find an estimator that dominates all other estimators for all $\theta \in \Theta$. So we need to consider some compromise.
+
+\begin{definition}[Bayes risk]
+  Given a prior distribution $\pi$ on $\Theta$, the Bayes risk of an estimator $\thetahat$ is defined as
+  \begin{align*}
+    r_\pi (\thetahat) = \int R(\theta; \thetahat) \pi (\theta) d\theta.
+  \end{align*}
+  We call an estimator $\thetahat_\pi$ a Bayes estimator if it minimizes the Bayes risk.
+\end{definition}
+
+\begin{definition}[Minimax risk]
+  The worst-case risk of an estimator $\thetahat$ is defined as
+  \begin{align*}
+    \bar{R} (\thetahat) = \sup_{\theta \in \Theta} R(\theta; \thetahat),
+  \end{align*}
+  and the minimax risk is defined as
+  \begin{align*}
+    \bar{R}^* = \inf_{\thetahat} \bar{R} (\thetahat) = \inf_{\thetahat} \sup_{\theta \in \Theta} R(\theta; \thetahat).
+  \end{align*}
+  We call an estimator $\thetahat^*$ a minimax estimator if it achieves the minimax risk, i.e., $\bar{R} (\thetahat^*) = \bar{R}^*$.
+\end{definition}
+
+\subsection{How to find Bayes estimators?}
+Suppose that the data distribution has a density $p_\theta (x)$ with respect to some measure, and the prior distribution $\pi$ has a density $\pi (\theta)$. We can compute the Bayes risk as:
+\begin{align*}
+  r_\pi (\thetahat) = \int_\Theta \int_{\mathcal{X}} L (\theta, \thetahat (x)) p_\theta (x) dx ~\pi (\theta) d \theta \\
+  = \int_{\mathcal{X}} \underbrace{\int_\Theta L (\theta, \thetahat (x)) p_\theta (x) \pi (\theta) d\theta}_{\mbox{pointwise minimization}} dx.
+\end{align*}
+Since $\thetahat (x)$ can depend arbitrarily on $x$, for fixed $x$, we can minimize the inner integral pointwise, so as to minimize the total Bayes risk. So the Bayes estimator takes the form
+\begin{align*}
+  \thetahat (x) = \arg\min_{\psi} \int_\Theta L (\theta, \psi) p_\theta (x) \pi (\theta) d\theta.
+\end{align*}
+Indeed, this integral has a nice interpretation:
+\begin{align*}
+  \thetahat (x) &= \arg\min_{\psi} \int_\Theta L (\theta, \psi) p_\theta (x) \pi (\theta) d\theta\\
+  &=  \arg\min_{\psi} \int_\Theta L (\theta, \psi)  \frac{p_\theta (x) \pi (\theta)
+  }{\int_\Theta p_\theta (x) \pi (\theta) d\theta} d\theta\\
+  &= \arg\min_{\psi} \int_\Theta L (\theta, \psi) \Pi (\theta \mid X =x )d \theta,
+\end{align*}
+where $\Pi (\theta \mid X = x)$ is the posterior distribution of $\theta$ given the observed data $X = x$. So the Bayes estimator is the posterior risk minimizer.
+
+Bayesian interpretation of the posterior distribution: Bayesian statistics treats the unknown parameter $\theta$ as a random variable, and the prior distribution $\pi$ is the prior belief about $\theta$. After observing the data $X = x$, we can update our belief about $\theta$ using Bayes' theorem, and the posterior distribution $\Pi (\theta \mid X = x)$ represents our updated belief about $\theta$ after seeing the data.
+
+For MSE loss, the Bayes estimator is the posterior mean:
+\begin{align*}
+  \thetahat (x) = \int_\Theta \theta \cdot  \Pi (\theta \mid X = x) d\theta.
+\end{align*}
+
+\end{document}

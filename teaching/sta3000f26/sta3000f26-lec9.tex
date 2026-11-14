@@ -1,0 +1,336 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+% Personal notation and theorem environments.
+\input{../final_macros.tex}
+
+\newcommand{\coursenumber}{STA3000F}
+\newcommand{\coursetitle}{Advanced Theory of Statistics}
+\newcommand{\courseterm}{Fall 2026}
+\newcounter{lecture}
+\setcounter{lecture}{9}
+\newcommand{\lecturenumber}{\arabic{lecture}}
+\newcommand{\lecturedate}{November 13, 2026}
+\newcommand{\lecturer}{Wenlong Mou}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\coursenumber: \coursetitle}
+\fancyhead[R]{Lecture \lecturenumber}
+\fancyfoot[C]{\lecturenumber--\arabic{page}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\usepackage{bm}
+
+\renewcommand{\thepage}{\lecturenumber--\arabic{page}}
+
+\newtheorem{example}{Example}
+\numberwithin{theorem}{lecture}
+\numberwithin{proposition}{lecture}
+\numberwithin{lemma}{lecture}
+\numberwithin{claim}{lecture}
+\numberwithin{corollary}{lecture}
+\numberwithin{definition}{lecture}
+\numberwithin{conjecture}{lecture}
+\numberwithin{remark}{lecture}
+\numberwithin{example}{lecture}
+\numberwithin{equation}{lecture}
+\counterwithin*{section}{lecture}
+\renewcommand{\theHsection}{\arabic{lecture}.\arabic{section}}
+
+\newcommand{\makelecturenotesheader}{%
+  \noindent
+  \textbf{\coursenumber: \coursetitle}%
+  \hfill
+  \textbf{\courseterm}
+
+  \begin{center}
+    {\Large\bfseries Lecture \lecturenumber: \lecturedate}
+  \end{center}
+
+  \noindent
+  \textbf{Lecturer:} \lecturer
+  \par\medskip
+  \hrule
+  \bigskip
+}
+
+\begin{document}
+
+\makelecturenotesheader
+
+\section{Continued from last time --- process convergence}
+In empirical process theory, we have studied upper bounds on
+\begin{align}
+  |(P_n - P) (f_\theta - f_{\thetastar})|,
+\end{align}
+showing that it converges to $0$ at at certain rate. This is a version of uniform law of large numbers. But if we re-scale it by $\sqrt{n}$, we might expect some convergence of
+\begin{align}
+  \big(\sqrt{n} (P_n - P) (f_\theta - f_{\thetastar}) \big)_{\theta \in \Theta},
+\end{align}
+to converge in distribution to something. For ULLN, initially we work with pointwise convergence and union bounds for finite $\Theta$. For the CLT, for finite $\Theta$, we know that multivariate CLT gives convergence to a multivariate Gaussian distribution
+\begin{align*}
+  \big(\sqrt{n} (P_n - P) (f_\theta - f_{\thetastar}) \big)_{\theta_i: i \in [N]} \overset{d}{\to} N(0, \Sigma).
+\end{align*}
+For infinite $\Theta$, we can identify the limiting covariance structure based on finite-dimensional marginals. We hope that the limit is a Gaussian process $G_\theta$ with covariance structure
+\begin{align*}
+  \cov (G_{\theta_1}, G_{\theta_2}) = \cov (f_{\theta_1} (X) - f_{\thetastar} (X), f_{\theta_2} (X) - f_{\thetastar} (X)),
+\end{align*}
+Without mathematical rigor, we can write the convergence as
+\begin{align*}
+  \big(\sqrt{n} (P_n - P) (f_\theta - f_{\thetastar}) \big)_{\theta \in \Theta} \overset{d}{\to} (G_\theta)_{\theta \in \Theta}.
+\end{align*}
+Then, we can derive the limiting distribution of $\thetahat_n$ using the classical way:
+\begin{align*}
+  \thetahat_n &\mydefn \arg\min_{\theta \in \Theta} F_n (\theta)\\
+  &= \arg\min_{\theta \in \Theta} \Big\{ F(\theta) +  (P_n - P) (f_\theta - f_{\thetastar}) \Big\}\\
+  &\approx \arg\min_{\theta \in \Theta} \Big\{ F(\thetastar) + \frac{1}{2} (\theta - \thetastar)^\top \nabla^2 F (\thetastar) (\theta - \thetastar) + \frac{1}{\sqrt{n}} G_\theta \Big\}.
+\end{align*}
+If $G_\theta = (\theta - \thetastar)^\top Z$ for some Gaussian vector $Z$, i.e., a degenerate Gaussian process, then you recover the classical asymptotic normality result. But in general, $G_\theta$ is not degenerate, and the limiting distribution of $\thetahat_n$ is not Gaussian.
+
+Those are ``physical'' arguments. In order to make them rigorous, the idea is to show ``stochastic equicontinuity'' of the empirical process: it is known that if a sequence of stochastic processes $(X_n (t))_{t \in T}$ converges in finite-dimensional distributions to a process $(X(t))_{t \in T}$, and suppose that the function $\omega$ defined as
+\begin{align*}
+ \omega (\eta) \mydefn \lim_{n \rightarrow \infty} \Exs \Big[ \sup_{|s - t| \leq \eta,~ s, t \in T} |X_n (s) - X_n (t)| \Big]
+\end{align*}
+satisfies $\lim_{\eta \to 0} \omega (\eta) = 0$, then we have convergence in distribution of the stochastic processes
+\begin{align*}
+  (X_n (t))_{t \in T} \overset{d}{\to} (X(t))_{t \in T}.
+\end{align*}
+Eventually, the argument boils down to upper bounding $\omega(\eta)$, which is a version of the empirical process supremum.
+
+It is also worth noting that even for degenerate $G_\theta$, this mechanism is still strictly more general than the classical argument based on Taylor expansion. If you make the arguments careful enough, you can prove asymptotic normality only based on first-order smoothness of $f$ (or even weaker, differentiability in quadratic means), without requiring second-order smoothness of $f$.
+
+\section{Convergence of Bayesian estimators}
+Given a prior distribution $\pi$, and $\mathrm{i.i.d.}$ data $X_1, \cdots, X_n \sim \Prob_{\theta^*}$ (here we do not need to assume that $\theta^*$ is random, as we can establish frequentist convergence of Bayesian estimators), we can define the posterior distribution as
+\begin{align*}
+  \Pi ( \theta \mid X_1, \cdots, X_n) \mydefn \frac{\prod_{i=1}^n p_\theta (X_i) \pi (\theta)}{\int \prod_{i=1}^n p_{\theta'} (X_i) \pi (d\theta')}.
+\end{align*}
+Theoretical questions of interest include:
+\begin{itemize}
+\item Consistency: can we have
+\begin{align*}
+  \Pi ( \theta: |\theta - \theta^*| \geq \varepsilon \mid X_1, \cdots, X_n) \xrightarrow{p} 0,
+\end{align*}
+for any $\varepsilon > 0$?
+\item Convergence rate: can we have
+\begin{align*}
+  \Pi ( \theta: |\theta - \theta^*| \geq r_n \mid X_1, \cdots, X_n) \xrightarrow{p} 0,
+\end{align*}
+where $r_n \to 0$ as $n \to \infty$?
+\item Asymptotic shape of the posterior distribution: can we have
+\begin{align*}
+ d_{\mathrm{TV}} \Big( \Pi (\cdot | X_1, \cdots, X_n), \mbox{limiting distribution} \Big) \xrightarrow{p} 0.
+\end{align*}
+\end{itemize}
+We will focus on the first question, while the techniques we develop can also be used to answer the second question.
+\begin{theorem}[Schwartz]
+  Under the following conditions:
+  \begin{enumerate}
+    \item For any $\varepsilon > 0$, we have
+    \begin{align*}
+      \pi \Big( \theta: \kull{\Prob_{\theta^*}}{\Prob_\theta}\leq \varepsilon \Big) > 0.
+    \end{align*}
+    \item For any $\varepsilon > 0$, there exists a sequence of tests $\phi_n$ such that
+    \begin{align*}
+      \Exs_{\theta^*} [\phi_n] \to 0, \quad \sup_{\theta: |\theta - \theta^*| \geq \varepsilon} \Exs_\theta [1 - \phi_n] \to 0.
+    \end{align*}
+  \end{enumerate}
+  Then we have posterior consistency:
+  \begin{align*}
+    \Pi ( \theta: |\theta - \theta^*| \geq \varepsilon \mid X_1, \cdots, X_n) \xrightarrow{p} 0.
+  \end{align*}
+\end{theorem}
+Remarks:
+\begin{itemize}
+  \item The first condition requires the prior to put positive mass around the true parameter $\theta^*$. Without this condition, the prior may be bounded away from $\theta^*$, and the posterior will never concentrate around $\theta^*$.
+  \item The second condition requires the existence of a sequence of tests that can distinguish $\theta^*$ from any other parameter $\theta$ that is at least $\varepsilon$. But this is just a theoretical device --- the posterior estimator does not need to know the tests. Existence of such tests is usually a weak condition --- without this condition, the model is usually not identifiable.
+\end{itemize}
+Proof of Schwartz's theorem:
+
+\paragraph{Step I: boost the error probability of tests}
+By assumption, there exists $n_0$ such that
+\begin{align*}
+  \Exs_{\thetastar} \big[ \phi_n \big] \leq 1/4, \quad \sup_{\theta: |\theta - \thetastar| \geq \varepsilon} \Exs_\theta [1 - \phi_n] \leq 1/4, \quad \forall n \geq n_0.
+\end{align*}
+Then we can use the following trick: for large $n$, we divide the $n$ samples into $n/ n_0$ blocks, each of size $n_0$. We can then run the test $\phi_{n_0}$ on each block to get
+\begin{align*}
+Y_i \mydefn \phi_{n_0} (\mbox{$i$-th block}), \quad i = 1, \ldots, n / n_0.
+\end{align*}
+Let the final test be the majority vote:
+\begin{align*}
+  \widetilde{\phi}_n = \bm{1} \Big\{ \sum_{i = 1}^{n / n_0} Y_i \geq n / (2 n_0) \Big\}.
+\end{align*}
+By Hoeffding bound, we have
+\begin{align*}
+  \Exs_{\thetastar} [\widetilde{\phi}_n] \leq \exp (- c n / n_0), \quad \sup_{\theta: |\theta - \thetastar| \geq \varepsilon} \Exs_\theta [1 - \widetilde{\phi}_n] \leq \exp (- c n / n_0).
+\end{align*}
+So without loss of generality, we can assume that the tests $\phi_n$ have exponentially decaying error probabilities.
+
+\paragraph{Step II: relating the posterior to the test}
+
+Fix $\varepsilon > 0$, we consider the set $\mathcal{U} \mydefn \{\theta: |\theta - \thetastar| \leq \varepsilon\}$. We have
+\begin{align*}
+  \Pi (\mathcal{U}^c \mid X_1, \cdots, X_n) &= \frac{\int_{\mathcal{U}^c} \prod_{i=1}^n p_\theta (X_i) \pi (\theta) d\theta}{\int_{\Theta} \prod_{i=1}^n p_\theta (X_i) \pi (\theta) d\theta}\\
+  &\leq \phi_n + (1 - \phi_n) \frac{\int_{\mathcal{U}^c} \prod_{i=1}^n p_\theta (X_i) / p_{\thetastar} (X_i) \cdot  \pi (\theta) d\theta}{\int_{\Theta} \prod_{i=1}^n p_\theta (X_i) / p_{\thetastar} (X_i) \cdot  \pi (\theta) d\theta}.
+\end{align*}
+For the numerator in the second term, we have
+\begin{align*}
+  &\Exs_{\thetastar} \Big[ (1 - \phi_n) \cdot \int_{\mathcal{U}^c} \prod_{i=1}^n \frac{p_\theta (X_i)}{p_{\thetastar} (X_i)} \cdot \pi (\theta) d\theta \Big]\\
+  &=\int  (1 - \phi_n) \cdot \int_{\mathcal{U}^c} \prod_{i=1}^n \frac{p_\theta (x_i)}{p_{\thetastar} (x_i)} \cdot \pi (\theta) \cdot \prod_{i=1}^n p_{\thetastar} (x_i) d\theta dx_1 \cdots dx_n\\
+  &= \int_{\mathcal{U}^c} \pi (\theta) \cdot \int (1 - \phi_n) \cdot \prod_{i=1}^n p_\theta (x_i) dx_1 \cdots dx_n d\theta\\
+  &= \int_{\mathcal{U}^c} \Exs_{\theta} [1 - \phi_n] \cdot \pi (\theta) d\theta,
+\end{align*}
+which is integral of type-II error outside $\mathcal{U}$. We know from step I that this is exponentially small.
+
+\paragraph{Step III: dealing with the denominator}
+We need to lower bound the quantity:
+\begin{align*}
+  \int_{\Theta} \prod_{i=1}^n p_\theta (X_i) / p_{\thetastar} (X_i) \cdot  \pi (\theta) d\theta.
+\end{align*}
+Let us fix a subset $\Theta_0 \subseteq \Theta$, it suffices to lower bound
+\begin{align*}
+  \int_{\Theta_0} \prod_{i=1}^n p_\theta (X_i) / p_{\thetastar} (X_i) \cdot  \pi (\theta) d\theta.
+\end{align*}
+In particular, we have
+\begin{align*}
+  &\log \int_{\Theta_0} \prod_{i = 1}^n p_\theta (X_i) / p_{\thetastar} (X_i) \cdot  \pi (\theta) d\theta\\
+  &= \log \prior (\Theta_0) + \log \int_{\Theta_0} \prod_{i = 1}^n p_\theta (X_i) / p_{\thetastar} (X_i) \cdot  \frac{\pi (\theta)}{\pi (\Theta_0)} d\theta\\
+  &\overset{(\text{Jensen's inequality})}{\geq} \log \prior (\Theta_0) + \int_{\Theta_0} \underbrace{\sum_{i = 1}^n \log \frac{p_\theta}{p_{\thetastar}} (X_i)}_{\text{i.i.d. sum}} \cdot  \frac{\pi (\theta)}{\pi (\Theta_0)} d\theta.
+\end{align*}
+By law of large numbers, we have
+\begin{align*}
+  \frac{1}{n} \sum_{i = 1}^n \int_{\Theta_0} \log \frac{p_\theta}{p_{\thetastar}} (X_i) \cdot  \frac{\pi (\theta)}{\pi (\Theta_0)} d\theta \xrightarrow{p} - \int_{\Theta_0} \kull{\Prob_{\thetastar}}{\Prob_\theta} \cdot  \frac{\pi (\theta)}{\pi (\Theta_0)} d\theta.
+\end{align*}
+We choose $\Theta_0 = \{\theta: \kull{\Prob_{\thetastar}}{\Prob_\theta} \leq \varepsilon\}$, which has positive prior mass by assumption. Then for this $\varepsilon$, we have
+\begin{align*}
+  \Prob \Big(\sum_{i = 1}^n \int_{\Theta_0} \log \frac{p_\theta}{p_{\thetastar}} (X_i) \cdot  \frac{\pi (\theta)}{\pi (\Theta_0)} d\theta \leq - 2 n \varepsilon  \Big) \xrightarrow{p} 0.
+\end{align*}
+Putting these together, with high probability, we have
+\begin{align*}
+  \frac{\mbox{numerator}}{\mbox{denominator}} \leq \frac{\exp ( - c n / n_0)}{\pi (\Theta_0) \exp ( - 2 n \varepsilon)} \xrightarrow{p} 0,
+\end{align*}
+which implies the posterior consistency.
+
+\bigskip
+
+Remarks on existence of tests:
+\begin{itemize}
+  \item Easy to construct for 1 vs. 1 testing problem --- Neyman--Pearson lemma gives the most powerful test.
+  \item Here we use 1 vs. many testing problem. A straightforward approach is to use union bound (i.e. Bonferroni correction) to reduce it to 1 vs. 1 testing problems. Suppose we have a level-$\alpha$ test $\phi_n (\theta_i)$ for testing $\thetastar$ vs. $\theta_i$, for $i = 1, \ldots, m$. Then we can use this test at level $\alpha / m$ for each $\theta_i$, and take the maximum of these tests to get a level-$\alpha$ test for testing $\thetastar$ vs. $\{\theta_1, \ldots, \theta_m\}$. For infinite $\Theta$, we can use discretization to reduce it to finite $\Theta$, and this boils down to techniques including covering/packing numbers, and VC dimension.
+\end{itemize}
+Though the theorem only shows consistency, the techniques can be used to show the convergence rates of Bayesian estimators. Localization argument can also be used to get tight convergence rates.
+
+\section{Nonparametric estimation}
+Examples:
+\begin{itemize}
+  \item Density estimation: $X_1, \cdots, X_n \sim p^*$, and we want to estimate $p^*$.
+
+  (possibles choices of the error metric: $|\widehat{p}_n (x_0) - p^* (x_0)|$,
+  $\vecnorm{\widehat{p}_n - p^*}{\mathbb{L}^2}$,
+  $d_{\mathrm{TV}}(\widehat{p}_n, p^*)$, $\kull{\widehat{p_n}}{p^*}$,
+  $\kull{p^*}{\widehat{p_n}}$, $\mathcal{W}_1 (\widehat{p_n}, p^*)$,
+  $\mathcal{W}_2 (\widehat{p_n}, p^*)$).
+  \item Regression: in general, we have $(X_i, Y_i) \simiid \Prob$, and we want to estimate the regression function $f^* (x) = \Exs[Y \mid X = x]$. This is the random design problem. A simplified version is the fixed design problem, where we have $Y_i = f^* (x_i) + \varepsilon_i$, and we want to estimate $f^*$.
+\end{itemize}
+
+Now let us see the application of empirical process tools to nonparametric estimation. We begin with fixed-design regression problem
+\begin{align*}
+  Y_i = f^* (x_i) + \varepsilon_i, \quad i = 1, \ldots, n,
+\end{align*}
+for some deterministic design points $x_1, \ldots, x_n$, and we want to estimate the regression function $f^*$. We assume that $\varepsilon_i \simiid \mathcal{N} (0, 1)$.
+
+Least-square estimator (equiv. MLE) over a function class $\mathcal{F}$:
+\begin{align*}
+  \widehat{f}_n \mydefn \arg\min_{f \in \mathcal{F}} \sum_{i = 1}^n (Y_i - f(x_i))^2,
+\end{align*}
+To facilitate the analysis (and computation), we assume that $\mathcal{F}$ is a convex function class.
+
+First-order optimality condition: for any $f \in \mathcal{F}$, we know that any convex combination of $\widehat{f}_n$ and $f$ is also in $\mathcal{F}$, so the function $t \mapsto \sum_{i = 1}^n (Y_i - ((1 - t) \widehat{f}_n (x_i) + t f(x_i)))^2$ is minimized at $t = 0$, for $t \in [0, 1]$. Taking derivative at $t = 0$, we have
+\begin{align*}
+  \sum_{i = 1}^n (Y_i - \widehat{f}_n (x_i)) (f(x_i) - \widehat{f}_n (x_i)) \leq 0, \quad \forall f \in \mathcal{F}.
+\end{align*}
+Suppose that $f^* \in \mathcal{F}$, then we can take $f = f^*$ to get
+\begin{align*}
+  \vecnorm{\widehat{f}_n - f^*}{n}^2 \leq \inprod{\widehat{f}_n - f^*}{\varepsilon}_n,
+\end{align*}
+where we define the empirical inner product and norm as
+\begin{align*}
+  \inprod{f}{g}_n \mydefn \frac{1}{n} \sum_{i = 1}^n f(x_i) g(x_i), \quad \vecnorm{f}{n}^2 \mydefn \inprod{f}{f}_n.
+\end{align*}
+Na\"{i}ve bound: by Cauchy--Schwarz inequality, we have
+\begin{align*}
+  \vecnorm{\widehat{f}_n - f^*}{n}^2 \leq \vecnorm{\widehat{f}_n - f^*}{n} \cdot \vecnorm{\varepsilon}{n},
+\end{align*}
+which gives you a bound of order $O_p (1)$, which is not useful. We need to do better.
+
+Similar to Rademacher complexity, if the function class $\mathcal{F}$ has some structural constraints, it cannot fit arbitrary noise $\varepsilon$. Here we use localized Gaussian complexity to quantify the ``size'' of the function class $\mathcal{F}$.
+\begin{align*}
+  \mathcal{G}_n (r; \mathcal{F}) \mydefn \Exs \Big[ \sup_{f \in \mathcal{F}: \vecnorm{f - f^*}{n} \leq r} \frac{1}{n} \sum_{i = 1}^n g_i (f(x_i) - f^* (x_i)) \Big],
+\end{align*}
+where $g_i \simiid \mathcal{N} (0, 1)$ are independent of $\varepsilon_i$.
+
+We know from the fixed-point relation that
+\begin{align*}
+  \vecnorm{\widehat{f}_n - f^*}{n}^2  \leq \sup_{\vecnorm{h}{n} \leq \vecnorm{\widehat{f}_n - f^*}{n}, h + f^* \in \mathcal{F}} \inprod{h}{\varepsilon}_n.
+\end{align*}
+If the radius were fixed, the expectation of the right-hand side can be bounded by the Gaussian complexity.
+
+Using the same technique as Lecture 8, we have the theorem:
+\begin{theorem}
+  Suppose that $\mathcal{G}_n (r; \mathcal{F}) \leq \phi_n (r)$ for some function $\phi_n$ satisfying $\phi_n (c r) \leq c^\alpha \phi_n (r)$ for some $\alpha < 2$. Let $r_n$ be the smallest positive solution to the fixed-point relation $\phi_n (r) \leq r^2$. Then we have
+  \begin{align*}
+    \vecnorm{\widehat{f}_n - f^*}{n} \leq c r_n,
+  \end{align*}
+  with high probability, where the constant $c$ depends only on $\alpha$ and the failure probability.
+\end{theorem}
+For convex set $\mathcal{F}$, the growth condition on $\phi_n$ is satisfied with $\alpha = 1$. In particular, we note that for any $f \in \mathcal{F} \cap \ball (f^*, c r)$ for some constant $c > 1$, then we have $f^* + (f - f^*) / c \in \mathcal{F} \cap \ball (f^*, r)$, and hence we can show that $\mathcal{G}_n (c r; \mathcal{F}) \leq c \mathcal{G}_n (r; \mathcal{F})$.
+
+\paragraph{How to bound Gaussian complexity?} In the previous lectures, we have seen bounds on Rademacher complexity, where the first step is to use the MGF of Gaussian random variables to bound the MGF of Rademacher random variables:
+\begin{align*}
+  \Exs \Big[ \exp (\lambda \sum_{i = 1}^n \varepsilon_i a_i) \Big] \leq \exp \Big( \frac{\lambda^2}{2} \sum_{i = 1}^n a_i^2 \Big), \quad \forall \lambda > 0,
+\end{align*}
+where $\varepsilon_i \simiid \mathrm{Rademacher}$.
+
+Now that we replace $\varepsilon_i$ with $g_i \simiid \mathcal{N} (0, 1)$, this inequality becomes an equality:
+\begin{align*}
+  \Exs \Big[ \exp (\lambda \sum_{i = 1}^n g_i a_i) \Big] = \exp \Big( \frac{\lambda^2}{2} \sum_{i = 1}^n a_i^2 \Big), \quad \forall \lambda > 0.
+\end{align*}
+And the rest of the argument is the same as before.
+\begin{theorem}
+  \begin{align*}
+    \mathcal{G}_n (r; \mathcal{F}) \leq \frac{c}{\sqrt{n}} \int_0^r \sqrt{\log N (\mathcal{F} \cap \ball (f^*, r); \vecnorm{\cdot}{n},  \varepsilon)} d \varepsilon,
+  \end{align*}
+\end{theorem}
+Example: consider the function class
+\begin{align*}
+  \mathcal{F} = \Big\{ f: [0, 1] \to [0, 1],~ |f(x) - f(y)| \leq |x - y|,~ \forall x, y \in [0, 1] \Big\}.
+\end{align*}
+Using the Rudelson--Vershynin lemma, we can show that
+\begin{align*}
+  \mathcal{N} (\mathcal{F} \cap \ball (f^*, r); \vecnorm{\cdot}{n},  \varepsilon) \leq  \mathcal{N} (\mathcal{F} ; \vecnorm{\cdot}{n},  \varepsilon) \leq \exp \big( c_1 \mathrm{fat}_{c_2 \varepsilon} (\mathcal{F})) \leq \exp (c / \varepsilon).
+\end{align*}
+Applying the Dudley integral result, we have
+\begin{align*}
+  \mathcal{G}_n (r; \mathcal{F}) \leq \frac{c}{\sqrt{n}} \int_0^r \sqrt{\log N (\mathcal{F} \cap \ball (f^*, r); \vecnorm{\cdot}{n},  \varepsilon)} d \varepsilon \leq c' \sqrt{\frac{r}{n}}.
+\end{align*}
+Then using the fixed-point relation, we have $r_n = c n^{-1/3}$, which implies that
+\begin{align*}
+  \vecnorm{\widehat{f}_n - f^*}{n} \leq c n^{-1/3},
+\end{align*}
+for the least-square estimator over the Lipschitz function class, with high probability.
+
+This matches the convergence rate of histogram/local averaging estimators.
+
+
+
+\end{document}

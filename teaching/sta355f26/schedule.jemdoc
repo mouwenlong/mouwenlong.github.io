@@ -14,7 +14,7 @@ lecture | topic | book chapters | notes ||
 10\/16 | identifiability and MLE consistency, asymptotic normality of Z- and M-estimators, sandwich covariance and plug-in inference, Fisher information and the Cramer--Rao bound, Newton and one-step estimators, averaged stochastic gradient descent | [https://link.springer.com/book/10.1007/978-0-387-21736-9 Wasserman 9.5, 9.7--9.8, 9.10, 9.13.4]; supplementary: van der Vaart 5.2--5.3, 5.5--5.7 | [./sta355f26-lec6.pdf Lecture 6] ||
 10\/23 | midterm exam | - | [./midterm.pdf Questions], [./midterm-sol.pdf Solutions] ||
 11\/06 | sufficient statistics and factorization, Rao--Blackwellization, exponential families, test size and power, one- and two-sided tests, Wald, Pearson chi-squared and Student t tests, p-values | [https://link.springer.com/book/10.1007/978-0-387-21736-9 Wasserman 9.13.2--9.13.3 and Chapter 10] | [./sta355f26-lec7.pdf Lecture 7] ||
-11\/13 |  |  |  ||
+11\/13 | p-values under the null, Bonferroni correction and family-wise error, false discovery rate and the Benjamini--Hochberg procedure, permutation tests, likelihood ratio tests, loss and risk, Bayes and minimax estimators | [https://link.springer.com/book/10.1007/978-0-387-21736-9 Wasserman 10.5--10.7 and Chapter 12] | [./sta355f26-lec8.pdf Lecture 8], [./benjamini-hochberg.html BH procedure (interactive)] ||
 11\/20 |  |  |  ||
 11\/27 |  |  |  ||
 12\/04 |  |  |  ||

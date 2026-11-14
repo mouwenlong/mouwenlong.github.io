@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Benjamini–Hochberg | Step by step</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --page: #f3f6f5; --surface: #fff; --ink: #152620; --soft: #4b625a;
+    --line: #d6e0dc; --grid: #e7eeeb; --point: #60746d;
+    --teal: #006b59; --tint: #e1f3ed; --on-teal: #fff;
+    --gold: #a34f0a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --page: #121b18; --surface: #1a2622; --ink: #eaf4ee; --soft: #b3c7be;
+      --line: #3d5149; --grid: #2d3d37; --point: #a0b6ae;
+      --teal: #72ddbf; --tint: #213f35; --on-teal: #0d2920;
+      --gold: #ffba72;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--page); color: var(--ink); font: 16px/1.5 system-ui, sans-serif; }
+  main { width: min(960px, 100%); margin: auto; padding: clamp(14px, 4vw, 38px); }
+  h1, h2, p { margin: 0; }
+  h1 { font-size: clamp(1.65rem, 4.8vw, 2.7rem); letter-spacing: -.045em; line-height: 1.16; }
+  .eyebrow { color: var(--teal); font-size: .75rem; font-weight: 750; letter-spacing: .13em; text-transform: uppercase; margin-bottom: 5px; }
+  .stages { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; margin: 22px 0 12px; }
+  button { border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); font: inherit; cursor: pointer; }
+  button:focus-visible, input:focus-visible, summary:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+  .stages button { padding: 10px 8px; text-align: left; font-size: .88rem; font-weight: 650; }
+  .stages button[aria-current="step"] { background: var(--teal); color: var(--on-teal); border-color: var(--teal); }
+  .step-number { margin-right: 6px; font-variant-numeric: tabular-nums; opacity: .78; }
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: clamp(12px, 2.6vw, 24px); }
+  .toolbar { display: flex; justify-content: space-between; align-items: end; gap: 10px 24px; flex-wrap: wrap; }
+  .slider { width: min(100%, 320px); display: grid; gap: 3px; }
+  label { display: flex; gap: 12px; justify-content: space-between; color: var(--soft); font-size: .85rem; }
+  output { color: var(--ink); font-weight: 750; font-variant-numeric: tabular-nums; }
+  input[type="range"] { width: 100%; margin: 0; height: 24px; accent-color: var(--teal); }
+  .play { padding: 7px 14px; font-weight: 650; font-size: .88rem; white-space: nowrap; }
+  .plot { margin-top: 12px; position: relative; }
+  svg { display: block; width: 100%; overflow: visible; font: 12px system-ui, sans-serif; }
+  svg text { fill: var(--soft); font-variant-numeric: tabular-nums; }
+  svg .axis-title { fill: var(--ink); font-weight: 650; }
+  .p-mark { transition: transform .5s cubic-bezier(.2,.75,.25,1); cursor: help; }
+  .grid { stroke: var(--grid); }
+  .axis { stroke: var(--point); }
+  .threshold { stroke: var(--gold); stroke-width: 1.7; stroke-dasharray: 6 4; }
+  .threshold-tick { stroke: var(--gold); stroke-width: 1.6; }
+  .cutoff { stroke: var(--teal); stroke-width: 1.3; stroke-dasharray: 3 4; }
+  .shade { fill: var(--tint); }
+  .dot { fill: var(--point); stroke: var(--surface); stroke-width: 1.5; }
+  .dot.active { fill: var(--teal); }
+  .dot.inactive { fill: var(--surface); stroke: var(--point); stroke-width: 1.6; }
+  .ring { fill: none; stroke: var(--gold); stroke-width: 2; }
+  .connector { stroke: var(--point); stroke-dasharray: 2 3; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 18px; color: var(--soft); min-height: 25px; font-size: .8rem; align-items: center; }
+  .legend span { display: inline-flex; gap: 6px; align-items: center; }
+  .swatch { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--point); }
+  .swatch.active { background: var(--teal); }
+  .swatch.open { background: none; border: 1.5px solid var(--point); }
+  .swatch.dash { width: 18px; height: 0; border-top: 2px dashed var(--gold); border-radius: 0; background: none; }
+  .swatch.ringed { background: none; border: 2px solid var(--gold); }
+  .result { margin-top: 10px; border-top: 1px solid var(--line); padding-top: 12px; min-height: 83px; }
+  h2 { font-size: 1.05rem; letter-spacing: -.015em; }
+  .result p { margin-top: 3px; color: var(--soft); font-size: .9rem; }
+  details { margin-top: 8px; color: var(--soft); }
+  summary { cursor: pointer; width: fit-content; font-size: .85rem; }
+  table { width: 100%; margin-top: 7px; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: .82rem; }
+  th, td { padding: 5px 4px; text-align: left; border-bottom: 1px solid var(--line); }
+  tbody th { font-weight: 650; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+  @media (max-width: 520px) {
+    .stages button { padding: 7px 4px; text-align: center; min-height: 46px; font-size: .77rem; }
+    .step-number { display: block; margin: 0; }
+    .slider { width: auto; flex: 1 1 130px; }
+    .play { padding-inline: 9px; min-height: 44px; }
+    th, td { padding-inline: 3px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .p-mark { transition: none; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="eyebrow">Multiple testing · worked example</p>
+    <h1>Benjamini–Hochberg</h1>
+  </header>
+  <nav class="stages" aria-label="Procedure steps">
+    <button type="button" data-step="0" aria-current="step"><span class="step-number">1</span>Input</button>
+    <button type="button" data-step="1"><span class="step-number">2</span>Sort</button>
+    <button type="button" data-step="2"><span class="step-number">3</span>Find cutoff</button>
+    <button type="button" data-step="3"><span class="step-number">4</span>Reject</button>
+  </nav>
+  <section class="panel" aria-label="Interactive p-value plot">
+    <div class="toolbar">
+      <div class="slider">
+        <label for="level"><span>Target FDR <i>q</i></span><output id="level-value" for="level">5%</output></label>
+        <input id="level" type="range" min="5" max="100" step="5" value="50" aria-valuetext="5%">
+      </div>
+      <button type="button" class="play" id="play">Play steps</button>
+    </div>
+    <div class="plot" id="plot">
+      <svg id="chart" role="img" aria-labelledby="plot-title plot-desc">
+        <title id="plot-title">P-values for eight hypotheses</title>
+        <desc id="plot-desc"></desc>
+        <g id="background" aria-hidden="true"></g>
+        <g id="points" aria-hidden="true"></g>
+      </svg>
+    </div>
+    <div class="legend" id="legend" aria-hidden="true"></div>
+    <div class="result" aria-live="polite" aria-atomic="true">
+      <h2 id="result-title"></h2>
+      <p id="result-detail"></p>
+    </div>
+    <details>
+      <summary>Exact values</summary>
+      <table>
+        <caption class="sr-only">Values and decisions for the current step</caption>
+        <thead id="values-head"></thead>
+        <tbody id="values-body"></tbody>
+      </table>
+    </details>
+    <noscript>This illustration needs JavaScript to display the steps.</noscript>
+  </section>
+</main>
+<script>
+(() => {
+  "use strict";
+  // Algorithm: Benjamini & Hochberg (1995), §2. DOI: 10.1111/j.2517-6161.1995.tb02031.x.
+  const byId = id => document.getElementById(id);
+  const input = [54, 23, 2, 90, 20, 39, 8, 70].map((p, i) => ({p, id: i + 1}));
+  const sorted = input.slice().sort((a, b) => a.p - b.p || a.id - b.id);
+  const m = input.length;
+  const chart = byId("chart");
+  const bg = byId("background");
+  const pointLayer = byId("points");
+  const level = byId("level");
+  const play = byId("play");
+  const stages = [...document.querySelectorAll("[data-step]")];
+  const names = ["H₁", "H₂", "H₃", "H₄", "H₅", "H₆", "H₇", "H₈"];
+  const name = d => names[d.id - 1];
+  const pvalue = d => (d.p / 1000).toFixed(3);
+  const decimal = x => Number(x.toFixed(6)).toString();
+  const percent = q => `${q / 10}%`;
+  const ns = "http://www.w3.org/2000/svg";
+  let step = 0, timer = null;
+
+  function mark(tag, attrs, parent, content) {
+    const el = document.createElementNS(ns, tag);
+    for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+    if (content !== undefined) el.textContent = content;
+    parent.append(el);
+    return el;
+  }
+  const groups = new Map(input.map(d => [d.id, mark("g", {class: "p-mark"}, pointLayer)]));
+
+  function draw() {
+    const width = Math.round(byId("plot").getBoundingClientRect().width);
+    if (!width) return;
+    const height = width < 460 ? 256 : 335;
+    const left = 45, right = width - 10, top = 27, bottom = height - 65;
+    const spacing = (right - left) / m;
+    const x = index => left + (index + 0.5) * spacing;
+    const y = value => bottom - (bottom - top) * value / 0.1;
+    const q = Number(level.value);
+    const threshold = rank => rank * q / (1000 * m);
+    // Compare integers so equality counts even at slider boundaries.
+    const passes = (d, rank) => d.p * m <= rank * q;
+    const k = sorted.reduce((last, d, i) => passes(d, i + 1) ? i + 1 : last, 0);
+    const ordered = step ? sorted : input;
+    const showLine = step >= 2;
+    const final = step === 3;
+
+    byId("level-value").textContent = percent(q);
+    level.setAttribute("aria-valuetext", percent(q));
+    chart.setAttribute("viewBox", `0 0 ${width} ${height}`);
+    chart.setAttribute("height", height);
+    bg.replaceChildren();
+    const line = (x1, y1, x2, y2, cls) => mark("line", {x1,y1,x2,y2,class:cls}, bg);
+    const label = (s, a, b, anchor = "middle", cls = "") =>
+      mark("text", {x:a,y:b,"text-anchor":anchor,class:cls}, bg, s);
+    if (final && k) mark("rect", {
+      x:left, y:top, width:k*spacing, height:bottom-top, class:"shade"
+    }, bg);
+    [0, .025, .05, .075, .10].forEach(v => {
+      line(left, y(v), right, y(v), "grid");
+      label(v === 0 ? "0" : v.toFixed(3), left-7, y(v)+4, "end");
+    });
+    line(left, top, left, bottom, "axis");
+    line(left, bottom, right, bottom, "axis");
+    label("p-value", left, 14, "start", "axis-title");
+    if (showLine) {
+      line(x(0), y(threshold(1)), x(m-1), y(threshold(m)), "threshold");
+      if (k) line(x(k-1), top, x(k-1), bottom, "cutoff");
+    }
+
+    ordered.forEach((d, i) => {
+      const rank = i + 1, px = x(i), py = y(d.p / 1000);
+      const cutoff = showLine && k === rank;
+      const on = final ? rank <= k : passes(d, rank);
+      label(name(d), px, bottom+34, "middle", "axis-title");
+      label(String(rank), px, bottom+17);
+      if (showLine) {
+        const limit = y(threshold(rank));
+        if (!final) line(px, py, px, limit, "connector");
+        line(px-4, limit, px+4, limit, "threshold-tick");
+      }
+      const group = groups.get(d.id);
+      group.replaceChildren();
+      group.style.transform = `translate(${px}px, ${py}px)`;
+      const comparison = showLine ? `; threshold ${decimal(threshold(rank))}` : "";
+      const decision = final ? (on ? "; reject" : "; do not reject") : "";
+      mark("title", {}, group, `${name(d)}: p = ${pvalue(d)}${comparison}${decision}`);
+      if (cutoff) mark("circle", {r:10, class:"ring"}, group);
+      mark("circle", {r:5.6, class:"dot" + (showLine ? (on ? " active" : " inactive") : "")}, group);
+    });
+    label(step ? "Rank (smallest p-value first)" : "Original input order",
+      (left+right)/2, height-9, "middle", "axis-title");
+
+    const swatch = (cls, label) => `<span><i class="swatch ${cls}"></i>${label}</span>`;
+    byId("legend").innerHTML = !showLine ? swatch("", "Observed p-value") :
+      swatch("dash", "BH threshold: (rank / 8) × q") +
+      swatch("active", final ? "Reject" : "Passes threshold") +
+      swatch("open", final ? "Do not reject" : "Above threshold") +
+      (k ? swatch("ringed", "Cutoff rank") : "");
+    let title, detail;
+    if (step === 0) {
+      title = "Start with eight p-values";
+      detail = "Each dot belongs to the hypothesis labeled below it.";
+    } else if (step === 1) {
+      title = "Sort from smallest to largest";
+      detail = "Give each p-value a rank. Keep its original hypothesis label.";
+    } else if (step === 2) {
+      title = k ? `Largest passing rank: ${k}` : "No rank passes";
+      detail = k ? `At rank ${k}: ${pvalue(sorted[k-1])} ≤ ${decimal(threshold(k))}. Pick the rightmost passing dot.`
+        : "Every p-value is above its own BH threshold.";
+    } else {
+      title = k ? `Reject ${k} of ${m}: ${sorted.slice(0,k).map(name).join(", ")}` : "Reject none";
+      const skipped = sorted.slice(0,k).findIndex((d,i) => !passes(d,i+1));
+      detail = !k ? "No passing rank means no rejections." : skipped < 0 ?
+        `Reject every hypothesis from rank 1 through rank ${k}.` :
+        `Reject ranks 1–${k}, including rank ${skipped+1} even though it is above its own threshold.`;
+    }
+    byId("result-title").textContent = title;
+    byId("result-detail").textContent = detail;
+    byId("plot-desc").textContent = `${title}. ${detail} Target level ${percent(q)}. Exact values are listed below the plot.`;
+
+    byId("values-head").innerHTML =
+      `<tr><th scope="col">${step ? "Rank" : "Position"}</th><th scope="col">Test</th><th scope="col">p-value</th>` +
+      (showLine ? `<th scope="col">BH limit</th><th scope="col">${final ? "Decision" : "Pass?"}</th>` : "") + "</tr>";
+    byId("values-body").innerHTML = ordered.map((d,i) => {
+      const rank = i + 1;
+      const outcome = final ? (rank <= k ? "Reject" : "Do not reject") : (passes(d,rank) ? "Yes" : "No");
+      return `<tr><td>${rank}</td><th scope="row">${name(d)}</th><td>${pvalue(d)}</td>` +
+        (showLine ? `<td>${decimal(threshold(rank))}</td><td>${outcome}</td>` : "") + "</tr>";
+    }).join("");
+  }
+
+  function show(n) {
+    step = n;
+    stages.forEach((button, i) => {
+      if (i === step) button.setAttribute("aria-current", "step");
+      else button.removeAttribute("aria-current");
+    });
+    draw();
+  }
+  function stop() {
+    clearTimeout(timer);
+    timer = null;
+    play.textContent = "Play steps";
+  }
+  function advance() {
+    show(step + 1);
+    if (step === stages.length - 1) stop();
+    else timer = setTimeout(advance, 1500);
+  }
+  play.addEventListener("click", () => {
+    if (timer !== null) { stop(); return; }
+    if (step === stages.length - 1) show(0);
+    play.textContent = "Pause";
+    timer = setTimeout(advance, 1500);
+  });
+  stages.forEach(button => button.addEventListener("click", () => {
+    stop(); show(Number(button.dataset.step));
+  }));
+  level.addEventListener("input", () => {
+    stop();
+    if (step < 2) show(2); else draw();
+  });
+  new ResizeObserver(draw).observe(byId("plot"));
+  draw();
+})();
+</script>
+</body>
+</html>
